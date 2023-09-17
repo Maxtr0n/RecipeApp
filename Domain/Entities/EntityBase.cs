@@ -8,6 +8,6 @@ namespace Domain.Entities
 {
     public class EntityBase
     {
-        public string Identifier { get; set; } = default!;
+        public Guid Identifier { get; set; } = default!;
     }
 }
