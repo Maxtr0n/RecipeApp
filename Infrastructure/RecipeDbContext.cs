@@ -1,18 +1,16 @@
 ﻿using Domain.Entities;
+using Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Infrastructure
+namespace Infrastructure;
+public class RecipeDbContext : DbContext
 {
-    public class RecipeDbContext : DbContext
+    public RecipeDbContext(DbContextOptions<RecipeDbContext> options) : base(options) { }
+
+    public DbSet<Recipe> Recipes { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        public RecipeDbContext(DbContextOptions options) : base(options) { }
-
-        public DbSet<Recipe> Recipes { get; set; }
-
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(RecipeEntityTypeConfiguration).Assembly);
     }
 }
