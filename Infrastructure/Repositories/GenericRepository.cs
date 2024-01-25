@@ -8,27 +8,27 @@ namespace Infrastructure.Repositories;
 public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : EntityBase
 {
     protected readonly RecipeDbContext _context;
-    protected readonly DbSet<TEntity> dbSet;
+    protected readonly DbSet<TEntity> _dbSet;
 
     public GenericRepository(RecipeDbContext context)
     {
-        _context = context;
-        dbSet = context.Set<TEntity>();
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _dbSet = context.Set<TEntity>();
     }
 
-    public virtual Task<Guid> CreateAsync(TEntity toCreate)
+    public virtual Guid Create(TEntity toCreate)
     {
-        throw new NotImplementedException();
+        _dbSet.Add(toCreate);
+        return toCreate.Id;
     }
 
-    public virtual Task DeleteAsync(Guid id)
+    public virtual async Task DeleteAsync(Guid id)
     {
-        throw new NotImplementedException();
-    }
-
-    public virtual Task DeleteAsync(TEntity entityToDelete)
-    {
-        throw new NotImplementedException();
+        TEntity? entityToDelete = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+        if (entityToDelete != null)
+        {
+            _dbSet.Remove(entityToDelete);
+        }
     }
 
     public virtual async Task<IEnumerable<TEntity>> GetAsync(
@@ -36,7 +36,7 @@ public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : E
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         string includeProperties = "")
     {
-        IQueryable<TEntity> query = dbSet;
+        IQueryable<TEntity> query = _dbSet.AsNoTracking();
 
         if (filter != null)
         {
@@ -59,13 +59,23 @@ public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : E
         }
     }
 
-    public virtual Task<TEntity> GetByIdAsync(Guid id)
+    public virtual async Task<TEntity?> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await _dbSet
+              .AsNoTracking()
+              .FirstOrDefaultAsync(e => e.Id == id);
     }
 
-    public virtual Task<TEntity> UpdateAsync(Guid id, TEntity entity)
+    public virtual async Task<TEntity> UpdateAsync(Guid id, TEntity entity)
     {
-        throw new NotImplementedException();
+        TEntity? entityToUpdate = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+        if (entityToUpdate == null)
+        {
+            //TODO: throw EntityNotFoundException()
+            throw new Exception();
+        }
+
+        _dbSet.Update(entityToUpdate);
+        return entityToUpdate;
     }
 }

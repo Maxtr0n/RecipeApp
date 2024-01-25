@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class Recipe : EntityBase
     {
@@ -14,7 +8,7 @@ namespace Domain.Entities
 
         public string Description { get; set; } = default!;
 
-        public IEnumerable<string> Images { get; set; } = Enumerable.Empty<string>();
+        public IEnumerable<string> Imags { get; set; } = Enumerable.Empty<string>();
 
         public string Author { get; set; } = default!;
     }

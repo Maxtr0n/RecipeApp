@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Abstractions;
 
 namespace Domain.Entities
 {
-    public class EntityBase
+    public class EntityBase : IIdentifiable
     {
-        public Guid Identifier { get; set; } = default!;
+        public Guid Id { get; set; } = default!;
     }
 }
