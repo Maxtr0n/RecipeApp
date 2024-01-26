@@ -2,7 +2,7 @@
 using Domain.Entities;
 
 namespace Domain.Specifications;
-public class RecipeByTitleSpec : Specification<Recipe>
+public class RecipeByTitleSpec : SingleResultSpecification<Recipe>
 {
     public RecipeByTitleSpec(string title)
     {

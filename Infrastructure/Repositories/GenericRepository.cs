@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Common.Abstractions.Repositories;
 using Ardalis.Specification.EntityFrameworkCore;
 using Domain.Abstractions;
 
