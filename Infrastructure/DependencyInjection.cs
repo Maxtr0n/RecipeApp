@@ -1,5 +1,5 @@
 ﻿using Application.Abstractions;
-using Domain.Entities;
+using Domain.Abstractions;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +11,7 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IRepository<EntityBase>, GenericRepository<EntityBase>>();
+            services.AddScoped<IRepository<IAggregateRoot>, GenericRepository<IAggregateRoot>>();
             services.AddDbContext<RecipeDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
             return services;
         }

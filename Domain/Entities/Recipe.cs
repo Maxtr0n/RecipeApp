@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities
 {
-    public class Recipe : EntityBase
+    public class Recipe : BaseEntity
     {
         public string Title { get; set; } = default!;
 

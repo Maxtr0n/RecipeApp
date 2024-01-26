@@ -2,7 +2,7 @@
 
 namespace Domain.Entities
 {
-    public class EntityBase : IIdentifiable
+    public abstract class BaseEntity : IIdentifiable
     {
         public Guid Id { get; set; } = default!;
     }
