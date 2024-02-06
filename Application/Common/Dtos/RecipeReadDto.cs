@@ -1,9 +1,9 @@
-﻿using Domain.Abstractions;
-
-namespace Domain.Entities
+﻿namespace Application.Common.Dtos
 {
-    public class Recipe : BaseEntity, IAggregateRoot
+    public class RecipeReadDto
     {
+        public Guid Id { get; set; }
+
         public string Title { get; set; } = default!;
 
         public IEnumerable<string> Ingredients { get; set; } = Enumerable.Empty<string>();
