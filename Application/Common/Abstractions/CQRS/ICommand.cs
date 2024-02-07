@@ -1,6 +1,5 @@
-﻿using Ardalis.Result;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.Common.Abstractions.CQRS;
-public interface ICommand<out TResponse> : IRequest<TResponse> where TResponse : Result { }
+public interface ICommand<out TResponse> : IRequest<TResponse> { }
 

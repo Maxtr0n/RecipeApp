@@ -2,7 +2,7 @@
 using Domain.Entities;
 
 namespace Domain.Specifications;
-public class RecipeByIdReadOnlySpec : Specification<Recipe>
+public class RecipeByIdReadOnlySpec : SingleResultSpecification<Recipe>
 {
     public RecipeByIdReadOnlySpec(Guid id)
     {

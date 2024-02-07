@@ -7,22 +7,12 @@ using Domain.Entities;
 
 namespace Application.Recipes.QueryHandlers;
 
-public class GetAllRecipesQueryHandler : IQueryHandler<GetAllRecipesQuery, IEnumerable<RecipeReadDto>>
+public class GetAllRecipesQueryHandler(IMapper mapper, IRepository<Recipe> repository) : IQueryHandler<GetAllRecipesQuery, List<RecipeReadDto>>
 {
-    private readonly IMapper _mapper;
-    private readonly IRepository<Recipe> _repository;
-
-    public GetAllRecipesQueryHandler(IMapper mapper, IRepository<Recipe> repository)
-    {
-        _mapper = mapper;
-        _repository = repository;
-    }
-
-
     //TODO: use result class from ardalis?
-    public async Task<IEnumerable<RecipeReadDto>> Handle(GetAllRecipesQuery request, CancellationToken cancellationToken)
+    public async Task<List<RecipeReadDto>> Handle(GetAllRecipesQuery request, CancellationToken cancellationToken)
     {
-        var recipes = _mapper.Map<IEnumerable<RecipeReadDto>>(await _repository.ListAsync(cancellationToken));
+        var recipes = mapper.Map<List<RecipeReadDto>>(await repository.ListAsync(cancellationToken)) ?? [];
 
         return recipes;
     }

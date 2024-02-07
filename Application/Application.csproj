@@ -19,9 +19,4 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Recipes\Commands\" />
-    <Folder Include="Recipes\CommandHandlers\" />
-  </ItemGroup>
-
 </Project>

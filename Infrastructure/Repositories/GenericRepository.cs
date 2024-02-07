@@ -4,6 +4,4 @@ using Domain.Abstractions;
 
 namespace Infrastructure.Repositories;
 
-public class GenericRepository<T>(RecipeDbContext context) : RepositoryBase<T>(context), IReadRepository<T>, IRepository<T> where T : class, IAggregateRoot
-{
-}
+public class GenericRepository<T>(RecipeDbContext context) : RepositoryBase<T>(context), IRepository<T> where T : class, IAggregateRoot { }

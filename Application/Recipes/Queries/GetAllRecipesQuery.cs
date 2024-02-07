@@ -2,4 +2,4 @@
 using Application.Common.Dtos;
 
 namespace Application.Recipes.Queries;
-public record GetAllRecipesQuery() : IQuery<IEnumerable<RecipeReadDto>>;
+public record GetAllRecipesQuery() : IQuery<List<RecipeReadDto>>;
