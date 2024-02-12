@@ -8,7 +8,9 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
 
+//builder.Services.AddFastEndpoints();
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -26,6 +28,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+//app.UseFastEndpoints();
 app.MapControllers();
 
 app.Run();
