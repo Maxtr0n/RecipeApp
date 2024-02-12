@@ -30,8 +30,7 @@ public class UpdateRecipeCommandHandler(IMapper mapper, IRepository<Recipe> repo
 
         await repository.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+        return mapper.Map<RecipeReadDto>(recipeToUpdate)!;
     }
-}
 }
 
