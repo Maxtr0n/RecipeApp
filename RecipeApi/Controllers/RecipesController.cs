@@ -14,14 +14,14 @@ public class RecipesController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<RecipeReadDto>> GetRecipeById([FromRoute] Guid id)
     {
         var result = await mediator.Send(new GetRecipeByIdQuery(id));
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     [HttpGet]
     public async Task<ActionResult<List<RecipeReadDto>>> GetRecipes()
     {
         var result = await mediator.Send(new GetAllRecipesQuery());
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     [HttpPost]
@@ -31,19 +31,23 @@ public class RecipesController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(new CreateRecipeCommand(dto));
         //TODO: return CreatedAtAction result or something like that
-        return Ok(result);
+        return Created();
     }
 
-    //[HttpDelete("id")]
-    //public async Task<ActionResult> DeleteRecipe([FromRoute] Guid id)
-    //{
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteRecipe([FromRoute] Guid id)
+    {
+        var result = await mediator.Send(new DeleteRecipeCommand(id));
+        //TODO what to return after delete
+        return Ok();
+    }
 
-    //}
+    [HttpPut("{id}")]
+    public async Task<ActionResult<RecipeReadDto>> UpdateRecipe([FromRoute] Guid id, [FromBody] RecipeUpdateDto recipeUpdateDto)
+    {
+        var result = await mediator.Send(new UpdateRecipeCommand(id, recipeUpdateDto));
 
-    //[HttpPut("id")]
-    //public async Task<ActionResult<RecipeReadDto>> UpdateRecipe([FromRoute] Guid id)
-    //{
-
-    //}
+        return Ok(result.Value);
+    }
 
 }
