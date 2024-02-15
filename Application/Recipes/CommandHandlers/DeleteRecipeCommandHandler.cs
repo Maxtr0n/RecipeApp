@@ -16,7 +16,7 @@ public class DeleteRecipeCommandHandler(IMapper mapper, IRepository<Recipe> repo
 
         if (recipeToDelete == null)
         {
-            return Result.NotFound($"The Recipe with the given Id: {request.Id} was not found.");
+            return Result.NotFound(Constants.RECIPE_NOT_FOUND_ERROR_MESSAGE);
         }
 
         await repository.DeleteAsync(recipeToDelete, cancellationToken);

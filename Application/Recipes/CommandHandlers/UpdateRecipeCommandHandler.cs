@@ -17,7 +17,7 @@ public class UpdateRecipeCommandHandler(IMapper mapper, IRepository<Recipe> repo
 
         if (recipeToUpdate == null)
         {
-            return Result.NotFound($"The Recipe with the given Id: {request.Id} was not found.");
+            return Result.NotFound(Constants.RECIPE_NOT_FOUND_ERROR_MESSAGE);
         }
 
         recipeToUpdate.Update(request.RecipeUpdateDto.Title,

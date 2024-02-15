@@ -16,8 +16,7 @@ public class GetRecipeByIdQueryHandler(IMapper mapper, IRepository<Recipe> repos
 
         if (recipe == null)
         {
-            // TODO throw correct exception (EntityNotFoundException)
-            throw new Exception();
+            return Result.NotFound(Constants.RECIPE_NOT_FOUND_ERROR_MESSAGE);
         }
 
         return recipe;

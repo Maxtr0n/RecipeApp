@@ -1,6 +1,7 @@
 ﻿using Application.Common.Dtos;
 using Application.Recipes.Commands;
 using Application.Recipes.Queries;
+using Ardalis.Result.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,17 +12,19 @@ namespace RecipeApi.Controllers;
 public class RecipesController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<RecipeReadDto>> GetRecipeById([FromRoute] Guid id)
     {
-        var result = await mediator.Send(new GetRecipeByIdQuery(id));
-        return Ok(result.Value);
+        return this.ToActionResult(await mediator.Send(new GetRecipeByIdQuery(id)));
     }
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<RecipeReadDto>>> GetRecipes()
     {
-        var result = await mediator.Send(new GetAllRecipesQuery());
-        return Ok(result.Value);
+        return this.ToActionResult(await mediator.Send(new GetAllRecipesQuery()));
     }
 
     [HttpPost]
@@ -29,25 +32,26 @@ public class RecipesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<RecipeReadDto>> CreateRecipe([FromBody] RecipeCreateDto dto)
     {
-        var result = await mediator.Send(new CreateRecipeCommand(dto));
         //TODO: return CreatedAtAction result or something like that
-        return Created();
+        return this.ToActionResult(await mediator.Send(new CreateRecipeCommand(dto)));
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteRecipe([FromRoute] Guid id)
     {
-        var result = await mediator.Send(new DeleteRecipeCommand(id));
-        //TODO what to return after delete
-        return Ok();
+        return this.ToActionResult(await mediator.Send(new DeleteRecipeCommand(id)));
     }
 
     [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<RecipeReadDto>> UpdateRecipe([FromRoute] Guid id, [FromBody] RecipeUpdateDto recipeUpdateDto)
     {
-        var result = await mediator.Send(new UpdateRecipeCommand(id, recipeUpdateDto));
-
-        return Ok(result.Value);
+        return this.ToActionResult(await mediator.Send(new UpdateRecipeCommand(id, recipeUpdateDto)));
     }
 
 }
