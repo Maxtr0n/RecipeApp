@@ -1,7 +1,6 @@
 ﻿using Application.Common.Dtos;
 using Application.Recipes.Commands;
 using Application.Recipes.Queries;
-using Ardalis.Result.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,14 +16,18 @@ public class RecipesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<RecipeReadDto>> GetRecipeById([FromRoute] Guid id)
     {
-        return this.ToActionResult(await mediator.Send(new GetRecipeByIdQuery(id)));
+        var result = await mediator.Send(new GetRecipeByIdQuery(id));
+
+        return result.Value;
     }
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<RecipeReadDto>>> GetRecipes()
     {
-        return this.ToActionResult(await mediator.Send(new GetAllRecipesQuery()));
+        var result = await mediator.Send(new GetAllRecipesQuery());
+
+        return result.Value;
     }
 
     [HttpPost]
@@ -32,8 +35,16 @@ public class RecipesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<RecipeReadDto>> CreateRecipe([FromBody] RecipeCreateDto dto)
     {
-        //TODO: return CreatedAtAction result or something like that
-        return this.ToActionResult(await mediator.Send(new CreateRecipeCommand(dto)));
+        var result = await mediator.Send(new CreateRecipeCommand(dto));
+
+        if (!result.IsSuccess)
+        {
+            //TODO: olvasd el ezt a cikket: https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-8.0#use-exceptions-to-modify-the-response
+            // és ez alapján kombinálni kéne ezt valahogy a ProblemDetails-es megoldással.
+            return BadRequest();
+        }
+
+        return CreatedAtAction(nameof(CreateRecipe), new { id = result.Value.Id }, result.Value);
     }
 
     [HttpDelete("{id}")]
@@ -42,7 +53,9 @@ public class RecipesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteRecipe([FromRoute] Guid id)
     {
-        return this.ToActionResult(await mediator.Send(new DeleteRecipeCommand(id)));
+        var result = await mediator.Send(new DeleteRecipeCommand(id));
+
+        return Ok();
     }
 
     [HttpPut("{id}")]
@@ -51,7 +64,9 @@ public class RecipesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<RecipeReadDto>> UpdateRecipe([FromRoute] Guid id, [FromBody] RecipeUpdateDto recipeUpdateDto)
     {
-        return this.ToActionResult(await mediator.Send(new UpdateRecipeCommand(id, recipeUpdateDto)));
+        var result = await mediator.Send(new UpdateRecipeCommand(id, recipeUpdateDto));
+
+        return result.Value;
     }
 
 }

@@ -2,10 +2,10 @@
 using Application.Common.Abstractions.Repositories;
 using Application.Common.Dtos;
 using Application.Recipes.Queries;
-using Ardalis.Result;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Specifications;
+using SharedKernel;
 
 namespace Application.Recipes.QueryHandlers;
 public class GetRecipeByIdQueryHandler(IMapper mapper, IRepository<Recipe> repository) : IQueryHandler<GetRecipeByIdQuery, Result<RecipeReadDto>>

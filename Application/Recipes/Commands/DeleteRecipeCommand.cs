@@ -1,5 +1,5 @@
 ﻿using Application.Common.Abstractions.CQRS;
-using Ardalis.Result;
+using SharedKernel;
 
 namespace Application.Recipes.Commands;
 

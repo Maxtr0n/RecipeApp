@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using RecipeApi.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 //builder.Services.AddFastEndpoints();
 builder.Services.AddControllers();
@@ -28,7 +32,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-//app.UseFastEndpoints();
+app.UseExceptionHandler();
+
 app.MapControllers();
 
 app.Run();

@@ -1,4 +1,5 @@
 ﻿using Domain.Abstractions;
+using SharedKernel;
 
 namespace Domain.Entities;
 
