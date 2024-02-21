@@ -1,14 +1,13 @@
 ﻿using Application.Common.Abstractions.CQRS;
 using Application.Common.Abstractions.Repositories;
 using Application.Recipes.Commands;
-using AutoMapper;
 using Domain.Entities;
 using Domain.Specifications;
 using SharedKernel;
 
 namespace Application.Recipes.CommandHandlers;
 
-public class DeleteRecipeCommandHandler(IMapper mapper, IRepository<Recipe> repository) : ICommandHandler<DeleteRecipeCommand, Result>
+public class DeleteRecipeCommandHandler(IRepository<Recipe> repository) : ICommandHandler<DeleteRecipeCommand, Result>
 {
     public async Task<Result> Handle(DeleteRecipeCommand request, CancellationToken cancellationToken)
     {

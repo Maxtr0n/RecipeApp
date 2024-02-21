@@ -3,31 +3,54 @@ using SharedKernel;
 
 namespace Domain.Entities;
 
-public class Recipe : BaseEntity, IAggregateRoot
+public sealed class Recipe : Entity, IAggregateRoot
 {
-    public string Title { get; set; } = default!;
+    private readonly List<string> _ingredients = new();
+    private readonly List<string> _images = new();
 
-    public List<string> Ingredients { get; set; } = [];
+    public Recipe(
+        Guid id,
+        string title,
+        IEnumerable<string> ingredients,
+        string description,
+        IEnumerable<string> images,
+        string author
+        ) : base(id)
+    {
+        //TODO guard clauses
 
-    public string Description { get; set; } = default!;
+        Title = title;
+        Description = description;
+        Author = author;
+        _ingredients.AddRange(ingredients);
+        _images.AddRange(images);
+    }
 
-    public List<string> Images { get; set; } = [];
+    public string Title { get; private set; } = default!;
 
-    public string Author { get; set; } = default!;
+    public IReadOnlyCollection<string> Ingredients => _ingredients;
+
+    public string Description { get; private set; } = default!;
+
+    public IReadOnlyCollection<string> Images => _images;
+
+    public string Author { get; private set; } = default!;
 
     public void Update(
         string title,
-        List<string> ingredients,
+        IEnumerable<string> ingredients,
         string description,
-        List<string> images,
+        IEnumerable<string> images,
         string author)
     {
         //TODO: guard clauses
 
         Title = title;
-        Ingredients = ingredients;
         Description = description;
-        Images = images;
         Author = author;
+        _ingredients.Clear();
+        _ingredients.AddRange(ingredients);
+        _images.Clear();
+        _images.AddRange(images);
     }
 }
