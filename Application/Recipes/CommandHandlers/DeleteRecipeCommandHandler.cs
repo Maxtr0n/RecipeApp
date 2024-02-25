@@ -15,7 +15,7 @@ public class DeleteRecipeCommandHandler(IRepository<Recipe> repository) : IComma
 
         if (recipeToDelete == null)
         {
-            return Result.NotFound(Constants.RECIPE_NOT_FOUND_ERROR_MESSAGE);
+            return Result.Failure(new Error("404", Constants.RECIPE_NOT_FOUND_ERROR_MESSAGE));
         }
 
         await repository.DeleteAsync(recipeToDelete, cancellationToken);

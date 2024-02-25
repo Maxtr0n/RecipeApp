@@ -16,7 +16,7 @@ public class GetRecipeByIdQueryHandler(IMapper mapper, IRepository<Recipe> repos
 
         if (recipe == null)
         {
-            return Result.NotFound(Constants.RECIPE_NOT_FOUND_ERROR_MESSAGE);
+            return Result.Failure<RecipeReadDto>(new Error("404", Constants.RECIPE_NOT_FOUND_ERROR_MESSAGE));
         }
 
         return recipe;
