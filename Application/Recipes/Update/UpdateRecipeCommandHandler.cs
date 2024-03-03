@@ -1,13 +1,12 @@
 ﻿using Application.Common.Abstractions.CQRS;
 using Application.Common.Abstractions.Repositories;
 using Application.Common.Dtos;
-using Application.Recipes.Commands;
+using Ardalis.Result;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Specifications;
-using SharedKernel;
 
-namespace Application.Recipes.CommandHandlers;
+namespace Application.Recipes.Update;
 
 public class UpdateRecipeCommandHandler(IMapper mapper, IRepository<Recipe> repository) : ICommandHandler<UpdateRecipeCommand, Result<RecipeReadDto>>
 {
@@ -17,7 +16,7 @@ public class UpdateRecipeCommandHandler(IMapper mapper, IRepository<Recipe> repo
 
         if (recipeToUpdate == null)
         {
-            return Result.Failure<RecipeReadDto>(new Error("404", Constants.RECIPE_NOT_FOUND_ERROR_MESSAGE));
+            return Result.NotFound(Constants.ErrorMessages.RECIPE_NOT_FOUND_ERROR_MESSAGE);
         }
 
         recipeToUpdate.Update(request.RecipeUpdateDto.Title,
@@ -26,7 +25,7 @@ public class UpdateRecipeCommandHandler(IMapper mapper, IRepository<Recipe> repo
             request.RecipeUpdateDto.Images,
             request.RecipeUpdateDto.Author);
 
-        await repository.UpdateAsync(recipeToUpdate);
+        await repository.UpdateAsync(recipeToUpdate, cancellationToken);
 
         await repository.SaveChangesAsync(cancellationToken);
 

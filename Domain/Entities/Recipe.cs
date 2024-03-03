@@ -1,12 +1,13 @@
-﻿using Domain.Abstractions;
+﻿using Ardalis.GuardClauses;
+using Domain.Abstractions;
 using SharedKernel;
 
 namespace Domain.Entities;
 
-public sealed class Recipe : Entity, IAggregateRoot
+public class Recipe : Entity, IAggregateRoot
 {
-    private readonly List<string> _ingredients = new();
-    private readonly List<string> _images = new();
+    private readonly List<string> _ingredients = [];
+    private readonly List<string> _images = [];
 
     public Recipe(
         Guid id,
@@ -17,7 +18,10 @@ public sealed class Recipe : Entity, IAggregateRoot
         string author
         ) : base(id)
     {
-        //TODO guard clauses
+        Guard.Against.NullOrEmpty(title);
+        Guard.Against.NullOrEmpty(ingredients);
+        Guard.Against.NullOrEmpty(description);
+        Guard.Against.NullOrEmpty(author);
 
         Title = title;
         Description = description;
@@ -28,11 +32,11 @@ public sealed class Recipe : Entity, IAggregateRoot
 
     public string Title { get; private set; } = default!;
 
-    public IReadOnlyCollection<string> Ingredients => _ingredients;
+    public IEnumerable<string> Ingredients => _ingredients;
 
     public string Description { get; private set; } = default!;
 
-    public IReadOnlyCollection<string> Images => _images;
+    public IEnumerable<string> Images => _images;
 
     public string Author { get; private set; } = default!;
 
@@ -43,7 +47,10 @@ public sealed class Recipe : Entity, IAggregateRoot
         IEnumerable<string> images,
         string author)
     {
-        //TODO: guard clauses
+        Guard.Against.NullOrEmpty(title);
+        Guard.Against.NullOrEmpty(ingredients);
+        Guard.Against.NullOrEmpty(description);
+        Guard.Against.NullOrEmpty(author);
 
         Title = title;
         Description = description;

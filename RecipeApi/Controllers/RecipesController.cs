@@ -1,6 +1,9 @@
 ﻿using Application.Common.Dtos;
-using Application.Recipes.Commands;
-using Application.Recipes.Queries;
+using Application.Recipes.Create;
+using Application.Recipes.Delete;
+using Application.Recipes.GetAll;
+using Application.Recipes.GetById;
+using Application.Recipes.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,9 +42,7 @@ public class RecipesController(IMediator mediator) : ControllerBase
 
         if (!result.IsSuccess)
         {
-            //TODO: olvasd el ezt a cikket: https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-8.0#use-exceptions-to-modify-the-response
-            // és ez alapján kombinálni kéne ezt valahogy a ProblemDetails-es megoldással.
-            return BadRequest();
+            return BadRequest(result.ValidationErrors);
         }
 
         return CreatedAtAction(nameof(CreateRecipe), new { id = result.Value.Id }, result.Value);

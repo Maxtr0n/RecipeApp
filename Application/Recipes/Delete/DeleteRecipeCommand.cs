@@ -1,6 +1,6 @@
 ﻿using Application.Common.Abstractions.CQRS;
-using SharedKernel;
+using Ardalis.Result;
 
-namespace Application.Recipes.Commands;
+namespace Application.Recipes.Delete;
 
 public record DeleteRecipeCommand(Guid Id) : ICommand<Result>;

@@ -1,12 +1,11 @@
 ﻿using Application.Common.Abstractions.CQRS;
 using Application.Common.Abstractions.Repositories;
 using Application.Common.Dtos;
-using Application.Recipes.Queries;
+using Ardalis.Result;
 using AutoMapper;
 using Domain.Entities;
-using SharedKernel;
 
-namespace Application.Recipes.QueryHandlers;
+namespace Application.Recipes.GetAll;
 
 public class GetAllRecipesQueryHandler(IMapper mapper, IRepository<Recipe> repository) : IQueryHandler<GetAllRecipesQuery, Result<List<RecipeReadDto>>>
 {

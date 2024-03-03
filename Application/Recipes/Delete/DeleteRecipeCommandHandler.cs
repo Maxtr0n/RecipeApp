@@ -1,11 +1,10 @@
 ﻿using Application.Common.Abstractions.CQRS;
 using Application.Common.Abstractions.Repositories;
-using Application.Recipes.Commands;
+using Ardalis.Result;
 using Domain.Entities;
 using Domain.Specifications;
-using SharedKernel;
 
-namespace Application.Recipes.CommandHandlers;
+namespace Application.Recipes.Delete;
 
 public class DeleteRecipeCommandHandler(IRepository<Recipe> repository) : ICommandHandler<DeleteRecipeCommand, Result>
 {
@@ -15,7 +14,7 @@ public class DeleteRecipeCommandHandler(IRepository<Recipe> repository) : IComma
 
         if (recipeToDelete == null)
         {
-            return Result.Failure(new Error("404", Constants.RECIPE_NOT_FOUND_ERROR_MESSAGE));
+            return Result.NotFound(Constants.ErrorMessages.RECIPE_NOT_FOUND_ERROR_MESSAGE);
         }
 
         await repository.DeleteAsync(recipeToDelete, cancellationToken);

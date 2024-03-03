@@ -2,14 +2,13 @@
 using AutoMapper;
 using Domain.Entities;
 
-namespace Application.Profiles
+namespace Application.Profiles;
+
+public class RecipeProfile : Profile
 {
-    public class RecipeProfile : Profile
+    public RecipeProfile()
     {
-        public RecipeProfile()
-        {
-            CreateMap<Recipe, RecipeReadDto>();
-            CreateMap<RecipeCreateDto, Recipe>();
-        }
+        CreateMap<Recipe, RecipeReadDto>();
+        //CreateMap<RecipeCreateDto, Recipe>(); for now I do not use automapper to create entities
     }
 }
