@@ -1,6 +1,7 @@
 ﻿using Application.Common.Abstractions.CQRS;
 using Application.Common.Abstractions.Repositories;
 using Application.Common.Dtos;
+using Application.Common.Extensions;
 using Ardalis.Result;
 using AutoMapper;
 using Domain.Entities;
@@ -20,9 +21,9 @@ public class UpdateRecipeCommandHandler(IMapper mapper, IRepository<Recipe> repo
         }
 
         recipeToUpdate.Update(request.RecipeUpdateDto.Title,
-            request.RecipeUpdateDto.Ingredients,
+            request.RecipeUpdateDto.Ingredients.JoinListToString(),
             request.RecipeUpdateDto.Description,
-            request.RecipeUpdateDto.Images,
+            request.RecipeUpdateDto.Images.JoinListToString(),
             request.RecipeUpdateDto.Author);
 
         await repository.UpdateAsync(recipeToUpdate, cancellationToken);

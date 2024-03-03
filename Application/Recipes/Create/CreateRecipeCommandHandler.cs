@@ -11,13 +11,7 @@ public class CreateRecipeCommandHandler(IMapper mapper, IRepository<Recipe> repo
 {
     public async Task<Result<RecipeReadDto>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
-        var recipe = new Recipe(
-            Guid.NewGuid(),
-            request.RecipeCreateDto.Title,
-            request.RecipeCreateDto.Ingredients,
-            request.RecipeCreateDto.Description,
-            request.RecipeCreateDto.Images,
-            request.RecipeCreateDto.Author);
+        var recipe = mapper.Map<Recipe>(request.RecipeCreateDto);
 
         var result = await repository.AddAsync(recipe, cancellationToken);
 

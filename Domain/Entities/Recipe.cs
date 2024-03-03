@@ -6,15 +6,12 @@ namespace Domain.Entities;
 
 public class Recipe : Entity, IAggregateRoot
 {
-    private readonly List<string> _ingredients = [];
-    private readonly List<string> _images = [];
-
     public Recipe(
         Guid id,
         string title,
-        IEnumerable<string> ingredients,
+        string ingredients,
         string description,
-        IEnumerable<string> images,
+        string images,
         string author
         ) : base(id)
     {
@@ -24,27 +21,28 @@ public class Recipe : Entity, IAggregateRoot
         Guard.Against.NullOrEmpty(author);
 
         Title = title;
+        Ingredients = ingredients;
         Description = description;
+        Images = images;
         Author = author;
-        _ingredients.AddRange(ingredients);
-        _images.AddRange(images);
+
     }
 
-    public string Title { get; private set; } = default!;
+    public string Title { get; private set; }
 
-    public IEnumerable<string> Ingredients => _ingredients;
+    public string Ingredients { get; private set; }
 
-    public string Description { get; private set; } = default!;
+    public string Description { get; private set; }
 
-    public IEnumerable<string> Images => _images;
+    public string Images { get; private set; }
 
-    public string Author { get; private set; } = default!;
+    public string Author { get; private set; }
 
     public void Update(
         string title,
-        IEnumerable<string> ingredients,
+        string ingredients,
         string description,
-        IEnumerable<string> images,
+        string images,
         string author)
     {
         Guard.Against.NullOrEmpty(title);
@@ -53,11 +51,9 @@ public class Recipe : Entity, IAggregateRoot
         Guard.Against.NullOrEmpty(author);
 
         Title = title;
+        Ingredients = ingredients;
         Description = description;
+        Images = images;
         Author = author;
-        _ingredients.Clear();
-        _ingredients.AddRange(ingredients);
-        _images.Clear();
-        _images.AddRange(images);
     }
 }
