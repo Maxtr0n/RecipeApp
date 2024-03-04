@@ -21,9 +21,9 @@ public class UpdateRecipeCommandHandler(IMapper mapper, IRepository<Recipe> repo
         }
 
         recipeToUpdate.Update(request.RecipeUpdateDto.Title,
-            request.RecipeUpdateDto.Ingredients.JoinListToString(),
+            request.RecipeUpdateDto.Ingredients.JoinStrings(),
             request.RecipeUpdateDto.Description,
-            request.RecipeUpdateDto.Images.JoinListToString(),
+            request.RecipeUpdateDto.Images.JoinStrings(),
             request.RecipeUpdateDto.Author);
 
         await repository.UpdateAsync(recipeToUpdate, cancellationToken);
