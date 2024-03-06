@@ -15,10 +15,9 @@ public static class DependencyInjection
             configuration.RegisterServicesFromAssemblies(assembly));
 
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        ValidatorOptions.Global.LanguageManager.Enabled = false;
         services.AddValidatorsFromAssembly(assembly);
 
-        // For now, only use automapper for the returned DTOS, because I create entities manually, following DDD
-        // later could be refactored, but must learn how to integrate automapper to work with DDD entities (constructors with parameters - id)
         services.AddAutoMapper(assembly);
 
         return services;
