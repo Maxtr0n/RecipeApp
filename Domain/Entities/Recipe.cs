@@ -11,7 +11,7 @@ public class Recipe : Entity, IAggregateRoot
         string title,
         string ingredients,
         string description,
-        string images,
+        string? images,
         string author
         ) : base(id)
     {
@@ -34,7 +34,7 @@ public class Recipe : Entity, IAggregateRoot
 
     public string Description { get; private set; }
 
-    public string Images { get; private set; }
+    public string? Images { get; private set; }
 
     public string Author { get; private set; }
 
@@ -42,7 +42,7 @@ public class Recipe : Entity, IAggregateRoot
         string title,
         string ingredients,
         string description,
-        string images,
+        string? images,
         string author)
     {
         Guard.Against.NullOrEmpty(title);
