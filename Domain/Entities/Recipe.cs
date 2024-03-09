@@ -15,10 +15,7 @@ public class Recipe : Entity, IAggregateRoot
         string author
         ) : base(id)
     {
-        Guard.Against.NullOrEmpty(title);
-        Guard.Against.NullOrEmpty(ingredients);
-        Guard.Against.NullOrEmpty(description);
-        Guard.Against.NullOrEmpty(author);
+        GuardAgainstInvalidInput(title, ingredients, description, author);
 
         Title = title;
         Ingredients = ingredients;
@@ -26,6 +23,23 @@ public class Recipe : Entity, IAggregateRoot
         Images = images;
         Author = author;
 
+    }
+
+    private static void GuardAgainstInvalidInput(string title, string ingredients, string description, string author)
+    {
+        Guard.Against.NullOrEmpty(title);
+        Guard.Against.StringTooShort(title, 3);
+        Guard.Against.StringTooLong(title, 100);
+
+        Guard.Against.NullOrEmpty(ingredients);
+
+        Guard.Against.NullOrEmpty(description);
+        Guard.Against.StringTooShort(description, 3);
+        Guard.Against.StringTooLong(description, 5000);
+
+        Guard.Against.NullOrEmpty(author);
+        Guard.Against.StringTooShort(author, 3);
+        Guard.Against.StringTooLong(author, 100);
     }
 
     public string Title { get; private set; }

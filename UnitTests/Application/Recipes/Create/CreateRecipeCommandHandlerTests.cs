@@ -7,7 +7,7 @@ using Domain.Entities;
 using FluentAssertions;
 using Moq;
 
-namespace UnitTests.Recipes.Create;
+namespace UnitTests.Application.Recipes.Create;
 
 public class CreateRecipeCommandHandlerTests
 {
