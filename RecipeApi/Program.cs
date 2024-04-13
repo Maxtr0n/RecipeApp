@@ -2,6 +2,7 @@ using Application;
 using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
 using Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using RecipeApi.Infrastructure;
 using System.Net;
 
@@ -23,6 +24,10 @@ builder.Services.AddControllers(mvcOptions => mvcOptions
             .For("DELETE", HttpStatusCode.NoContent))
     ));
 
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+    .AddEntityFrameworkStores<RecipeDbContext>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -39,6 +44,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.MapIdentityApi<IdentityUser>();
 
 app.UseExceptionHandler();
 

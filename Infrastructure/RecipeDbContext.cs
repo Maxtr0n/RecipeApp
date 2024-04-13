@@ -1,9 +1,11 @@
 ﻿using Domain.Entities;
 using Infrastructure.EntityConfigurations;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
-public class RecipeDbContext : DbContext
+public class RecipeDbContext : IdentityDbContext<IdentityUser>
 {
     public RecipeDbContext(DbContextOptions<RecipeDbContext> options) : base(options) { }
 
