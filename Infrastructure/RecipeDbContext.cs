@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
-public class RecipeDbContext : IdentityDbContext<IdentityUser>
+public class RecipeDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 {
     public RecipeDbContext(DbContextOptions<RecipeDbContext> options) : base(options) { }
 

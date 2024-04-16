@@ -5,7 +5,7 @@ namespace UnitTests.Domain.Entities;
 public class RecipeTests
 {
     private const string VALID_TITLE = "Recipe Title";
-    private const string VALID_AUTHOR = "Recipe Author";
+    private ApplicationUser VALID_AUTHOR = new();
     private const string VALID_INGREDIENTS = "Ingredient1;Ingredient2";
     private const string VALID_DESCRIPTION = "Recipe Description";
     private const string VALID_IMAGES = "https://testurl.com/image1;https://testurl.com/image2";

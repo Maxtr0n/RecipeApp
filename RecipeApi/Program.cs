@@ -1,10 +1,7 @@
 using Application;
-using Ardalis.Result;
-using Ardalis.Result.AspNetCore;
 using Infrastructure;
 using Microsoft.AspNetCore.Identity;
-using RecipeApi.Infrastructure;
-using System.Net;
+using RecipeApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,24 +10,7 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
 
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddProblemDetails();
-
-builder.Services.AddControllers(mvcOptions => mvcOptions
-    .AddResultConvention(resultStatusMap => resultStatusMap
-        .AddDefaultMap()
-        .For(ResultStatus.Ok, HttpStatusCode.OK, resultStatusOptions => resultStatusOptions
-            .For("POST", HttpStatusCode.Created)
-            .For("DELETE", HttpStatusCode.NoContent))
-    ));
-
-builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
-    .AddEntityFrameworkStores<RecipeDbContext>();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.SetupApi();
 
 var app = builder.Build();
 

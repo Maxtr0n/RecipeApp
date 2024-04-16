@@ -7,6 +7,7 @@ using Application.Recipes.Update;
 using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RecipeApi.Controllers;
@@ -29,6 +30,7 @@ public class RecipesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     [TranslateResultToActionResult]
     public async Task<Result<RecipeReadDto>> CreateRecipe([FromBody] RecipeCreateDto dto)
     {
@@ -36,6 +38,7 @@ public class RecipesController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     [TranslateResultToActionResult]
     public async Task<Result> DeleteRecipe([FromRoute] Guid id)
     {
@@ -44,6 +47,7 @@ public class RecipesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     [TranslateResultToActionResult]
     public async Task<Result<RecipeReadDto>> UpdateRecipe([FromRoute] Guid id, [FromBody] RecipeUpdateDto recipeUpdateDto)
     {
