@@ -1,5 +1,6 @@
 ﻿using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
+using Domain.Entities;
 using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using RecipeApi.Infrastructure;
@@ -24,7 +25,7 @@ public static class ApiExtensions
             ));
 
         services.AddAuthorization();
-        services.AddIdentityApiEndpoints<IdentityUser>()
+        services.AddIdentityApiEndpoints<ApplicationUser>()
             .AddEntityFrameworkStores<RecipeDbContext>();
 
         services.AddHealthChecks();
