@@ -1,17 +1,16 @@
-﻿namespace Application.Common.Dtos
+﻿namespace Application.Common.Dtos;
+
+public class RecipeReadDto
 {
-    public class RecipeReadDto
-    {
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        public string Title { get; set; } = default!;
+    public string Title { get; set; } = default!;
 
-        public List<string> Ingredients { get; set; } = [];
+    public List<string> Ingredients { get; set; } = [];
 
-        public string Description { get; set; } = default!;
+    public string Description { get; set; } = default!;
 
-        public List<string> Images { get; set; } = [];
+    public List<string> Images { get; set; } = [];
 
-        public string Author { get; set; } = default!;
-    }
+    public Guid ApplicationUserId { get; set; } = default!;
 }

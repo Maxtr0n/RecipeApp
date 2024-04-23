@@ -13,6 +13,7 @@ public class CreateRecipeCommandHandlerTests
 {
     private readonly Mock<IRepository<Recipe>> _recipeRepositoryMock;
     private readonly Mock<IMapper> _mapper;
+    private readonly Guid _applicationUserId = Guid.NewGuid();
 
     public CreateRecipeCommandHandlerTests()
     {
@@ -27,13 +28,14 @@ public class CreateRecipeCommandHandlerTests
         var dto = new RecipeCreateDto
         {
             Title = "Recipe Title",
-            Author = "Recipe Author",
+            ApplicationUserId = _applicationUserId,
             Ingredients = ["Ingredient1", "Ingredient2"],
             Images = [],
             Description = "Recipe Description"
         };
 
-        var recipe = new Recipe(Guid.NewGuid(), dto.Title, dto.Ingredients.JoinStrings(), dto.Description, dto.Images.JoinStrings(), dto.Author);
+        var user = new ApplicationUser();
+        var recipe = new Recipe(Guid.NewGuid(), dto.Title, dto.Ingredients.JoinStrings(), dto.Description, dto.Images.JoinStrings(), user);
 
         _mapper.Setup(x => x.Map<Recipe>(It.IsAny<RecipeCreateDto>())).Returns(recipe);
         _recipeRepositoryMock.Setup(x => x.AddAsync(It.IsAny<Recipe>(), It.IsAny<CancellationToken>())).ReturnsAsync((Recipe)null!);
@@ -57,7 +59,7 @@ public class CreateRecipeCommandHandlerTests
         var dto = new RecipeCreateDto
         {
             Title = "Recipe Title",
-            Author = "Recipe Author",
+            ApplicationUserId = _applicationUserId,
             Ingredients = ["Ingredient1", "Ingredient2"],
             Images = [],
             Description = "Recipe Description"
@@ -67,14 +69,14 @@ public class CreateRecipeCommandHandlerTests
         {
             Id = Guid.NewGuid(),
             Title = "Recipe Title",
-            Author = "Recipe Author",
+            ApplicationUserId = _applicationUserId,
             Ingredients = ["Ingredient1", "Ingredient2"],
             Images = [],
             Description = "Recipe Description"
         };
 
-
-        var recipe = new Recipe(Guid.NewGuid(), dto.Title, dto.Ingredients.JoinStrings(), dto.Description, dto.Images.JoinStrings(), dto.Author);
+        var user = new ApplicationUser();
+        var recipe = new Recipe(Guid.NewGuid(), dto.Title, dto.Ingredients.JoinStrings(), dto.Description, dto.Images.JoinStrings(), user);
 
         _mapper.Setup(x => x.Map<Recipe>(It.IsAny<RecipeCreateDto>())).Returns(recipe);
         _mapper.Setup(x => x.Map<RecipeReadDto>(It.IsAny<Recipe>())).Returns(readDto);
@@ -91,7 +93,7 @@ public class CreateRecipeCommandHandlerTests
         result.Value.Should().NotBeNull();
         result.Value.Id.Should().NotBeEmpty();
         result.Value.Title.Should().Be(dto.Title);
-        result.Value.Author.Should().Be(dto.Author);
+        result.Value.ApplicationUserId.Should().Be(dto.ApplicationUserId);
         result.Value.Ingredients.Should().Contain(dto.Ingredients);
         result.Value.Description.Should().Be(dto.Description);
     }

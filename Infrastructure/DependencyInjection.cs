@@ -4,15 +4,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure
+namespace Infrastructure;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-            services.AddDbContext<RecipeDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
-            return services;
-        }
+        services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+        services.AddDbContext<RecipeDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
+        services.AddHealthChecks()
+            .AddDbContextCheck<RecipeDbContext>();
+
+        return services;
     }
 }

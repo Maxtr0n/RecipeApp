@@ -54,18 +54,15 @@ public class Recipe : Entity, IAggregateRoot
         string title,
         string ingredients,
         string description,
-        string? images,
-        ApplicationUser author)
+        string? images)
     {
         Guard.Against.NullOrEmpty(title);
         Guard.Against.NullOrEmpty(ingredients);
         Guard.Against.NullOrEmpty(description);
-        Guard.Against.Null(author);
 
         Title = title;
         Ingredients = ingredients;
         Description = description;
         Images = images;
-        Author = author;
     }
 }

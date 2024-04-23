@@ -41,7 +41,7 @@ public class RecipeTests
     {
         // Arrange
         Action act = () => new Recipe(VALID_ID,
-            null,
+            null!,
             VALID_INGREDIENTS,
             VALID_DESCRIPTION,
             VALID_IMAGES,

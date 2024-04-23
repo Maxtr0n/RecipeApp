@@ -6,8 +6,13 @@ public static class MappingExtensions
         return string.Join(";", listToJoin);
     }
 
-    public static IEnumerable<string> SplitStrings(this string stringToSplit)
+    public static IEnumerable<string> SplitStrings(this string? stringToSplit)
     {
+        if (stringToSplit == null)
+        {
+            return [];
+        }
+
         return stringToSplit.Split(';', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
     }
 }

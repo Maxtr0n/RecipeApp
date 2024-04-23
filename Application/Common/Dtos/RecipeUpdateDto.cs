@@ -8,6 +8,4 @@ public class RecipeUpdateDto
     public string Description { get; set; } = default!;
 
     public List<string> Images { get; set; } = [];
-
-    public string Author { get; set; } = default!;
 }

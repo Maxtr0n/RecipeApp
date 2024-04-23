@@ -15,12 +15,6 @@ public class UpdateRecipeCommandValidator : AbstractValidator<UpdateRecipeComman
             .MinimumLength(3)
             .MaximumLength(100);
 
-        RuleFor(x => x.RecipeUpdateDto.Author)
-            .NotEmpty()
-            .WithMessage("Author is required.")
-            .MinimumLength(3)
-            .MaximumLength(100);
-
         RuleFor(x => x.RecipeUpdateDto.Description)
             .NotEmpty()
             .WithMessage("Description is required.")
