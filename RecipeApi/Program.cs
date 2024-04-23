@@ -1,6 +1,5 @@
 using Application;
 using Infrastructure;
-using Microsoft.AspNetCore.Identity;
 using RecipeApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,20 +14,6 @@ builder.Services.SetupApi();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapIdentityApi<IdentityUser>();
-
-app.UseExceptionHandler();
-
-app.MapControllers();
+app.UseApi();
 
 app.Run();

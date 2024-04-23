@@ -27,10 +27,35 @@ public static class ApiExtensions
         services.AddIdentityApiEndpoints<IdentityUser>()
             .AddEntityFrameworkStores<RecipeDbContext>();
 
+        services.AddHealthChecks();
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
         return services;
+    }
+
+    public static WebApplication UseApi(this WebApplication app)
+    {
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseHttpsRedirection();
+
+        app.UseAuthorization();
+
+        app.MapIdentityApi<IdentityUser>();
+
+        app.UseExceptionHandler();
+
+        app.MapControllers();
+
+        app.MapHealthChecks("/health");
+
+        return app;
     }
 }
