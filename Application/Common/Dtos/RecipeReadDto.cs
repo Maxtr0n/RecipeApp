@@ -12,5 +12,5 @@ public class RecipeReadDto
 
     public List<string> Images { get; set; } = [];
 
-    public Guid ApplicationUserId { get; set; } = default!;
+    public string Author { get; set; } = default!;
 }

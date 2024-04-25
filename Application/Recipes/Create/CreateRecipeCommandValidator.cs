@@ -14,10 +14,6 @@ public class CreateRecipeCommandValidator : AbstractValidator<CreateRecipeComman
             .MinimumLength(3)
             .MaximumLength(100);
 
-        RuleFor(x => x.RecipeCreateDto.ApplicationUserId)
-            .NotEmpty()
-            .WithMessage("Author is required.");
-
         RuleFor(x => x.RecipeCreateDto.Description)
             .NotEmpty()
             .WithMessage("Description is required.")

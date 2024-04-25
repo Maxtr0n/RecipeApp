@@ -9,6 +9,4 @@ public class RecipeCreateDto
     public string Description { get; set; } = default!;
 
     public List<string> Images { get; set; } = [];
-
-    public Guid ApplicationUserId { get; set; } = default!;
 }

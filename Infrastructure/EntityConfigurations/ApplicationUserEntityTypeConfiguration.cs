@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.EntityConfigurations;
-public class RecipeEntityTypeConfiguration : IEntityTypeConfiguration<Recipe>
+public class ApplicationUserEntityTypeConfiguration : IEntityTypeConfiguration<ApplicationUser>
 {
-    public void Configure(EntityTypeBuilder<Recipe> builder)
+    public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
     }
 }

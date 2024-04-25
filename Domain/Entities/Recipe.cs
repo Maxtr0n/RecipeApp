@@ -12,20 +12,28 @@ public class Recipe : Entity, IAggregateRoot
         string ingredients,
         string description,
         string? images,
-        Guid authorId
-        ) : base(id)
+        ApplicationUser author
+        ) : this(id, title, ingredients, description, images)
     {
-        GuardAgainstInvalidInput(title, ingredients, description, authorId);
+        GuardAgainstInvalidInput(title, ingredients, description, author);
+        Author = author;
+    }
 
+    // EF Core ctor
+    private Recipe(
+        Guid id,
+        string title,
+        string ingredients,
+        string description,
+        string? images) : base(id)
+    {
         Title = title;
         Ingredients = ingredients;
         Description = description;
         Images = images;
-        AuthorId = authorId;
-
     }
 
-    private static void GuardAgainstInvalidInput(string title, string ingredients, string description, Guid authorId)
+    private static void GuardAgainstInvalidInput(string title, string ingredients, string description, ApplicationUser author)
     {
         Guard.Against.NullOrEmpty(title);
         Guard.Against.StringTooShort(title, 3);
@@ -37,7 +45,7 @@ public class Recipe : Entity, IAggregateRoot
         Guard.Against.StringTooShort(description, 3);
         Guard.Against.StringTooLong(description, 5000);
 
-        Guard.Against.NullOrEmpty(authorId);
+        Guard.Against.Null(author);
     }
 
     public string Title { get; private set; }
@@ -48,7 +56,7 @@ public class Recipe : Entity, IAggregateRoot
 
     public string? Images { get; private set; }
 
-    public Guid AuthorId { get; private set; }
+    public ApplicationUser Author { get; private set; }
 
     public void Update(
         string title,
