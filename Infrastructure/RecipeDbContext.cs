@@ -13,6 +13,7 @@ public class RecipeDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RecipeEntityTypeConfiguration).Assembly);
     }
 }
