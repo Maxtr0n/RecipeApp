@@ -13,7 +13,7 @@ public static class DependencyInjection
         services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         services.AddDbContext<RecipeDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
         services.AddHealthChecks()
-            .AddDbContextCheck<RecipeDbContext>();
+            .AddDbContextCheck<RecipeDbContext>(name: "Database");
 
         return services;
     }
