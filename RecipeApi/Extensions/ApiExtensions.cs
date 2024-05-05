@@ -2,7 +2,6 @@
 using Ardalis.Result.AspNetCore;
 using Domain.Entities;
 using Infrastructure;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 using RecipeApi.Infrastructure;
 using System.Net;
@@ -55,16 +54,6 @@ public static class ApiExtensions
         app.UseExceptionHandler();
 
         app.MapControllers();
-
-        app.MapHealthChecks("/health/database", new HealthCheckOptions
-        {
-            Predicate = healthCheck => healthCheck.Name.Equals("Database")
-        });
-
-        app.MapHealthChecks("/health", new HealthCheckOptions
-        {
-            Predicate = _ => false
-        });
 
         return app;
     }
