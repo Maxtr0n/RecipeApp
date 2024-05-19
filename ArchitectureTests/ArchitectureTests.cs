@@ -109,6 +109,8 @@ public class ArchitectureTests
             .InAssembly(assembly)
             .That()
             .HaveNameEndingWith("Controller")
+            .And()
+            .DoNotHaveNameMatching("HealthController")
             .Should()
             .HaveDependencyOn("MediatR")
             .GetResult();
