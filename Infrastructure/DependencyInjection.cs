@@ -1,5 +1,6 @@
 ﻿using Application.Common.Abstractions.Repositories;
-using Infrastructure.Repositories;
+using Infrastructure.Persistence;
+using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Infrastructure.Persistence.EntityConfigurations;
 using NetArchTest.Rules;
 
 namespace ArchitectureTests;
@@ -80,7 +81,7 @@ public class ArchitectureTests
     public void Infrastructure_Should_Not_HaveDependencyOnOtherProjects()
     {
         // Arrange
-        var assembly = typeof(Infrastructure.EntityConfigurations.RecipeEntityTypeConfiguration).Assembly;
+        var assembly = typeof(RecipeEntityTypeConfiguration).Assembly;
 
         var otherProjects = new[]
         {

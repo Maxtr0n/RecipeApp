@@ -1,7 +1,7 @@
 ﻿using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
 using Domain.Entities;
-using Infrastructure;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using RecipeApi.Infrastructure;
 using System.Net;
