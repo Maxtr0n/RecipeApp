@@ -39,9 +39,10 @@ public static class ApiExtensions
 
     public static WebApplication UseApi(this WebApplication app)
     {
+        app.UseSwagger();
+
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
             app.UseSwaggerUI();
         }
 
