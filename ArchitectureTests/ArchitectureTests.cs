@@ -1,3 +1,4 @@
+using Application.Common.MapperProfiles;
 using FluentAssertions;
 using Infrastructure.Persistence.EntityConfigurations;
 using NetArchTest.Rules;
@@ -39,7 +40,7 @@ public class ArchitectureTests
     public void Application_Should_Not_HaveDependencyOnOtherProjects()
     {
         // Arrange
-        var assembly = typeof(Application.Common.Profiles.RecipeProfile).Assembly;
+        var assembly = typeof(RecipeProfile).Assembly;
 
         var otherProjects = new[]
         {
@@ -62,7 +63,7 @@ public class ArchitectureTests
     public void Handlers_Should_Have_DependencyOnDomain()
     {
         // Arrange
-        var assembly = typeof(Application.Common.Profiles.RecipeProfile).Assembly;
+        var assembly = typeof(RecipeProfile).Assembly;
         // Act
         var result = Types
             .InAssembly(assembly)
