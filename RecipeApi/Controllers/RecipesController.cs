@@ -22,6 +22,7 @@ public class RecipesController(IMediator mediator) : ControllerBase
     {
         return await mediator.Send(new GetRecipeByIdQuery(id));
     }
+
     [HttpGet]
     [TranslateResultToActionResult]
     public async Task<Result<List<RecipeReadDto>>> GetRecipes()
@@ -43,15 +44,14 @@ public class RecipesController(IMediator mediator) : ControllerBase
     public async Task<Result> DeleteRecipe([FromRoute] Guid id)
     {
         return await mediator.Send(new DeleteRecipeCommand(id));
-
     }
 
     [HttpPut("{id}")]
     [Authorize]
     [TranslateResultToActionResult]
-    public async Task<Result<RecipeReadDto>> UpdateRecipe([FromRoute] Guid id, [FromBody] RecipeUpdateDto recipeUpdateDto)
+    public async Task<Result<RecipeReadDto>> UpdateRecipe([FromRoute] Guid id,
+        [FromBody] RecipeUpdateDto recipeUpdateDto)
     {
         return await mediator.Send(new UpdateRecipeCommand(id, recipeUpdateDto));
     }
-
 }

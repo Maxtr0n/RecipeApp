@@ -5,10 +5,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
-public class RecipeDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+public class RecipeDbContext(DbContextOptions<RecipeDbContext> options)
+    : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>(options)
 {
-    public RecipeDbContext(DbContextOptions<RecipeDbContext> options) : base(options) { }
-
     public DbSet<Recipe> Recipes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
