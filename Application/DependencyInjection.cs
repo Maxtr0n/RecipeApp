@@ -18,8 +18,6 @@ public static class DependencyInjection
         ValidatorOptions.Global.LanguageManager.Enabled = false;
         services.AddValidatorsFromAssembly(assembly);
 
-        services.AddAutoMapper(assembly);
-
         return services;
     }
 }

@@ -1,7 +1,9 @@
-using Application.Common.MapperProfiles;
+using Application;
+using Domain.Abstractions;
 using FluentAssertions;
 using Infrastructure.Persistence.EntityConfigurations;
 using NetArchTest.Rules;
+using RecipeApi.Controllers;
 
 namespace ArchitectureTests;
 
@@ -16,14 +18,9 @@ public class ArchitectureTests
     public void Domain_Should_Not_HaveDependencyOnOtherProjects()
     {
         // Arrange
-        var assembly = typeof(Domain.Abstractions.IAggregateRoot).Assembly;
+        var assembly = typeof(IAggregateRoot).Assembly;
 
-        var otherProjects = new[]
-        {
-            ApplicationNamespace,
-            InfrastructureNamespace,
-            WebNamespace
-        };
+        var otherProjects = new[] { ApplicationNamespace, InfrastructureNamespace, WebNamespace };
 
         // Act
         var testResults = Types
@@ -40,13 +37,9 @@ public class ArchitectureTests
     public void Application_Should_Not_HaveDependencyOnOtherProjects()
     {
         // Arrange
-        var assembly = typeof(RecipeProfile).Assembly;
+        var assembly = typeof(DependencyInjection).Assembly;
 
-        var otherProjects = new[]
-        {
-            InfrastructureNamespace,
-            WebNamespace
-        };
+        var otherProjects = new[] { InfrastructureNamespace, WebNamespace };
 
         // Act
         var testResults = Types
@@ -63,7 +56,8 @@ public class ArchitectureTests
     public void Handlers_Should_Have_DependencyOnDomain()
     {
         // Arrange
-        var assembly = typeof(RecipeProfile).Assembly;
+        var assembly = typeof(DependencyInjection).Assembly;
+
         // Act
         var result = Types
             .InAssembly(assembly)
@@ -84,10 +78,7 @@ public class ArchitectureTests
         // Arrange
         var assembly = typeof(RecipeEntityTypeConfiguration).Assembly;
 
-        var otherProjects = new[]
-        {
-            WebNamespace
-        };
+        var otherProjects = new[] { WebNamespace };
 
         // Act
         var testResults = Types
@@ -104,7 +95,7 @@ public class ArchitectureTests
     public void Controllers_Should_HaveDependencyOnMediatr()
     {
         // Arrange
-        var assembly = typeof(RecipeApi.Controllers.RecipesController).Assembly;
+        var assembly = typeof(RecipesController).Assembly;
 
         // Act
         var testResults = Types

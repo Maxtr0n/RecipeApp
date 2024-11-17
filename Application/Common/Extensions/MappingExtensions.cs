@@ -1,4 +1,5 @@
 ﻿namespace Application.Common.Extensions;
+
 public static class MappingExtensions
 {
     public static string JoinStrings(this IEnumerable<string> listToJoin)
@@ -8,11 +9,8 @@ public static class MappingExtensions
 
     public static IEnumerable<string> SplitStrings(this string? stringToSplit)
     {
-        if (stringToSplit == null)
-        {
-            return [];
-        }
-
-        return stringToSplit.Split(';', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        return stringToSplit == null
+            ? []
+            : stringToSplit.Split(';', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
     }
 }

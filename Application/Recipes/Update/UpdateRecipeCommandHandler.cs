@@ -2,14 +2,15 @@
 using Application.Common.Abstractions.Repositories;
 using Application.Common.Dtos;
 using Application.Common.Extensions;
+using Application.Common.Mappings;
 using Ardalis.Result;
-using AutoMapper;
 using Domain.Entities;
 using Domain.Specifications;
 
 namespace Application.Recipes.Update;
 
-public class UpdateRecipeCommandHandler(IMapper mapper, IRepository<Recipe> repository) : ICommandHandler<UpdateRecipeCommand, Result<RecipeReadDto>>
+public class UpdateRecipeCommandHandler(IRepository<Recipe> repository)
+    : ICommandHandler<UpdateRecipeCommand, Result<RecipeReadDto>>
 {
     public async Task<Result<RecipeReadDto>> Handle(UpdateRecipeCommand request, CancellationToken cancellationToken)
     {
@@ -29,7 +30,6 @@ public class UpdateRecipeCommandHandler(IMapper mapper, IRepository<Recipe> repo
 
         await repository.SaveChangesAsync(cancellationToken);
 
-        return mapper.Map<RecipeReadDto>(recipeToUpdate)!;
+        return recipeToUpdate.MapToReadDto();
     }
 }
-

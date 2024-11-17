@@ -3,7 +3,6 @@ using Application.Common.Dtos;
 using Application.Common.Extensions;
 using Application.Recipes.Create;
 using Ardalis.Result;
-using AutoMapper;
 using Domain.Entities;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
@@ -16,16 +15,13 @@ namespace UnitTests.Application.Recipes.Create;
 public class CreateRecipeCommandHandlerTests
 {
     private readonly Mock<IRepository<Recipe>> _recipeRepositoryMock;
-    private readonly Mock<IMapper> _mapper;
     private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
-    private readonly ApplicationUser user;
 
     public CreateRecipeCommandHandlerTests()
     {
-        _mapper = new();
-        _recipeRepositoryMock = new();
+        _recipeRepositoryMock = new Mock<IRepository<Recipe>>();
 
-        user = new ApplicationUser();
+        var user = new ApplicationUser();
 
         _userManagerMock = new Mock<UserManager<ApplicationUser>>(
             new Mock<IUserStore<ApplicationUser>>().Object,
@@ -53,17 +49,15 @@ public class CreateRecipeCommandHandlerTests
             Ingredients = ["Ingredient1", "Ingredient2"],
             Images = [],
             Description = "Recipe Description",
-            AuthorId = Guid.NewGuid(),
-
+            AuthorId = Guid.NewGuid()
         };
 
-        var recipe = new Recipe(Guid.NewGuid(), dto.Title, dto.Ingredients.JoinStrings(), dto.Description, dto.Images.JoinStrings(), user);
-
-        _mapper.Setup(x => x.Map<Recipe>(It.IsAny<RecipeCreateDto>())).Returns(recipe);
-        _recipeRepositoryMock.Setup(x => x.AddAsync(It.IsAny<Recipe>(), It.IsAny<CancellationToken>())).ReturnsAsync((Recipe)null!);
+        _recipeRepositoryMock.Setup(x => x.AddAsync(It.IsAny<Recipe>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Recipe)null!);
 
         var command = new CreateRecipeCommand(dto);
-        var handler = new CreateRecipeCommandHandler(_mapper.Object, _recipeRepositoryMock.Object, _userManagerMock.Object);
+        var handler =
+            new CreateRecipeCommandHandler(_recipeRepositoryMock.Object, _userManagerMock.Object);
 
         // Act
         var result = await handler.Handle(command, default);
@@ -84,16 +78,14 @@ public class CreateRecipeCommandHandlerTests
             Ingredients = ["Ingredient1", "Ingredient2"],
             Images = [],
             Description = "Recipe Description",
-            AuthorId = Guid.NewGuid(),
+            AuthorId = Guid.NewGuid()
         };
 
-        var recipe = new Recipe(Guid.NewGuid(), dto.Title, dto.Ingredients.JoinStrings(), dto.Description, dto.Images.JoinStrings(), user);
-
-        _mapper.Setup(x => x.Map<Recipe>(It.IsAny<RecipeCreateDto>())).Returns(recipe);
         _userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync((ApplicationUser)null!);
 
         var command = new CreateRecipeCommand(dto);
-        var handler = new CreateRecipeCommandHandler(_mapper.Object, _recipeRepositoryMock.Object, _userManagerMock.Object);
+        var handler =
+            new CreateRecipeCommandHandler(_recipeRepositoryMock.Object, _userManagerMock.Object);
 
         // Act
         var result = await handler.Handle(command, default);
@@ -114,28 +106,18 @@ public class CreateRecipeCommandHandlerTests
             Ingredients = ["Ingredient1", "Ingredient2"],
             Images = [],
             Description = "Recipe Description",
-            AuthorId = Guid.NewGuid(),
+            AuthorId = Guid.NewGuid()
         };
 
-        var readDto = new RecipeReadDto
-        {
-            Id = Guid.NewGuid(),
-            Title = "Recipe Title",
-            Author = "Author",
-            Ingredients = ["Ingredient1", "Ingredient2"],
-            Images = [],
-            Description = "Recipe Description"
-        };
+        var recipe = new Recipe(Guid.NewGuid(), dto.Title, dto.Ingredients.JoinStrings(), dto.Description,
+            dto.Images.JoinStrings(), Guid.NewGuid());
 
-        var user = new ApplicationUser();
-        var recipe = new Recipe(Guid.NewGuid(), dto.Title, dto.Ingredients.JoinStrings(), dto.Description, dto.Images.JoinStrings(), user);
-
-        _mapper.Setup(x => x.Map<Recipe>(It.IsAny<RecipeCreateDto>())).Returns(recipe);
-        _mapper.Setup(x => x.Map<RecipeReadDto>(It.IsAny<Recipe>())).Returns(readDto);
-        _recipeRepositoryMock.Setup(x => x.AddAsync(It.IsAny<Recipe>(), It.IsAny<CancellationToken>())).ReturnsAsync(recipe);
+        _recipeRepositoryMock.Setup(x => x.AddAsync(It.IsAny<Recipe>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(recipe);
 
         var command = new CreateRecipeCommand(dto);
-        var handler = new CreateRecipeCommandHandler(_mapper.Object, _recipeRepositoryMock.Object, _userManagerMock.Object);
+        var handler =
+            new CreateRecipeCommandHandler(_recipeRepositoryMock.Object, _userManagerMock.Object);
 
         // Act
         var result = await handler.Handle(command, default);
