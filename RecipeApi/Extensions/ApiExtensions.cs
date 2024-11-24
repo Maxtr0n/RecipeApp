@@ -2,7 +2,6 @@
 using Ardalis.Result.AspNetCore;
 using Domain.Entities;
 using Infrastructure.Persistence;
-using Microsoft.AspNetCore.Identity;
 using RecipeApi.Infrastructure;
 using System.Net;
 
@@ -10,7 +9,6 @@ namespace RecipeApi.Extensions;
 
 public static class ApiExtensions
 {
-
     public static IServiceCollection SetupApi(this IServiceCollection services)
     {
         services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -25,6 +23,7 @@ public static class ApiExtensions
             ));
 
         services.AddAuthorization();
+
         services.AddIdentityApiEndpoints<ApplicationUser>()
             .AddEntityFrameworkStores<RecipeDbContext>();
 
@@ -48,9 +47,7 @@ public static class ApiExtensions
 
         app.UseHttpsRedirection();
 
-        app.UseAuthorization();
-
-        app.MapIdentityApi<IdentityUser>();
+        app.MapIdentityApi<ApplicationUser>();
 
         app.UseExceptionHandler();
 
