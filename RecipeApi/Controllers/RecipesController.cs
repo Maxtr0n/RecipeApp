@@ -6,15 +6,17 @@ using Application.Recipes.GetById;
 using Application.Recipes.Update;
 using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RecipeApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class RecipesController(IMediator mediator) : ControllerBase
+public class RecipesController(IMediator mediator, UserManager<ApplicationUser> userManager) : ControllerBase
 {
     [HttpGet("{id}")]
     [TranslateResultToActionResult]
@@ -35,7 +37,14 @@ public class RecipesController(IMediator mediator) : ControllerBase
     [TranslateResultToActionResult]
     public async Task<Result<RecipeReadDto>> CreateRecipe([FromBody] RecipeCreateDto dto)
     {
-        return await mediator.Send(new CreateRecipeCommand(dto));
+        var userName = User.Identity?.Name;
+
+        if (string.IsNullOrEmpty(userName))
+        {
+            return Result<RecipeReadDto>.Unauthorized();
+        }
+
+        return await mediator.Send(new CreateRecipeCommand(dto, userName));
     }
 
     [HttpDelete("{id}")]

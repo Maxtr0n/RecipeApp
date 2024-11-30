@@ -13,21 +13,21 @@ public class CreateRecipeCommandHandler(IRepository<Recipe> repository, UserMana
 {
     public async Task<Result<RecipeReadDto>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
-        var user = await userManager.FindByIdAsync(request.RecipeCreateDto.AuthorId.ToString());
+        var userById = await userManager.FindByIdAsync(request.RecipeCreateDto.AuthorId.ToString());
 
-        if (user == null)
+        if (userById == null)
         {
-            return Result.NotFound(Constants.ErrorMessages.RECIPE_USER_NOT_FOUND);
+            return Result.NotFound(Constants.ErrorMessages.RecipeUserNotFound);
+        }
+
+        if (userById.UserName != request.userName)
+        {
+            return Result.Unauthorized(Constants.ErrorMessages.RecipeUserDiffersFromAuthenticatedUser);
         }
 
         var recipe = request.RecipeCreateDto.MapToEntity();
 
         var result = await repository.AddAsync(recipe, cancellationToken);
-
-        if (result is null)
-        {
-            return Result.CriticalError(Constants.ErrorMessages.RECIPE_COULD_NOT_CREATE_ERROR_MESSAGE);
-        }
 
         await repository.SaveChangesAsync(cancellationToken);
 

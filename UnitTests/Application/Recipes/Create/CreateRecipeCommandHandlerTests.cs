@@ -21,7 +21,7 @@ public class CreateRecipeCommandHandlerTests
     {
         _recipeRepositoryMock = new Mock<IRepository<Recipe>>();
 
-        var user = new ApplicationUser();
+        var user = new ApplicationUser { UserName = "test@test.com" };
 
         _userManagerMock = new Mock<UserManager<ApplicationUser>>(
             new Mock<IUserStore<ApplicationUser>>().Object,
@@ -35,37 +35,9 @@ public class CreateRecipeCommandHandlerTests
             new Mock<ILogger<UserManager<ApplicationUser>>>().Object);
 
         _userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user);
+        _userManagerMock.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(user);
         _userManagerMock.Setup(userManager => userManager.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
             .Returns(Task.FromResult(IdentityResult.Success));
-    }
-
-    [Fact]
-    public async Task Handle_Should_ReturnFailureResult_WhenRecipeCannotBeCreated()
-    {
-        // Arrange
-        var dto = new RecipeCreateDto
-        {
-            Title = "Recipe Title",
-            Ingredients = ["Ingredient1", "Ingredient2"],
-            Images = [],
-            Description = "Recipe Description",
-            AuthorId = Guid.NewGuid()
-        };
-
-        _recipeRepositoryMock.Setup(x => x.AddAsync(It.IsAny<Recipe>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Recipe)null!);
-
-        var command = new CreateRecipeCommand(dto);
-        var handler =
-            new CreateRecipeCommandHandler(_recipeRepositoryMock.Object, _userManagerMock.Object);
-
-        // Act
-        var result = await handler.Handle(command, default);
-
-        // Assert
-        result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().NotBeEmpty();
-        result.Status.Should().Be(ResultStatus.CriticalError);
     }
 
     [Fact]
@@ -83,7 +55,7 @@ public class CreateRecipeCommandHandlerTests
 
         _userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync((ApplicationUser)null!);
 
-        var command = new CreateRecipeCommand(dto);
+        var command = new CreateRecipeCommand(dto, "test@test.com");
         var handler =
             new CreateRecipeCommandHandler(_recipeRepositoryMock.Object, _userManagerMock.Object);
 
@@ -115,7 +87,7 @@ public class CreateRecipeCommandHandlerTests
         _recipeRepositoryMock.Setup(x => x.AddAsync(It.IsAny<Recipe>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(recipe);
 
-        var command = new CreateRecipeCommand(dto);
+        var command = new CreateRecipeCommand(dto, "test@test.com");
         var handler =
             new CreateRecipeCommandHandler(_recipeRepositoryMock.Object, _userManagerMock.Object);
 

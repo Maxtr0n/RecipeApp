@@ -17,7 +17,7 @@ public class GetRecipeByIdQueryHandler(IRepository<Recipe> repository)
 
         if (recipe == null)
         {
-            return Result.NotFound(Constants.ErrorMessages.RECIPE_NOT_FOUND_ERROR_MESSAGE);
+            return Result.NotFound(Constants.ErrorMessages.RecipeNotFoundErrorMessage);
         }
 
         return recipe.MapToReadDto();
