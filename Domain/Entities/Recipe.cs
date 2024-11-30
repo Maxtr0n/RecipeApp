@@ -27,6 +27,7 @@ public class Recipe : Entity, IAggregateRoot
         string description,
         string? images) : base(id)
     {
+        Id = id;
         Title = title;
         Ingredients = ingredients;
         Description = description;

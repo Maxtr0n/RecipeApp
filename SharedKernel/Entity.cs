@@ -1,4 +1,5 @@
 ﻿namespace SharedKernel;
+
 public abstract class Entity
 {
     private readonly List<IDomainEvent> _domainEvents = new();
@@ -8,7 +9,7 @@ public abstract class Entity
         Id = id;
     }
 
-    public Guid Id { get; private init; }
+    public Guid Id { get; set; }
 
 
     public List<IDomainEvent> DomainEvents => _domainEvents.ToList();
