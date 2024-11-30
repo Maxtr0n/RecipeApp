@@ -6,12 +6,6 @@ namespace Application.Common.Mappings;
 
 public static class RecipeMappings
 {
-    public static Recipe MapToEntity(this RecipeCreateDto recipeCreateDto)
-    {
-        return new Recipe(Guid.NewGuid(), recipeCreateDto.Title, recipeCreateDto.Ingredients.JoinStrings(),
-            recipeCreateDto.Description, recipeCreateDto.Images.JoinStrings(), recipeCreateDto.AuthorId);
-    }
-
     public static RecipeReadDto MapToReadDto(this Recipe recipe)
     {
         return new RecipeReadDto
@@ -19,7 +13,7 @@ public static class RecipeMappings
             Id = recipe.Id,
             Title = recipe.Title,
             Description = recipe.Description,
-            AuthorId = recipe.AuthorId.ToString(),
+            AuthorId = recipe.Author.Id.ToString(),
             Ingredients = recipe.Ingredients.SplitStrings().ToList(),
             Images = recipe.Images.SplitStrings().ToList()
         };
@@ -36,7 +30,7 @@ public static class RecipeMappings
                 Id = recipe.Id,
                 Title = recipe.Title,
                 Description = recipe.Description,
-                AuthorId = recipe.AuthorId.ToString(),
+                AuthorId = recipe.Author.Id.ToString(),
                 Ingredients = recipe.Ingredients.SplitStrings().ToList(),
                 Images = recipe.Images.SplitStrings().ToList()
             });

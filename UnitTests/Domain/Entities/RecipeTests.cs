@@ -9,8 +9,8 @@ public class RecipeTests
     private const string VALID_INGREDIENTS = "Ingredient1;Ingredient2";
     private const string VALID_DESCRIPTION = "Recipe Description";
     private const string VALID_IMAGES = "https://testurl.com/image1;https://testurl.com/image2";
+    private readonly ApplicationUser VALID_AUTHOR = new() { Id = Guid.NewGuid() };
     private readonly Guid VALID_ID = Guid.NewGuid();
-    private readonly Guid VALID_AUTHOR_ID = Guid.NewGuid();
 
     [Fact]
     public void Constructor_Should_CreateRecipe_WhenParametersAreValid()
@@ -24,7 +24,7 @@ public class RecipeTests
             VALID_INGREDIENTS,
             VALID_DESCRIPTION,
             VALID_IMAGES,
-            VALID_AUTHOR_ID
+            VALID_AUTHOR
         );
 
         // Assert
@@ -34,7 +34,7 @@ public class RecipeTests
         recipe.Ingredients.Should().Be(VALID_INGREDIENTS);
         recipe.Description.Should().Be(VALID_DESCRIPTION);
         recipe.Images.Should().Be(VALID_IMAGES);
-        recipe.AuthorId.Should().Be(VALID_AUTHOR_ID);
+        recipe.Author.Should().Be(VALID_AUTHOR);
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class RecipeTests
             VALID_INGREDIENTS,
             VALID_DESCRIPTION,
             VALID_IMAGES,
-            VALID_AUTHOR_ID);
+            VALID_AUTHOR);
 
         // Act & Assert
         act.Should().Throw<ArgumentNullException>().WithParameterName("title");
@@ -61,7 +61,7 @@ public class RecipeTests
             VALID_INGREDIENTS,
             VALID_DESCRIPTION,
             VALID_IMAGES,
-            VALID_AUTHOR_ID);
+            VALID_AUTHOR);
 
         // Act & Assert
         act.Should().Throw<ArgumentException>().WithParameterName("title");

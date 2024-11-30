@@ -44,7 +44,14 @@ public class RecipesController(IMediator mediator, UserManager<ApplicationUser> 
             return Result<RecipeReadDto>.Unauthorized();
         }
 
-        return await mediator.Send(new CreateRecipeCommand(dto, userName));
+        var user = await userManager.FindByNameAsync(userName);
+
+        if (user == null)
+        {
+            return Result<RecipeReadDto>.Unauthorized();
+        }
+
+        return await mediator.Send(new CreateRecipeCommand(dto, user));
     }
 
     [HttpDelete("{id}")]
