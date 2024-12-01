@@ -2,6 +2,7 @@
 using Ardalis.Result.AspNetCore;
 using Domain.Entities;
 using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using RecipeApi.Infrastructure;
 using System.Net;
@@ -25,7 +26,9 @@ public static class ApiExtensions
 
         services.AddAuthorization();
 
-        services.AddIdentityApiEndpoints<ApplicationUser>()
+        services.AddIdentityApiEndpoints<ApplicationUser>(options =>
+            {
+            })
             .AddEntityFrameworkStores<RecipeDbContext>();
 
         services.AddHealthChecks();
@@ -76,5 +79,27 @@ public static class ApiExtensions
         app.MapControllers();
 
         return app;
+    }
+
+    public static void ApplyMigrations(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+
+        var dbContext = scope.ServiceProvider.GetRequiredService<RecipeDbContext>();
+
+        // Check and apply pending migrations
+        var pendingMigrations = dbContext.Database.GetPendingMigrations();
+
+        var migrations = pendingMigrations.ToList();
+        if (migrations.Count != 0)
+        {
+            Console.WriteLine($"Applying {migrations.Count} migrations to  database...");
+            dbContext.Database.Migrate();
+            Console.WriteLine("Migrations applied successfully.");
+        }
+        else
+        {
+            Console.WriteLine("No pending migrations found.");
+        }
     }
 }

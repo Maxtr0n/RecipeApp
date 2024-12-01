@@ -12,6 +12,8 @@ builder.Services
 
 var app = builder.Build();
 
+app.ApplyMigrations();
+
 // Configure the HTTP request pipeline.
 app.UseApi();
 

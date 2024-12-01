@@ -18,6 +18,8 @@ public class CreateRecipeCommandHandler(IRepository<Recipe> repository, UserMana
             request.RecipeCreateDto.Ingredients.JoinStrings(),
             request.RecipeCreateDto.Description, request.RecipeCreateDto.Images.JoinStrings());
 
+        await repository.AddAsync(recipe, cancellationToken);
+
         await repository.SaveChangesAsync(cancellationToken);
 
         return recipe.MapToReadDto();
