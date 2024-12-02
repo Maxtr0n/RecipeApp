@@ -31,7 +31,7 @@ public class GenericRepository<T>(RecipeDbContext context) : IGenericRepository<
         return await query.ToListAsync();
     }
 
-    public void UpdateAsync(T entity)
+    public void Update(T entity)
     {
         _dbSet.Update(entity);
     }

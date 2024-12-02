@@ -5,24 +5,28 @@ using Application.Common.Mappings;
 using Ardalis.Result;
 using Domain.Abstractions;
 using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 
 namespace Application.Recipes.Create;
 
 public class CreateRecipeCommandHandler(
-    IGenericRepository<Recipe> genericRepository,
-    UserManager<ApplicationUser> userManager)
+    IGenericRepository<ApplicationUser> userRepository,
+    IUnitOfWork unitOfWork)
     : ICommandHandler<CreateRecipeCommand, Result<RecipeReadDto>>
 {
     public async Task<Result<RecipeReadDto>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
-        var recipe = request.User.AddRecipe(request.RecipeCreateDto.Title,
+        var user = await userRepository.GetByIdAsync(request.User.Id);
+
+        if (user == null)
+        {
+            return Result<RecipeReadDto>.NotFound($"User with id {request.User.Id} does not exist");
+        }
+
+        var recipe = user.AddRecipe(request.RecipeCreateDto.Title,
             request.RecipeCreateDto.Ingredients.JoinStrings(),
             request.RecipeCreateDto.Description, request.RecipeCreateDto.Images.JoinStrings());
 
-        //await repository.AddAsync(recipe, cancellationToken);
-
-        await genericRepository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return recipe.MapToReadDto();
     }

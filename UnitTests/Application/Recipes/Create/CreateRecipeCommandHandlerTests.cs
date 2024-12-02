@@ -12,14 +12,16 @@ namespace UnitTests.Application.Recipes.Create;
 
 public class CreateRecipeCommandHandlerTests
 {
-    private readonly Mock<IGenericRepository<Recipe>> _recipeRepositoryMock;
+    private readonly Mock<IGenericRepository<ApplicationUser>> _recipeRepositoryMock;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly ApplicationUser _user = new() { UserName = "test@test.com", Id = Guid.NewGuid() };
     private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
 
 
     public CreateRecipeCommandHandlerTests()
     {
-        _recipeRepositoryMock = new Mock<IGenericRepository<Recipe>>();
+        _recipeRepositoryMock = new Mock<IGenericRepository<ApplicationUser>>();
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         _userManagerMock = new Mock<UserManager<ApplicationUser>>(
             new Mock<IUserStore<ApplicationUser>>().Object,
@@ -52,7 +54,7 @@ public class CreateRecipeCommandHandlerTests
 
         var command = new CreateRecipeCommand(dto, _user);
         var handler =
-            new CreateRecipeCommandHandler(_recipeRepositoryMock.Object, _userManagerMock.Object);
+            new CreateRecipeCommandHandler(_recipeRepositoryMock.Object, _unitOfWorkMock.Object);
 
         // Act
         var result = await handler.Handle(command, default);

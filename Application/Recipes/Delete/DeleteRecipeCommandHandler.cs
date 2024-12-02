@@ -5,22 +5,14 @@ using Domain.Entities;
 
 namespace Application.Recipes.Delete;
 
-public class DeleteRecipeCommandHandler(IGenericRepository<Recipe> genericRepository)
+public class DeleteRecipeCommandHandler(IGenericRepository<Recipe> recipeRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<DeleteRecipeCommand, Result>
 {
     public async Task<Result> Handle(DeleteRecipeCommand request, CancellationToken cancellationToken)
     {
-        var recipeToDelete =
-            await genericRepository.SingleOrDefaultAsync(new RecipeByIdSpec(request.Id), cancellationToken);
+        await recipeRepository.DeleteByIdAsync(request.Id);
 
-        if (recipeToDelete == null)
-        {
-            return Result.NotFound(Constants.ErrorMessages.RecipeNotFoundErrorMessage);
-        }
-
-        await genericRepository.DeleteAsync(recipeToDelete, cancellationToken);
-
-        await genericRepository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

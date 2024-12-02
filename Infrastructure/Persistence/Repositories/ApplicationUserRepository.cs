@@ -1,5 +1,5 @@
 ﻿namespace Infrastructure.Persistence.Repositories;
 
-public class RecipeGenericRepository
+public class ApplicationUserRepository
 {
 }

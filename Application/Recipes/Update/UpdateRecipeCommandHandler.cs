@@ -1,19 +1,20 @@
 ﻿using Application.Common.Abstractions.CQRS;
 using Application.Common.Dtos;
 using Application.Common.Extensions;
+using Application.Common.Mappings;
 using Ardalis.Result;
 using Domain.Abstractions;
 using Domain.Entities;
 
 namespace Application.Recipes.Update;
 
-public class UpdateRecipeCommandHandler(IGenericRepository<Recipe> genericRepository)
+public class UpdateRecipeCommandHandler(IGenericRepository<Recipe> recipeRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<UpdateRecipeCommand, Result<RecipeReadDto>>
 {
     public async Task<Result<RecipeReadDto>> Handle(UpdateRecipeCommand request, CancellationToken cancellationToken)
     {
         var recipeToUpdate =
-            await genericRepository.SingleOrDefaultAsync(new RecipeByIdSpec(request.Id), cancellationToken);
+            await recipeRepository.GetByIdAsync(request.Id);
 
         if (recipeToUpdate == null)
         {
@@ -25,9 +26,7 @@ public class UpdateRecipeCommandHandler(IGenericRepository<Recipe> genericReposi
             request.RecipeUpdateDto.Description,
             request.RecipeUpdateDto.Images.JoinStrings());
 
-        await genericRepository.UpdateAsync(recipeToUpdate, cancellationToken);
-
-        await genericRepository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return recipeToUpdate.MapToReadDto();
     }
