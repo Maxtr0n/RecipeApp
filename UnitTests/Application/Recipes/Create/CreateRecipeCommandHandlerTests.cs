@@ -1,6 +1,6 @@
-﻿using Application.Common.Abstractions.Repositories;
-using Application.Common.Dtos;
+﻿using Application.Common.Dtos;
 using Application.Recipes.Create;
+using Domain.Abstractions;
 using Domain.Entities;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
@@ -12,14 +12,14 @@ namespace UnitTests.Application.Recipes.Create;
 
 public class CreateRecipeCommandHandlerTests
 {
-    private readonly Mock<IRepository<Recipe>> _recipeRepositoryMock;
+    private readonly Mock<IGenericRepository<Recipe>> _recipeRepositoryMock;
     private readonly ApplicationUser _user = new() { UserName = "test@test.com", Id = Guid.NewGuid() };
     private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
 
 
     public CreateRecipeCommandHandlerTests()
     {
-        _recipeRepositoryMock = new Mock<IRepository<Recipe>>();
+        _recipeRepositoryMock = new Mock<IGenericRepository<Recipe>>();
 
         _userManagerMock = new Mock<UserManager<ApplicationUser>>(
             new Mock<IUserStore<ApplicationUser>>().Object,

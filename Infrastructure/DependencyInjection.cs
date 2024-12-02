@@ -1,4 +1,4 @@
-﻿using Application.Common.Abstractions.Repositories;
+﻿using Domain.Abstractions;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +11,14 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-        services.AddDbContext<RecipeDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
+        services.AddDbContext<RecipeDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
         services.AddHealthChecks()
-            .AddDbContextCheck<RecipeDbContext>(name: "Database");
+            .AddDbContextCheck<RecipeDbContext>("Database");
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
 
         return services;
     }

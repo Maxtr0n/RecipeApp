@@ -1,25 +1,26 @@
 ﻿using Application.Common.Abstractions.CQRS;
-using Application.Common.Abstractions.Repositories;
 using Ardalis.Result;
+using Domain.Abstractions;
 using Domain.Entities;
-using Domain.Specifications;
 
 namespace Application.Recipes.Delete;
 
-public class DeleteRecipeCommandHandler(IRepository<Recipe> repository) : ICommandHandler<DeleteRecipeCommand, Result>
+public class DeleteRecipeCommandHandler(IGenericRepository<Recipe> genericRepository)
+    : ICommandHandler<DeleteRecipeCommand, Result>
 {
     public async Task<Result> Handle(DeleteRecipeCommand request, CancellationToken cancellationToken)
     {
-        var recipeToDelete = await repository.SingleOrDefaultAsync(new RecipeByIdSpec(request.Id), cancellationToken);
+        var recipeToDelete =
+            await genericRepository.SingleOrDefaultAsync(new RecipeByIdSpec(request.Id), cancellationToken);
 
         if (recipeToDelete == null)
         {
             return Result.NotFound(Constants.ErrorMessages.RecipeNotFoundErrorMessage);
         }
 
-        await repository.DeleteAsync(recipeToDelete, cancellationToken);
+        await genericRepository.DeleteAsync(recipeToDelete, cancellationToken);
 
-        await repository.SaveChangesAsync(cancellationToken);
+        await genericRepository.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }
