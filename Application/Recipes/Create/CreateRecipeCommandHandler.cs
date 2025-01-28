@@ -5,17 +5,18 @@ using Application.Common.Mappings;
 using Ardalis.Result;
 using Domain.Abstractions;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.Recipes.Create;
 
 public class CreateRecipeCommandHandler(
-    IGenericRepository<ApplicationUser> userRepository,
+    UserManager<ApplicationUser> userManager,
     IUnitOfWork unitOfWork)
     : ICommandHandler<CreateRecipeCommand, Result<RecipeReadDto>>
 {
     public async Task<Result<RecipeReadDto>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByIdAsync(request.User.Id);
+        var user = await userManager.FindByIdAsync(request.User.Id.ToString());
 
         if (user == null)
         {
