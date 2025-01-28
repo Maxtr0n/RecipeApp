@@ -20,7 +20,6 @@ public class CreateRecipeCommandHandlerTests
     public CreateRecipeCommandHandlerTests()
     {
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-
         _userManagerMock = new Mock<UserManager<ApplicationUser>>(
             new Mock<IUserStore<ApplicationUser>>().Object,
             new Mock<IOptions<IdentityOptions>>().Object,
