@@ -18,3 +18,7 @@ app.ApplyMigrations();
 app.UseApi();
 
 app.Run();
+
+public partial class Program
+{
+}
