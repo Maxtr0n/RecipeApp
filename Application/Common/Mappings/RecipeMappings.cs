@@ -13,7 +13,7 @@ public static class RecipeMappings
             Id = recipe.Id,
             Title = recipe.Title,
             Description = recipe.Description,
-            AuthorId = recipe.Author.Id.ToString(),
+            AuthorId = recipe.AuthorId.ToString(),
             Ingredients = recipe.Ingredients.SplitStrings().ToList(),
             Images = recipe.Images.SplitStrings().ToList()
         };
@@ -30,7 +30,7 @@ public static class RecipeMappings
                 Id = recipe.Id,
                 Title = recipe.Title,
                 Description = recipe.Description,
-                AuthorId = recipe.Author.Id.ToString(),
+                AuthorId = recipe.AuthorId.ToString(),
                 Ingredients = recipe.Ingredients.SplitStrings().ToList(),
                 Images = recipe.Images.SplitStrings().ToList()
             });

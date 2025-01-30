@@ -13,7 +13,7 @@ public class ApplicationUser : IdentityUser<Guid>, IAggregateRoot
         string description,
         string? images)
     {
-        var recipe = new Recipe(Guid.NewGuid(), title, ingredients, description, images, this);
+        var recipe = new Recipe(Guid.NewGuid(), title, ingredients, description, images, Id);
 
         Recipes.Add(recipe);
 

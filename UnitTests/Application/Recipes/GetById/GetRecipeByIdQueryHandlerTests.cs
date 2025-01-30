@@ -17,8 +17,8 @@ public class GetRecipeByIdQueryHandlerTests
     {
         _recipeRepositoryMock = new Mock<IGenericRepository<Recipe>>();
 
-        var user = new ApplicationUser();
-        _recipe = new Recipe(Guid.NewGuid(), "Test Recipe Title", "Salt;Pepper;", "Description", null, user);
+        var user = new ApplicationUser { Id = Guid.NewGuid() };
+        _recipe = new Recipe(Guid.NewGuid(), "Test Recipe Title", "Salt;Pepper;", "Description", null, user.Id);
     }
 
     [Fact]
