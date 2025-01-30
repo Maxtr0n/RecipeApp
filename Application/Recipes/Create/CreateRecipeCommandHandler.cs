@@ -11,6 +11,7 @@ namespace Application.Recipes.Create;
 
 public class CreateRecipeCommandHandler(
     UserManager<ApplicationUser> userManager,
+    IGenericRepository<Recipe> recipeRepository,
     IUnitOfWork unitOfWork)
     : ICommandHandler<CreateRecipeCommand, Result<RecipeReadDto>>
 {
@@ -26,6 +27,8 @@ public class CreateRecipeCommandHandler(
         var recipe = user.AddRecipe(request.RecipeCreateDto.Title,
             request.RecipeCreateDto.Ingredients.JoinStrings(),
             request.RecipeCreateDto.Description, request.RecipeCreateDto.Images.JoinStrings());
+
+        await recipeRepository.AddAsync(recipe);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
