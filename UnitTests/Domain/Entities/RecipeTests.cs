@@ -5,12 +5,11 @@ namespace UnitTests.Domain.Entities;
 
 public class RecipeTests
 {
-    private const string VALID_TITLE = "Recipe Title";
-    private const string VALID_INGREDIENTS = "Ingredient1;Ingredient2";
-    private const string VALID_DESCRIPTION = "Recipe Description";
-    private const string VALID_IMAGES = "https://testurl.com/image1;https://testurl.com/image2";
-    private readonly Guid VALID_AUTHOR_ID = Guid.NewGuid();
-    private readonly Guid VALID_ID = Guid.NewGuid();
+    private const string ValidTitle = "Recipe Title";
+    private const string ValidIngredients = "Ingredient1;Ingredient2";
+    private const string ValidDescription = "Recipe Description";
+    private const string ValidImages = "https://testurl.com/image1;https://testurl.com/image2";
+    private readonly Guid _validAuthorId = Guid.NewGuid();
 
     [Fact]
     public void Constructor_Should_CreateRecipe_WhenParametersAreValid()
@@ -19,34 +18,35 @@ public class RecipeTests
 
         // Act
         var recipe = new Recipe(
-            VALID_ID,
-            VALID_TITLE,
-            VALID_INGREDIENTS,
-            VALID_DESCRIPTION,
-            VALID_IMAGES,
-            VALID_AUTHOR_ID
+            ValidTitle,
+            ValidIngredients,
+            ValidDescription,
+            ValidImages,
+            _validAuthorId
         );
 
         // Assert
         recipe.Should().NotBeNull();
-        recipe.Id.Should().Be(VALID_ID);
-        recipe.Title.Should().Be(VALID_TITLE);
-        recipe.Ingredients.Should().Be(VALID_INGREDIENTS);
-        recipe.Description.Should().Be(VALID_DESCRIPTION);
-        recipe.Images.Should().Be(VALID_IMAGES);
-        recipe.AuthorId.Should().Be(VALID_AUTHOR_ID);
+        recipe.Title.Should().Be(ValidTitle);
+        recipe.Ingredients.Should().Be(ValidIngredients);
+        recipe.Description.Should().Be(ValidDescription);
+        recipe.Images.Should().Be(ValidImages);
+        recipe.AuthorId.Should().Be(_validAuthorId);
     }
 
     [Fact]
     public void Constructor_Should_ThrowArgumentNullException_WhenTitleIsNull()
     {
         // Arrange
-        Action act = () => new Recipe(VALID_ID,
-            null!,
-            VALID_INGREDIENTS,
-            VALID_DESCRIPTION,
-            VALID_IMAGES,
-            VALID_AUTHOR_ID);
+        var act = () =>
+        {
+            var recipe = new Recipe(
+                null!,
+                ValidIngredients,
+                ValidDescription,
+                ValidImages,
+                _validAuthorId);
+        };
 
         // Act & Assert
         act.Should().Throw<ArgumentNullException>().WithParameterName("title");
@@ -56,12 +56,15 @@ public class RecipeTests
     public void Constructor_Should_ThrowArgumentException_WhenTitleIsEmpty()
     {
         // Arrange
-        Action act = () => new Recipe(VALID_ID,
-            string.Empty,
-            VALID_INGREDIENTS,
-            VALID_DESCRIPTION,
-            VALID_IMAGES,
-            VALID_AUTHOR_ID);
+        var act = () =>
+        {
+            var recipe = new Recipe(
+                string.Empty,
+                ValidIngredients,
+                ValidDescription,
+                ValidImages,
+                _validAuthorId);
+        };
 
         // Act & Assert
         act.Should().Throw<ArgumentException>().WithParameterName("title");

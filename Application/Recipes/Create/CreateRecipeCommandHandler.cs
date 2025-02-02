@@ -24,9 +24,9 @@ public class CreateRecipeCommandHandler(
             return Result<RecipeReadDto>.NotFound($"User with id {request.User.Id} does not exist");
         }
 
-        var recipe = user.AddRecipe(request.RecipeCreateDto.Title,
-            request.RecipeCreateDto.Ingredients.JoinStrings(),
-            request.RecipeCreateDto.Description, request.RecipeCreateDto.Images.JoinStrings());
+        var recipe = new Recipe(request.RecipeCreateDto.Title,
+            request.RecipeCreateDto.Ingredients.JoinStrings(), request.RecipeCreateDto.Description,
+            request.RecipeCreateDto.Images.JoinStrings(), user.Id);
 
         await recipeRepository.AddAsync(recipe);
 

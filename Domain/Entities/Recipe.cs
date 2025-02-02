@@ -7,31 +7,19 @@ namespace Domain.Entities;
 public class Recipe : Entity, IAggregateRoot
 {
     public Recipe(
-        Guid id,
         string title,
         string ingredients,
         string description,
         string? images,
         Guid authorId
-    ) : this(id, title, ingredients, description, images)
+    ) : base(Guid.NewGuid())
     {
         GuardAgainstInvalidInput(title, ingredients, description, authorId);
-        AuthorId = authorId;
-    }
-
-    // EF Core ctor
-    private Recipe(
-        Guid id,
-        string title,
-        string ingredients,
-        string description,
-        string? images) : base(id)
-    {
-        Id = id;
         Title = title;
         Ingredients = ingredients;
         Description = description;
         Images = images;
+        AuthorId = authorId;
     }
 
     public string Title { get; private set; }
