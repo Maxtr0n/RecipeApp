@@ -27,7 +27,7 @@ public class CreateRecipeTest(IntegrationTestWebAppFactory factory) : BaseIntegr
 
         var userResult = await UserManager.FindByNameAsync(user.UserName);
 
-        var command = new CreateRecipeCommand(dto, userResult);
+        var command = new CreateRecipeCommand(dto, userResult!);
 
         // Act
         var result = await Sender.Send(command);
