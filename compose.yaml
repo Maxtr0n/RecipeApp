@@ -1,6 +1,18 @@
 ﻿services:
-  recipeapi:
-    image: recipeapi
+  recipe.api:
+    image: recipe-api
+    container_name: recipe.api
     build:
       context: .
       dockerfile: RecipeApi/Dockerfile
+  recipe.database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: recipe.database
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Secret12345!
+    #volumes:
+    #lényege hogy mappolod a konténer egy mappáját (ahol a db adatok vannak), a local géped egy mappájára
+    #így perzisztálva lesznek az adatok azután hogy ujraindul a konténer
+    ports:
+      - "1434:1433"
