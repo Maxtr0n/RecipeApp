@@ -12,7 +12,7 @@ builder.Services
 
 var app = builder.Build();
 
-app.ApplyMigrations();
+//app.ApplyMigrations();
 
 // Configure the HTTP request pipeline.
 app.UseApi();
