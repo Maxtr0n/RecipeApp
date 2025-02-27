@@ -1,13 +1,16 @@
 ﻿services:
   recipe.api:
-    image: recipe-api
+    #image: schutzmate/recipeapi
     container_name: recipe.api
     build:
       context: .
-      dockerfile: RecipeApi/Dockerfile
+      dockerfile: Dockerfile
+    #Port 8080 inside the container (from the EXPOSE instruction in the Dockerfile) is mapped to port 5000 on the host machine.
+    ports:
+      - "5000:8080"
+      - "5001:8081"
     environment:
       - DB_HOST=recipe.database
-      - DB_PORT=1434
       - DB_NAME=RecipeDb
       - DB_USER=sa
       - DB_PASSWORD=Secret12345!
@@ -24,7 +27,7 @@
     ports:
       - "1434:1433"
     volumes:
-      - sqlserver_data:/var/opt/mssql  # Persistent volume for SQL Server data
+      - sqlserver_data:/var/opt/mssql # Persistent volume for SQL Server data
 
 volumes:
-  sqlserver_data:  # Named volume declaration
+  sqlserver_data: # Named volume declaration
