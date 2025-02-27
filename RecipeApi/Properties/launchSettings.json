@@ -8,7 +8,8 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5118",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings__SqlServer": "Server=localhost,1433;Database=RecipeDb;User Id=sa;Password=Macska123!;Persist Security Info=False;TrustServerCertificate=True;"
       }
     },
     "https": {
@@ -18,7 +19,8 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7171;http://localhost:5118",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings__SqlServer": "Server=localhost,1433;Database=RecipeDb;User Id=sa;Password=Macska123!;Persist Security Info=False;TrustServerCertificate=True;"
       }
     },
     "migrate": {
@@ -29,7 +31,8 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7171;http://localhost:5118",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings__SqlServer": "Server=localhost,1433;Database=RecipeDb;User Id=sa;Password=Macska123!;Persist Security Info=False;TrustServerCertificate=True;"
       }
     }
   }

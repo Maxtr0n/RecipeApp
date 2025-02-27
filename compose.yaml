@@ -5,6 +5,13 @@
     build:
       context: .
       dockerfile: RecipeApi/Dockerfile
+    environment:
+      - DB_HOST=recipe.database
+      - DB_PORT=1434
+      - DB_NAME=RecipeDb
+      - DB_USER=sa
+      - DB_PASSWORD=Secret12345!
+  
   recipe.database:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: recipe.database
@@ -16,3 +23,8 @@
     #így perzisztálva lesznek az adatok azután hogy ujraindul a konténer
     ports:
       - "1434:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql  # Persistent volume for SQL Server data
+
+volumes:
+  sqlserver_data:  # Named volume declaration
