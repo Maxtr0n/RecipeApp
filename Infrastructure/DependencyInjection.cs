@@ -14,8 +14,6 @@ public static class DependencyInjection
         services.AddDbContext<RecipeDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
 
-        Console.WriteLine("Connection string: " + configuration.GetConnectionString("SqlServer"));
-
         services.AddHealthChecks()
             .AddDbContextCheck<RecipeDbContext>("Database");
 

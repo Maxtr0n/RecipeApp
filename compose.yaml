@@ -1,33 +1,45 @@
 ﻿services:
-  recipe.api:
-    #image: schutzmate/recipeapi
-    container_name: recipe.api
-    build:
-      context: .
-      dockerfile: Dockerfile
-    #Port 8080 inside the container (from the EXPOSE instruction in the Dockerfile) is mapped to port 5000 on the host machine.
-    ports:
-      - "5000:8080"
-      - "5001:8081"
-    environment:
-      - DB_HOST=recipe.database
-      - DB_NAME=RecipeDb
-      - DB_USER=sa
-      - DB_PASSWORD=Secret12345!
-  
-  recipe.database:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: recipe.database
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=Secret12345!
-    #volumes:
-    #lényege hogy mappolod a konténer egy mappáját (ahol a db adatok vannak), a local géped egy mappájára
-    #így perzisztálva lesznek az adatok azután hogy ujraindul a konténer
-    ports:
-      - "1434:1433"
-    volumes:
-      - sqlserver_data:/var/opt/mssql # Persistent volume for SQL Server data
+    recipe.api:
+        #image: schutzmate/recipeapi
+        container_name: recipe.api
+        build:
+            context: .
+            dockerfile: Dockerfile
+        #Port 8080 inside the container (from the EXPOSE instruction in the Dockerfile) is mapped to port 5000 on the host machine.
+        ports:
+            - "5000:8080"
+            - "5001:8081"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:8081;http://+:8080
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Secret12345!
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - ConnectionStrings__SqlServer=Server=recipe.database;Database=RecipeDb;User Id=sa;Password=Secret12345!;Persist Security Info=False;TrustServerCertificate=True;
+        # Mount the developer certificate into the container (using COPY in the Dockerfile is not recommended)
+        volumes:
+            - ~/.aspnet/https:/https:ro
+        depends_on:
+            recipe.database:
+                condition: service_started
+        healthcheck:
+            test: curl --fail http://localhost:5000/api/health || exit 1
+            interval: 20s
+            timeout: 20s
+            retries: 5
+
+    recipe.database:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        container_name: recipe.database
+        environment:
+            - ACCEPT_EULA=Y
+            - MSSQL_SA_PASSWORD=Secret12345!
+        #volumes:
+        #lényege hogy mappolod a konténer egy mappáját (ahol a db adatok vannak), a local géped egy mappájára
+        #így perzisztálva lesznek az adatok azután hogy ujraindul a konténer
+        ports:
+            - "1434:1433"
+        volumes:
+            - sqlserver_data:/var/opt/mssql # Persistent volume for SQL Server data
 
 volumes:
-  sqlserver_data: # Named volume declaration
+    sqlserver_data: # Named volume declaration
