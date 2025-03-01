@@ -22,7 +22,7 @@
             recipe.database:
                 condition: service_started
         healthcheck:
-            test: curl --fail http://localhost:5000/api/health || exit 1
+            test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
             interval: 20s
             timeout: 20s
             retries: 5
@@ -38,7 +38,4 @@
         #lényege hogy mappolod a konténer egy mappáját (ahol a db adatok vannak), a local géped egy mappájára
         #így perzisztálva lesznek az adatok azután hogy ujraindul a konténer
         volumes:
-            - sqlserver_data:/var/opt/mssql # Persistent volume for SQL Server data
-
-volumes:
-    sqlserver_data: # Named volume declaration
+            - ./.containers/recipe-db:/var/opt/mssql # Persistent volume for SQL Server data
