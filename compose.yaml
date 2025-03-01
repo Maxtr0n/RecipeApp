@@ -33,11 +33,10 @@
         environment:
             - ACCEPT_EULA=Y
             - MSSQL_SA_PASSWORD=Secret12345!
-        #volumes:
-        #lényege hogy mappolod a konténer egy mappáját (ahol a db adatok vannak), a local géped egy mappájára
-        #így perzisztálva lesznek az adatok azután hogy ujraindul a konténer
         ports:
             - "1434:1433"
+        #lényege hogy mappolod a konténer egy mappáját (ahol a db adatok vannak), a local géped egy mappájára
+        #így perzisztálva lesznek az adatok azután hogy ujraindul a konténer
         volumes:
             - sqlserver_data:/var/opt/mssql # Persistent volume for SQL Server data
 
