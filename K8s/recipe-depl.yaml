@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: recipe-depl
+spec:
+    selector:
+        matchLabels:
+            app: recipe-api
+    template:
+        metadata:
+            labels:
+                app: recipe-api
+        spec:
+            containers:
+                - name: recipe-api
+                  image: schutzmate/recipeapi:latest
+                  resources:
+                      limits:
+                          memory: "128Mi"
+                          cpu: "500m"
