@@ -18,3 +18,17 @@ spec:
                       limits:
                           memory: "128Mi"
                           cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: recipe-clusterip-srv
+spec:
+    type: ClusterIP
+    selector:
+        app: recipe-api
+    ports:
+        - name: recipe-api
+          protocol: TCP
+          port: 8080
+          targetPort: 8080
