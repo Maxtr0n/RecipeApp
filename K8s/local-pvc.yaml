@@ -7,4 +7,4 @@ spec:
         requests:
             storage: 200Mi
     accessModes:
-        - ReadWriteOncePod
+        - ReadWriteOnce

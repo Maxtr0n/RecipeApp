@@ -17,7 +17,7 @@ spec:
                   image: mcr.microsoft.com/mssql/server:2022-latest
                   resources:
                       limits:
-                          memory: "512Mi"
+                          memory: "2Gi"
                           cpu: "500m"
                   ports:
                       - containerPort: 1433
