@@ -52,7 +52,7 @@ public static class ApiExtensions
                         {
                             Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
                         },
-                        Array.Empty<string>()
+                        []
                     }
                 });
             }
@@ -86,20 +86,33 @@ public static class ApiExtensions
         using var scope = app.Services.CreateScope();
 
         var dbContext = scope.ServiceProvider.GetRequiredService<RecipeDbContext>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<RecipeDbContext>>();
 
         // Check and apply pending migrations
         var pendingMigrations = dbContext.Database.GetPendingMigrations();
 
         var migrations = pendingMigrations.ToList();
-        if (migrations.Count != 0)
+
+        if (migrations.Count == 0)
         {
-            Console.WriteLine($"Applying {migrations.Count} migrations to  database...");
+            logger.LogInformation("No pending migrations found.");
+            Environment.Exit(0);
+        }
+
+        logger.LogInformation("Applying {MigrationsCount} migrations to  database...", migrations.Count);
+
+        try
+        {
             dbContext.Database.Migrate();
-            Console.WriteLine("Migrations applied successfully.");
         }
-        else
+        catch (Exception ex)
         {
-            Console.WriteLine("No pending migrations found.");
+            logger.LogError(ex, "Applying database migrations failed.");
+            Environment.Exit(1);
         }
+
+        logger.LogInformation("Applying database migrations succeeded.");
+
+        Environment.Exit(0);
     }
 }
