@@ -3,8 +3,8 @@ using Ardalis.Result.AspNetCore;
 using Domain.Entities;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using RecipeApi.Infrastructure;
+using Scalar.AspNetCore;
 using System.Net;
 
 namespace RecipeApi.Extensions;
@@ -33,41 +33,18 @@ public static class ApiExtensions
 
         services.AddHealthChecks();
 
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(options =>
-            {
-                options.AddSecurityDefinition("Bearer",
-                    new OpenApiSecurityScheme
-                    {
-                        Name = "Authorization",
-                        In = ParameterLocation.Header,
-                        Type = SecuritySchemeType.Http,
-                        Scheme = "Bearer"
-                    });
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-                        },
-                        []
-                    }
-                });
-            }
-        );
+        services.AddOpenApi();
 
         return services;
     }
 
     public static WebApplication UseApi(this WebApplication app)
     {
-        app.UseSwagger();
+        app.MapOpenApi();
 
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwaggerUI();
+            app.MapScalarApiReference();
         }
 
         //app.UseHttpsRedirection();
