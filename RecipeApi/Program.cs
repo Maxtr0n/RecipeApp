@@ -14,6 +14,10 @@ var app = builder.Build();
 
 if (args.Contains("migrate"))
 {
+    app.ApplyMigrations(true);
+}
+else if (app.Environment.IsDevelopment())
+{
     app.ApplyMigrations();
 }
 

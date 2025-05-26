@@ -58,7 +58,7 @@ public static class ApiExtensions
         return app;
     }
 
-    public static void ApplyMigrations(this WebApplication app)
+    public static void ApplyMigrations(this WebApplication app, bool exit = false)
     {
         using var scope = app.Services.CreateScope();
 
@@ -73,7 +73,10 @@ public static class ApiExtensions
         if (migrations.Count == 0)
         {
             logger.LogInformation("No pending migrations found.");
-            Environment.Exit(0);
+            if (exit)
+            {
+                Environment.Exit(0);
+            }
         }
 
         logger.LogInformation("Applying {MigrationsCount} migrations to  database...", migrations.Count);
@@ -90,6 +93,9 @@ public static class ApiExtensions
 
         logger.LogInformation("Applying database migrations succeeded.");
 
-        Environment.Exit(0);
+        if (exit)
+        {
+            Environment.Exit(0);
+        }
     }
 }
