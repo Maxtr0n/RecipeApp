@@ -61,5 +61,5 @@ spec:
         app: mssql
     ports:
         - protocol: TCP
-          port: 1434
+          port: 1435
           targetPort: 1433

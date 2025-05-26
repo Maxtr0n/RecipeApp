@@ -12,7 +12,8 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<RecipeDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
+            //options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
+            options.UseNpgsql(configuration.GetConnectionString("Postgres")));
 
         services.AddHealthChecks()
             .AddDbContextCheck<RecipeDbContext>("Database");

@@ -70,7 +70,7 @@ public static class ApiExtensions
             app.UseSwaggerUI();
         }
 
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
 
         app.MapIdentityApi<ApplicationUser>();
 

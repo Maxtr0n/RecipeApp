@@ -18,17 +18,18 @@ spec:
                       limits:
                           memory: "128Mi"
                           cpu: "500m"
+                  ports:
+                      - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-    name: recipe-clusterip-srv
+    name: recipe-loadbalancer
 spec:
-    type: ClusterIP
+    type: LoadBalancer
     selector:
         app: recipe-api
     ports:
-        - name: recipe-api
-          protocol: TCP
+        - protocol: TCP
           port: 8080
           targetPort: 8080
