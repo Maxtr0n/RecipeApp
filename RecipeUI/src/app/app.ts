@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { RecipeComponent } from "./components/recipe-component/recipe-component";
+import { RecipeComponent } from "./features/recipe/recipe-component";
 
 @Component({
     selector: 'app-root',
