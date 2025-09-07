@@ -19,15 +19,7 @@ public class CreateRecipeTest(IntegrationTestWebAppFactory factory) : BaseIntegr
             Images = []
         };
 
-        var user = new ApplicationUser { UserName = "username123", Email = "email123@test.com" };
-        var identityResult = await UserManager.CreateAsync(user, "Asd123!");
-        await UnitOfWork.SaveChangesAsync();
-
-        identityResult.Succeeded.Should().BeTrue();
-
-        var userResult = await UserManager.FindByNameAsync(user.UserName);
-
-        var command = new CreateRecipeCommand(dto, userResult!);
+        var command = new CreateRecipeCommand(dto);
 
         // Act
         var result = await Sender.Send(command);

@@ -16,7 +16,7 @@ namespace RecipeApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class RecipesController(IMediator mediator, UserManager<ApplicationUser> userManager) : ControllerBase
+public class RecipesController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{id}")]
     [TranslateResultToActionResult]
@@ -43,15 +43,9 @@ public class RecipesController(IMediator mediator, UserManager<ApplicationUser> 
         {
             return Result<RecipeReadDto>.Unauthorized();
         }
+        
 
-        var user = await userManager.FindByNameAsync(userName);
-
-        if (user == null)
-        {
-            return Result<RecipeReadDto>.Unauthorized();
-        }
-
-        return await mediator.Send(new CreateRecipeCommand(dto, user));
+        return await mediator.Send(new CreateRecipeCommand(dto));
     }
 
     [HttpDelete("{id}")]

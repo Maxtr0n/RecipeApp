@@ -10,28 +10,22 @@ using Microsoft.AspNetCore.Identity;
 namespace Application.Recipes.Create;
 
 public class CreateRecipeCommandHandler(
-    UserManager<ApplicationUser> userManager,
     IGenericRepository<Recipe> recipeRepository,
     IUnitOfWork unitOfWork)
     : ICommandHandler<CreateRecipeCommand, Result<RecipeReadDto>>
 {
     public async Task<Result<RecipeReadDto>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
-        var user = await userManager.FindByIdAsync(request.User.Id.ToString());
+        // var recipe = new Recipe(request.RecipeCreateDto.Title,
+        //     request.RecipeCreateDto.Ingredients.JoinStrings(), request.RecipeCreateDto.Description,
+        //     request.RecipeCreateDto.Images.JoinStrings());
+        //
+        // await recipeRepository.AddAsync(recipe);
+        //
+        // await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        if (user == null)
-        {
-            return Result<RecipeReadDto>.NotFound($"User with id {request.User.Id} does not exist");
-        }
+        // return recipe.MapToReadDto();
 
-        var recipe = new Recipe(request.RecipeCreateDto.Title,
-            request.RecipeCreateDto.Ingredients.JoinStrings(), request.RecipeCreateDto.Description,
-            request.RecipeCreateDto.Images.JoinStrings(), user.Id);
-
-        await recipeRepository.AddAsync(recipe);
-
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-
-        return recipe.MapToReadDto();
+        return new RecipeReadDto();
     }
 }

@@ -15,7 +15,6 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
     protected readonly RecipeDbContext DbContext;
     protected readonly ISender Sender;
     protected readonly IUnitOfWork UnitOfWork;
-    protected readonly UserManager<ApplicationUser> UserManager;
 
     public BaseIntegrationTest(IntegrationTestWebAppFactory factory)
     {
@@ -23,7 +22,6 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
 
         Sender = _scope.ServiceProvider.GetRequiredService<ISender>();
         DbContext = _scope.ServiceProvider.GetRequiredService<RecipeDbContext>();
-        UserManager = _scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         UnitOfWork = _scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
     }
 
@@ -42,18 +40,8 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
             Ingredients = ["Ingredient 1, Ingredient 2, Ingredient 3"],
             Images = []
         };
-        var user = new ApplicationUser { UserName = "username123", Email = "email123@test.com" };
-        var identityResult = await UserManager.CreateAsync(user, "Asd123!");
-        await UnitOfWork.SaveChangesAsync();
-
-        if (!identityResult.Succeeded)
-        {
-            throw new Exception("Failed to create user");
-        }
-
-        var userResult = await UserManager.FindByNameAsync(user.UserName);
-
-        var createCommand = new CreateRecipeCommand(createRecipeDto, userResult!);
+        
+        var createCommand = new CreateRecipeCommand(createRecipeDto);
         var createRecipeResult = await Sender.Send(createCommand);
 
 
@@ -85,18 +73,7 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
             Images = []
         };
 
-        var user = new ApplicationUser { UserName = "username123", Email = "email123@test.com" };
-        var identityResult = await UserManager.CreateAsync(user, "Asd123!");
-        await UnitOfWork.SaveChangesAsync();
-
-        if (!identityResult.Succeeded)
-        {
-            throw new Exception("Failed to create user");
-        }
-
-        var userResult = await UserManager.FindByNameAsync(user.UserName);
-
-        var createCommand = new CreateRecipeCommand(dto1, userResult!);
+        var createCommand = new CreateRecipeCommand(dto1);
         var createRecipeResult = await Sender.Send(createCommand);
 
         if (!createRecipeResult.IsSuccess || createRecipeResult == null)
@@ -106,7 +83,7 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
 
         var firstRecipeId = createRecipeResult.Value.Id;
 
-        createCommand = new CreateRecipeCommand(dto2, userResult!);
+        createCommand = new CreateRecipeCommand(dto2);
         createRecipeResult = await Sender.Send(createCommand);
 
         if (!createRecipeResult.IsSuccess || createRecipeResult == null)

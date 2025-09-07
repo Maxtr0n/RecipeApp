@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 public class RecipeDbContext(DbContextOptions<RecipeDbContext> options)
-    : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>(options)
+    : DbContext(options)
 {
     public DbSet<Recipe> Recipes { get; set; }
 

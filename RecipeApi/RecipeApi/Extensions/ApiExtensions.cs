@@ -24,12 +24,8 @@ public static class ApiExtensions
                     .For("DELETE", HttpStatusCode.NoContent))
             ));
 
+        services.AddAuthentication();
         services.AddAuthorization();
-
-        services.AddIdentityApiEndpoints<ApplicationUser>(options =>
-            {
-            })
-            .AddEntityFrameworkStores<RecipeDbContext>();
 
         services.AddHealthChecks();
 
@@ -48,8 +44,9 @@ public static class ApiExtensions
         }
 
         //app.UseHttpsRedirection();
-
-        app.MapIdentityApi<ApplicationUser>();
+        
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseExceptionHandler();
 

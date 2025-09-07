@@ -14,28 +14,10 @@ public class CreateRecipeCommandHandlerTests
 {
     private readonly Mock<IGenericRepository<Recipe>> _recipeRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly ApplicationUser _user = new() { UserName = "test@test.com", Id = Guid.NewGuid() };
-    private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
-
     public CreateRecipeCommandHandlerTests()
     {
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _recipeRepositoryMock = new Mock<IGenericRepository<Recipe>>();
-        _userManagerMock = new Mock<UserManager<ApplicationUser>>(
-            new Mock<IUserStore<ApplicationUser>>().Object,
-            new Mock<IOptions<IdentityOptions>>().Object,
-            new Mock<IPasswordHasher<ApplicationUser>>().Object,
-            Array.Empty<IUserValidator<ApplicationUser>>(),
-            Array.Empty<IPasswordValidator<ApplicationUser>>(),
-            new Mock<ILookupNormalizer>().Object,
-            new Mock<IdentityErrorDescriber>().Object,
-            new Mock<IServiceProvider>().Object,
-            new Mock<ILogger<UserManager<ApplicationUser>>>().Object);
-
-        _userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(_user);
-        _userManagerMock.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(_user);
-        _userManagerMock.Setup(userManager => userManager.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
-            .Returns(Task.FromResult(IdentityResult.Success));
     }
 
     [Fact]
@@ -50,9 +32,9 @@ public class CreateRecipeCommandHandlerTests
             Description = "Recipe Description"
         };
 
-        var command = new CreateRecipeCommand(dto, _user);
+        var command = new CreateRecipeCommand(dto);
         var handler =
-            new CreateRecipeCommandHandler(_userManagerMock.Object, _recipeRepositoryMock.Object,
+            new CreateRecipeCommandHandler(_recipeRepositoryMock.Object,
                 _unitOfWorkMock.Object);
 
         // Act

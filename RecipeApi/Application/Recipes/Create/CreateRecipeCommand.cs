@@ -5,5 +5,5 @@ using Domain.Entities;
 
 namespace Application.Recipes.Create;
 
-public record CreateRecipeCommand(RecipeCreateDto RecipeCreateDto, ApplicationUser User)
+public record CreateRecipeCommand(RecipeCreateDto RecipeCreateDto)
     : ICommand<Result<RecipeReadDto>>;

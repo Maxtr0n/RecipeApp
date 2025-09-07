@@ -21,8 +21,7 @@ public class UpdateRecipeCommandHandlerTests
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _recipeRepositoryMock = new Mock<IGenericRepository<Recipe>>();
 
-        var user = new ApplicationUser { Id = Guid.NewGuid() };
-        _recipe = new Recipe("Test Recipe Title", "Salt;Pepper;", "Description", null, user.Id);
+        _recipe = new Recipe("Test Recipe Title", "Salt;Pepper;", "Description", null, Guid.Empty);
     }
 
     [Fact]
