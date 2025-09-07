@@ -1,4 +1,8 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+# install curl for healthchecks
+USER root
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+# switch back to non-root user if provided by Docker build args
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080

@@ -11,7 +11,7 @@ public class Recipe : Entity, IAggregateRoot
         string ingredients,
         string description,
         string? images,
-        Guid authorId
+        string authorId
     ) : base(Guid.NewGuid())
     {
         GuardAgainstInvalidInput(title, ingredients, description, authorId);
@@ -30,10 +30,10 @@ public class Recipe : Entity, IAggregateRoot
 
     public string? Images { get; private set; }
 
-    public Guid AuthorId { get; private set; }
+    public string AuthorId { get; private set; }
 
     private static void GuardAgainstInvalidInput(string title, string ingredients, string description,
-        Guid authorId)
+        string authorId)
     {
         Guard.Against.NullOrEmpty(title);
         Guard.Against.StringTooShort(title, 3);

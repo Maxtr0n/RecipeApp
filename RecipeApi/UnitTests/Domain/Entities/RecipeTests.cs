@@ -9,7 +9,7 @@ public class RecipeTests
     private const string ValidIngredients = "Ingredient1;Ingredient2";
     private const string ValidDescription = "Recipe Description";
     private const string ValidImages = "https://testurl.com/image1;https://testurl.com/image2";
-    private readonly Guid _validAuthorId = Guid.NewGuid();
+    private readonly string _validAuthorId = Guid.NewGuid().ToString();
 
     [Fact]
     public void Constructor_Should_CreateRecipe_WhenParametersAreValid()
