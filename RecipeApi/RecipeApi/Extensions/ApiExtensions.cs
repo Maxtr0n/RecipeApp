@@ -2,7 +2,11 @@
 using Ardalis.Result.AspNetCore;
 using Domain.Entities;
 using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using RecipeApi.Infrastructure;
 using Scalar.AspNetCore;
 using System.Net;
@@ -11,7 +15,7 @@ namespace RecipeApi.Extensions;
 
 public static class ApiExtensions
 {
-    public static IServiceCollection SetupApi(this IServiceCollection services)
+    public static IServiceCollection SetupApi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
@@ -24,8 +28,26 @@ public static class ApiExtensions
                     .For("DELETE", HttpStatusCode.NoContent))
             ));
 
-        services.AddAuthentication();
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(o =>
+            {
+                o.RequireHttpsMetadata = false;
+                o.Audience = configuration["Authentication:Audience"];
+                o.MetadataAddress = configuration["Authentication:MetadataAddress"]!;
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = configuration["Authentication:ValidIssuer"],
+                };
+            });
         services.AddAuthorization();
+
+        services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService("RecipeApi"))
+            .WithTracing(tracing =>
+                tracing
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddOtlpExporter());
 
         services.AddHealthChecks();
 
@@ -44,7 +66,7 @@ public static class ApiExtensions
         }
 
         //app.UseHttpsRedirection();
-        
+
         app.UseAuthentication();
         app.UseAuthorization();
 
