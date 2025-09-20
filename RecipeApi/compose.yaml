@@ -15,7 +15,10 @@
       - ASPNETCORE_Kestrel__Certificates__Default__Password=Secret12345!
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ConnectionStrings__Postgres=Host=recipe.database;Port=5432;Database=RecipeDb;Username=postgres;Password=Secret12345!;
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4317
+      # Send telemetry to OTel Collector
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://recipe.dashboard:18889
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=recipe.api
     # Mount the developer certificate into the container (using COPY in the Dockerfile is not recommended)
     volumes:
       - ~/.aspnet/https:/https:ro
@@ -51,6 +54,13 @@
       interval: 10s
       timeout: 5s
       retries: 5
+      
+  recipe.dashboard:
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:latest
+    container_name: dashboard
+    ports:
+      - "18888:18888"
+      - "4317:18889"
   
   keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -64,12 +74,62 @@
       - ./.containers/identity:/opt/keycloak/data
     ports:
       - "18080:8080"
+
+#  jaeger:
+#    image: jaegertracing/all-in-one:latest
+#    container_name: jaeger
+#    ports:
+#      - "4317:4317"
+#      - "4318:4318"
+#      - "16686:16686"
+    
+  # otel-collector:
+  #   image: otel/opentelemetry-collector-contrib:0.135.0
+  #   container_name: otel-collector
+  #   command: [ "--config=/etc/otel-collector-config.yaml" ]
+  #   volumes:
+  #     - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+  #   ports:
+  #     - "8889:8889" # Prometheus metrics exposed here
+  #     - "13133:13133" # health_check extension
+  #     - "4317:4317" # OTLP gRPC receiver
+  #     - "4318:4318" # OTLP http receiver
+
+  # jaeger:
+  #   image: jaegertracing/jaeger:2.10.0
+  #   container_name: jaeger
+  #   environment:
+  #     - METRICS_STORAGE_TYPE=prometheus
+  #     - SPAN_STORAGE_TYPE=badger
+  #   ports:
+  #     - "16686:16686"  # UI
+  #     - "14268:14268"   # Collector HTTP
+  #     - "6831:6831/udp" # Agent UDP
         
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    container_name: jaeger
-    ports:
-      - "4317:4317"
-      - "4318:4318"
-      - "16686:16686"
-      
+#   prometheus:
+#     image: prom/prometheus
+#     container_name: prometheus
+#     command:
+#       - '--config.file=/etc/prometheus/prometheus.yaml'
+#     ports:
+#       - "9090:9090"
+#     restart: unless-stopped
+#     volumes:
+#       - ./prometheus:/etc/prometheus
+#       - prom_data:/prometheus
+  
+#   grafana:
+#       image: grafana/grafana-enterprise
+#       container_name: grafana
+#       ports:
+#         - "3000:3000"
+#       restart: unless-stopped
+#       environment:
+#         - GF_SECURITY_ADMIN_USER=admin
+#         - GF_SECURITY_ADMIN_PASSWORD=grafana
+#       volumes:
+#       - grafana-storage:/var/lib/grafana
+
+# volumes:
+#     prom_data:
+#     grafana-storage:

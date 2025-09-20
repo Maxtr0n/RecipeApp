@@ -3,9 +3,7 @@ using Application.Recipes.Create;
 using Domain.Abstractions;
 using Domain.Entities;
 using FluentAssertions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Moq;
 
 namespace UnitTests.Application.Recipes.Create;
@@ -14,10 +12,12 @@ public class CreateRecipeCommandHandlerTests
 {
     private readonly Mock<IGenericRepository<Recipe>> _recipeRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<ILogger<CreateRecipeCommandHandler>> _loggerMock;
     public CreateRecipeCommandHandlerTests()
     {
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _recipeRepositoryMock = new Mock<IGenericRepository<Recipe>>();
+        _loggerMock = new Mock<ILogger<CreateRecipeCommandHandler>>();
     }
 
     [Fact]
@@ -34,8 +34,10 @@ public class CreateRecipeCommandHandlerTests
 
         var command = new CreateRecipeCommand(dto);
         var handler =
-            new CreateRecipeCommandHandler(_recipeRepositoryMock.Object,
-                _unitOfWorkMock.Object);
+            new CreateRecipeCommandHandler(
+                _recipeRepositoryMock.Object,
+                _unitOfWorkMock.Object,
+                _loggerMock.Object);
 
         // Act
         var result = await handler.Handle(command, default);

@@ -5,6 +5,8 @@ using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using RecipeApi.Infrastructure;
@@ -39,21 +41,40 @@ public static class ApiExtensions
                     ValidIssuer = configuration["Authentication:ValidIssuer"],
                 };
             });
+        
         services.AddAuthorization();
-
-        services.AddOpenTelemetry()
-            .ConfigureResource(resource => resource.AddService("RecipeApi"))
-            .WithTracing(tracing =>
-                tracing
-                    .AddAspNetCoreInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .AddOtlpExporter());
+        
+        AddOpenTelemetry(services);
 
         services.AddHealthChecks();
 
         services.AddOpenApi();
 
         return services;
+    }
+
+    private static void AddOpenTelemetry(IServiceCollection services)
+    {
+        services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService("RecipeApi"))
+            .WithMetrics(metrics =>
+            {
+                metrics
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation();
+
+                metrics.AddOtlpExporter();
+            })
+            .WithTracing(tracing =>
+            {
+                tracing
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddEntityFrameworkCoreInstrumentation();
+                
+                tracing
+                    .AddOtlpExporter();
+            });
     }
 
     public static WebApplication UseApi(this WebApplication app)

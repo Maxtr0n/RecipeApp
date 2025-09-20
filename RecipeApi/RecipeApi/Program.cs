@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using OpenTelemetry.Logs;
 using RecipeApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration)
     .SetupApi(builder.Configuration);
+
+builder.Logging.AddOpenTelemetry(logging => logging.AddOtlpExporter());
 
 var app = builder.Build();
 
