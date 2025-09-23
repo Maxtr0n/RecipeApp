@@ -1,27 +1,12 @@
 ﻿services:
   recipe.api:
-    #image: schutzmate/recipeapi
-    container_name: recipe.api
-    build:
-      context: .
-      dockerfile: Dockerfile
-    #Port 8080 inside the container (from the EXPOSE instruction in the Dockerfile) is mapped to port 5000 on the host machine.
-    ports:
-      - "5000:8080"
-      - "5001:8081"
+    image: schutzmate/recipeapi:latest
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:8081;http://+:8080
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=Secret12345!
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__Postgres=Host=recipe.database;Port=5432;Database=RecipeDb;Username=postgres;Password=Secret12345!;
-      # Send telemetry to OTel Collector
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://recipe.dashboard:18889
       - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
       - OTEL_SERVICE_NAME=recipe.api
-    # Mount the developer certificate into the container (using COPY in the Dockerfile is not recommended)
-    volumes:
-      - ~/.aspnet/https:/https:ro
     depends_on:
       recipe.database:
         condition: service_healthy
@@ -32,21 +17,15 @@
       interval: 20s
       timeout: 20s
       retries: 5
-  
+
   recipe.database:
     image: postgres:17
-    container_name: recipe.database
     restart: always
-    # set shared memory limit when using docker compose
     shm_size: 128mb
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=Secret12345!
       - POSTGRES_DB=RecipeDb
-    ports:
-      - "5432:5432"
-    #lényege hogy mappolod a konténer egy mappáját (ahol a db adatok vannak), a local géped egy mappájára
-    #így perzisztálva lesznek az adatok azután hogy ujraindul a konténer
     volumes:
       - ./.containers/recipe-db:/var/lib/postgresql/data
     healthcheck:
@@ -54,17 +33,12 @@
       interval: 10s
       timeout: 5s
       retries: 5
-      
+  
   recipe.dashboard:
     image: mcr.microsoft.com/dotnet/aspire-dashboard:latest
-    container_name: dashboard
-    ports:
-      - "18888:18888"
-      - "4317:18889"
-  
+
   keycloak:
     image: quay.io/keycloak/keycloak:latest
-    container_name: Keycloak
     command: start-dev
     environment:
       - KC_HEALTH_ENABLED=true
@@ -72,8 +46,6 @@
       - KEYCLOAK_ADMIN_PASSWORD=admin
     volumes:
       - ./.containers/identity:/opt/keycloak/data
-    ports:
-      - "18080:8080"
 
 #  jaeger:
 #    image: jaegertracing/all-in-one:latest

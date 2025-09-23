@@ -83,7 +83,14 @@ public static class ApiExtensions
 
         if (app.Environment.IsDevelopment())
         {
-            app.MapScalarApiReference();
+            app.MapScalarApiReference(options => options
+                .AddPreferredSecuritySchemes("OAuth2")
+                .AddClientCredentialsFlow("OAuth2", flow =>
+                {
+                    flow.ClientId = "service-client-12345";
+                    flow.ClientSecret = "service-secret-67890";
+                    flow.SelectedScopes = ["api.read", "api.write"];
+                }));
         }
 
         //app.UseHttpsRedirection();

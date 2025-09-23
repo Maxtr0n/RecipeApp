@@ -1,0 +1,25 @@
+services:
+  recipe.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Secret12345!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  recipe.database:
+    ports:
+      - "5432:5432"
+
+  keycloak:
+    ports:
+      - "18080:8080"
+
+  recipe.dashboard:
+    ports:
+      - "18888:18888"
+      - "4317:18889"
