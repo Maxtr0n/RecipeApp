@@ -24,9 +24,22 @@ jobs:
         with:
           images: schutzmate/recipeapi
           tags: |
-            type=ref,event=branch
-            type=ref,event=tag
+            # Always tag by commit SHA
             type=sha
+            
+            # Tag release versions (v1.2.3, v1.2, v1)
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            
+            # Tag branch name (only for default branch, e.g., master/main)
+            type=ref,event=branch,enable={{is_default_branch}}
+            
+            # Tag Git tags directly
+            type=ref,event=tag
+          
+            # Assign "latest" on default branch
+            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push
         uses: docker/build-push-action@v5
