@@ -37,13 +37,12 @@ public class RecipesController(IMediator mediator) : ControllerBase
     [TranslateResultToActionResult]
     public async Task<Result<RecipeReadDto>> CreateRecipe([FromBody] RecipeCreateDto dto)
     {
-        var userName = User.Identity?.Name;
-
-        if (string.IsNullOrEmpty(userName))
-        {
-            return Result<RecipeReadDto>.Unauthorized();
-        }
-        
+        // var userName = User.Identity?.Name;
+        //
+        // if (string.IsNullOrEmpty(userName))
+        // {
+        //     return Result<RecipeReadDto>.Unauthorized();
+        // }
 
         return await mediator.Send(new CreateRecipeCommand(dto));
     }

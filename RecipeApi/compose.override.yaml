@@ -10,6 +10,7 @@ services:
       - "5001:8081"
     volumes:
       - ~/.aspnet/https:/https:ro
+    profiles: [ "api" ] # For local dev, Rider runs the API directly, so we don't start it here.
 
   recipe.database:
     ports:

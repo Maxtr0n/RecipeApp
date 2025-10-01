@@ -1,11 +1,12 @@
 ﻿using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
-using Domain.Entities;
 using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.OpenApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using OpenTelemetry.Logs;
+using Microsoft.OpenApi.Models;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -33,7 +34,9 @@ public static class ApiExtensions
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(o =>
             {
+                // In production set to true and use https when communicating with keycloak
                 o.RequireHttpsMetadata = false;
+                o.Authority = configuration["Auth:ValidIssuer"];
                 o.Audience = configuration["Authentication:Audience"];
                 o.MetadataAddress = configuration["Authentication:MetadataAddress"]!;
                 o.TokenValidationParameters = new TokenValidationParameters
@@ -42,7 +45,7 @@ public static class ApiExtensions
                 };
             });
         
-        services.AddAuthorization();
+        services.AddAuthorizationBuilder();
         
         AddOpenTelemetry(services);
 
@@ -83,14 +86,7 @@ public static class ApiExtensions
 
         if (app.Environment.IsDevelopment())
         {
-            app.MapScalarApiReference(options => options
-                .AddPreferredSecuritySchemes("OAuth2")
-                .AddClientCredentialsFlow("OAuth2", flow =>
-                {
-                    flow.ClientId = "service-client-12345";
-                    flow.ClientSecret = "service-secret-67890";
-                    flow.SelectedScopes = ["api.read", "api.write"];
-                }));
+            app.MapScalarApiReference();
         }
 
         //app.UseHttpsRedirection();
