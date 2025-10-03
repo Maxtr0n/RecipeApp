@@ -21,7 +21,7 @@ public class UpdateRecipeCommandHandlerTests
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _recipeRepositoryMock = new Mock<IGenericRepository<Recipe>>();
 
-        _recipe = new Recipe("Test Recipe Title", "Salt;Pepper;", "Description", null, Guid.NewGuid().ToString());
+        _recipe = new Recipe("Test Recipe Title", "Salt;Pepper;", "Description", null, Constants.UserId);
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class UpdateRecipeCommandHandlerTests
             Ingredients = ["Ingredient1;Ingredient2;Ingredient3"]
         };
 
-        var command = new UpdateRecipeCommand(_recipe.Id, dto);
+        var command = new UpdateRecipeCommand(_recipe.Id, dto, Constants.UserId);
         var commandHandler = new UpdateRecipeCommandHandler(_recipeRepositoryMock.Object, _unitOfWorkMock.Object);
 
         //Act
@@ -69,6 +69,6 @@ public class UpdateRecipeCommandHandlerTests
         result.IsSuccess.Should().BeFalse();
         result.Status.Should().Be(ResultStatus.NotFound);
         result.Errors.Count().Should().Be(1);
-        result.Errors.First().Should().Be(Constants.ErrorMessages.RecipeNotFoundErrorMessage);
+        result.Errors.First().Should().Be(ErrorMessages.RecipeNotFoundErrorMessage);
     }
 }

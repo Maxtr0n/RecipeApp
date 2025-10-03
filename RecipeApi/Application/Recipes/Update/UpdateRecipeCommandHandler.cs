@@ -18,7 +18,7 @@ public class UpdateRecipeCommandHandler(IGenericRepository<Recipe> recipeReposit
 
         if (recipeToUpdate == null)
         {
-            return Result.NotFound(Constants.ErrorMessages.RecipeNotFoundErrorMessage);
+            return Result.NotFound(ErrorMessages.RecipeNotFoundErrorMessage);
         }
 
         if (recipeToUpdate.AuthorId != request.UserId)
