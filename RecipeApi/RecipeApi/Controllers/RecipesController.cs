@@ -9,7 +9,6 @@ using Ardalis.Result.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace RecipeApi.Controllers;
 
@@ -36,7 +35,7 @@ public class RecipesController(IMediator mediator) : ControllerBase
     [TranslateResultToActionResult]
     public async Task<Result<RecipeReadDto>> CreateRecipe([FromBody] RecipeCreateDto dto)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = User.FindFirst("sub")?.Value;
 
         if (string.IsNullOrEmpty(userId))
         {
@@ -60,7 +59,7 @@ public class RecipesController(IMediator mediator) : ControllerBase
     public async Task<Result<RecipeReadDto>> UpdateRecipe([FromRoute] Guid id,
         [FromBody] RecipeUpdateDto recipeUpdateDto)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = User.FindFirst("sub")?.Value;
 
         if (string.IsNullOrEmpty(userId))
         {

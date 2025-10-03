@@ -34,6 +34,7 @@ public static class ApiExtensions
                 o.RequireHttpsMetadata = false;
                 o.Authority = configuration["Authentication:ValidIssuer"];
                 o.Audience = configuration["Authentication:Audience"];
+                o.MapInboundClaims = false;
             });
 
         services.AddAuthorizationBuilder();
