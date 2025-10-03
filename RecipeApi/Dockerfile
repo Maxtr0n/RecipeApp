@@ -26,7 +26,11 @@ COPY SharedKernel/SharedKernel.csproj SharedKernel/
 COPY Infrastructure/Infrastructure.csproj Infrastructure/
 
 # Restore dependencies using the solution
-RUN dotnet restore "RecipeApi.sln"
+RUN dotnet restore Application/Application.csproj \
+    && dotnet restore Domain/Domain.csproj \
+    && dotnet restore SharedKernel/SharedKernel.csproj \
+    && dotnet restore Infrastructure/Infrastructure.csproj \
+    && dotnet restore RecipeApi/RecipeApi.csproj
 
 # --- Build Layer ---
 # Copy the rest of the source AFTER restore
