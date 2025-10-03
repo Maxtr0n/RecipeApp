@@ -21,6 +21,11 @@ public class UpdateRecipeCommandHandler(IGenericRepository<Recipe> recipeReposit
             return Result.NotFound(Constants.ErrorMessages.RecipeNotFoundErrorMessage);
         }
 
+        if (recipeToUpdate.AuthorId != request.UserId)
+        {
+            return Result.Forbidden();
+        }
+
         recipeToUpdate.Update(request.RecipeUpdateDto.Title,
             request.RecipeUpdateDto.Ingredients.JoinStrings(),
             request.RecipeUpdateDto.Description,

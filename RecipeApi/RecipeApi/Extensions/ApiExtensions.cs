@@ -1,12 +1,8 @@
 ﻿using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
 using Infrastructure.Persistence;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.OpenApi;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -36,17 +32,12 @@ public static class ApiExtensions
             {
                 // In production set to true and use https when communicating with keycloak
                 o.RequireHttpsMetadata = false;
-                o.Authority = configuration["Auth:ValidIssuer"];
+                o.Authority = configuration["Authentication:ValidIssuer"];
                 o.Audience = configuration["Authentication:Audience"];
-                o.MetadataAddress = configuration["Authentication:MetadataAddress"]!;
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = configuration["Authentication:ValidIssuer"],
-                };
             });
-        
+
         services.AddAuthorizationBuilder();
-        
+
         AddOpenTelemetry(services);
 
         services.AddHealthChecks();
@@ -74,7 +65,7 @@ public static class ApiExtensions
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddEntityFrameworkCoreInstrumentation();
-                
+
                 tracing
                     .AddOtlpExporter();
             });

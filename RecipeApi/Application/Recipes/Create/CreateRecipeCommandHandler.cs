@@ -1,5 +1,7 @@
 ﻿using Application.Common.Abstractions.CQRS;
 using Application.Common.Dtos;
+using Application.Common.Extensions;
+using Application.Common.Mappings;
 using Ardalis.Result;
 using Domain.Abstractions;
 using Domain.Entities;
@@ -18,18 +20,17 @@ public class CreateRecipeCommandHandler(
     public async Task<Result<RecipeReadDto>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Creating recipe");
-        // var recipe = new Recipe(request.RecipeCreateDto.Title,
-        //     request.RecipeCreateDto.Ingredients.JoinStrings(), request.RecipeCreateDto.Description,
-        //     request.RecipeCreateDto.Images.JoinStrings());
-        //
-        // await recipeRepository.AddAsync(recipe);
-        //
-        // await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // return recipe.MapToReadDto();
-        
+        var recipe = new Recipe(request.RecipeCreateDto.Title,
+            request.RecipeCreateDto.Ingredients.JoinStrings(), request.RecipeCreateDto.Description,
+            request.RecipeCreateDto.Images.JoinStrings(), request.UserId);
+
+        await recipeRepository.AddAsync(recipe);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
         logger.LogInformation("Recipe created successfully");
 
-        return new RecipeReadDto();
+        return recipe.MapToReadDto();
     }
 }

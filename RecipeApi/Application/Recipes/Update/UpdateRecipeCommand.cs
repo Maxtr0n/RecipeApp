@@ -4,4 +4,5 @@ using Ardalis.Result;
 
 namespace Application.Recipes.Update;
 
-public record UpdateRecipeCommand(Guid Id, RecipeUpdateDto RecipeUpdateDto) : ICommand<Result<RecipeReadDto>>;
+public record UpdateRecipeCommand(Guid Id, RecipeUpdateDto RecipeUpdateDto, string UserId)
+    : ICommand<Result<RecipeReadDto>>;
