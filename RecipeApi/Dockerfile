@@ -11,14 +11,28 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["RecipeApi/RecipeApi.csproj", "RecipeApi/"]
-COPY ["Application/Application.csproj", "Application/"]
-COPY ["Domain/Domain.csproj", "Domain/"]
-COPY ["SharedKernel/SharedKernel.csproj", "SharedKernel/"]
-COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
-RUN dotnet restore "RecipeApi/RecipeApi.csproj"
+
+# --- Restore Layer ---
+# Copy solution + props files first
+COPY Directory.Build.props .
+COPY Directory.Packages.props .
+COPY RecipeApi.sln .
+
+# Copy only project files (so restore cache is reused unless deps change)
+COPY RecipeApi/RecipeApi.csproj RecipeApi/
+COPY Application/Application.csproj Application/
+COPY Domain/Domain.csproj Domain/
+COPY SharedKernel/SharedKernel.csproj SharedKernel/
+COPY Infrastructure/Infrastructure.csproj Infrastructure/
+
+# Restore dependencies using the solution
+RUN dotnet restore "RecipeApi.sln"
+
+# --- Build Layer ---
+# Copy the rest of the source AFTER restore
 COPY . .
-WORKDIR "/src/RecipeApi"
+
+WORKDIR /src/RecipeApi
 RUN dotnet build "RecipeApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

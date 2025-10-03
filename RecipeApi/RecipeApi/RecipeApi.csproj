@@ -20,10 +20,6 @@
         <PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore"/>
         <PackageReference Include="OpenTelemetry.Instrumentation.Http"/>
         <PackageReference Include="Scalar.AspNetCore"/>
-        <PackageReference Include="SonarAnalyzer.CSharp">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

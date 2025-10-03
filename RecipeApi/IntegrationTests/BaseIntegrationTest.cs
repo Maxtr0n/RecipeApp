@@ -1,10 +1,8 @@
 ﻿using Application.Common.Dtos;
 using Application.Recipes.Create;
 using Domain.Abstractions;
-using Domain.Entities;
 using Infrastructure.Persistence;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IntegrationTests;
@@ -16,7 +14,7 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
     protected readonly ISender Sender;
     protected readonly IUnitOfWork UnitOfWork;
 
-    public BaseIntegrationTest(IntegrationTestWebAppFactory factory)
+    protected BaseIntegrationTest(IntegrationTestWebAppFactory factory)
     {
         _scope = factory.Services.CreateScope();
 

@@ -6,10 +6,8 @@ using Application.Recipes.GetById;
 using Application.Recipes.Update;
 using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RecipeApi.Controllers;
