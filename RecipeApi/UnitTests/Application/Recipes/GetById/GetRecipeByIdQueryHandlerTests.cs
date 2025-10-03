@@ -17,7 +17,7 @@ public class GetRecipeByIdQueryHandlerTests
     {
         _recipeRepositoryMock = new Mock<IGenericRepository<Recipe>>();
 
-        _recipe = new Recipe("Test Recipe Title", "Salt;Pepper;", "Description", null, Guid.NewGuid().ToString());
+        _recipe = new Recipe("Test Recipe Title", "Salt;Pepper;", "Description", null, Constants.UserId);
     }
 
     [Fact]
@@ -56,6 +56,6 @@ public class GetRecipeByIdQueryHandlerTests
         result.IsSuccess.Should().BeFalse();
         result.Status.Should().Be(ResultStatus.NotFound);
         result.Errors.Count().Should().Be(1);
-        result.Errors.First().Should().Be(Constants.ErrorMessages.RecipeNotFoundErrorMessage);
+        result.Errors.First().Should().Be(ErrorMessages.RecipeNotFoundErrorMessage);
     }
 }

@@ -12,7 +12,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
 {
     private readonly PostgreSqlContainer _dbContainer =
         new PostgreSqlBuilder()
-            .WithImage("postgres:17-alpine")
+            .WithImage("postgres:18-alpine")
             .Build();
 
     public Task InitializeAsync()

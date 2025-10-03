@@ -1,6 +1,5 @@
 ﻿using Application.Common.Dtos;
 using Application.Recipes.Create;
-using Domain.Entities;
 using FluentAssertions;
 
 namespace IntegrationTests.Recipes;
@@ -19,7 +18,7 @@ public class CreateRecipeTest(IntegrationTestWebAppFactory factory) : BaseIntegr
             Images = []
         };
 
-        var command = new CreateRecipeCommand(dto);
+        var command = new CreateRecipeCommand(dto, Constants.UserId);
 
         // Act
         var result = await Sender.Send(command);

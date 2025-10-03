@@ -5,8 +5,9 @@ using Application.Common.Mappings;
 using Ardalis.Result;
 using Domain.Abstractions;
 using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Application.Recipes.Create;
 
@@ -19,18 +20,17 @@ public class CreateRecipeCommandHandler(
     public async Task<Result<RecipeReadDto>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Creating recipe");
-        // var recipe = new Recipe(request.RecipeCreateDto.Title,
-        //     request.RecipeCreateDto.Ingredients.JoinStrings(), request.RecipeCreateDto.Description,
-        //     request.RecipeCreateDto.Images.JoinStrings());
-        //
-        // await recipeRepository.AddAsync(recipe);
-        //
-        // await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // return recipe.MapToReadDto();
-        
+        var recipe = new Recipe(request.RecipeCreateDto.Title,
+            request.RecipeCreateDto.Ingredients.JoinStrings(), request.RecipeCreateDto.Description,
+            request.RecipeCreateDto.Images.JoinStrings(), request.UserId);
+
+        await recipeRepository.AddAsync(recipe);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
         logger.LogInformation("Recipe created successfully");
 
-        return new RecipeReadDto();
+        return recipe.MapToReadDto();
     }
 }

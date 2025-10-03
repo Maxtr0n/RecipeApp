@@ -7,7 +7,7 @@ namespace IntegrationTests.Recipes;
 public class UpdateRecipeTest(IntegrationTestWebAppFactory factory) : BaseIntegrationTest(factory)
 {
     [Fact]
-    public async Task Delete_Should_Remove_Recipe_From_Database()
+    public async Task Update_Should_Update_Recipe_In_Database()
     {
         // Arrange
         var recipeId = await CreateUserAndRecipeForTesting();
@@ -20,7 +20,7 @@ public class UpdateRecipeTest(IntegrationTestWebAppFactory factory) : BaseIntegr
             Images = ["Images 1, Images 2, Images 3"]
         };
 
-        var updateCommand = new UpdateRecipeCommand(recipeId, updateRecipeDto);
+        var updateCommand = new UpdateRecipeCommand(recipeId, updateRecipeDto, Constants.UserId);
 
         // Act
         var result = await Sender.Send(updateCommand);

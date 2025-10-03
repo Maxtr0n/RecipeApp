@@ -1,10 +1,8 @@
 ﻿using Application.Common.Dtos;
 using Application.Recipes.Create;
 using Domain.Abstractions;
-using Domain.Entities;
 using Infrastructure.Persistence;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IntegrationTests;
@@ -16,7 +14,7 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
     protected readonly ISender Sender;
     protected readonly IUnitOfWork UnitOfWork;
 
-    public BaseIntegrationTest(IntegrationTestWebAppFactory factory)
+    protected BaseIntegrationTest(IntegrationTestWebAppFactory factory)
     {
         _scope = factory.Services.CreateScope();
 
@@ -40,10 +38,9 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
             Ingredients = ["Ingredient 1, Ingredient 2, Ingredient 3"],
             Images = []
         };
-        
-        var createCommand = new CreateRecipeCommand(createRecipeDto);
-        var createRecipeResult = await Sender.Send(createCommand);
 
+        var createCommand = new CreateRecipeCommand(createRecipeDto, Constants.UserId);
+        var createRecipeResult = await Sender.Send(createCommand);
 
         if (!createRecipeResult.IsSuccess || createRecipeResult == null)
         {
@@ -73,7 +70,7 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
             Images = []
         };
 
-        var createCommand = new CreateRecipeCommand(dto1);
+        var createCommand = new CreateRecipeCommand(dto1, Constants.UserId);
         var createRecipeResult = await Sender.Send(createCommand);
 
         if (!createRecipeResult.IsSuccess || createRecipeResult == null)
@@ -83,7 +80,7 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
 
         var firstRecipeId = createRecipeResult.Value.Id;
 
-        createCommand = new CreateRecipeCommand(dto2);
+        createCommand = new CreateRecipeCommand(dto2, Constants.UserId);
         createRecipeResult = await Sender.Send(createCommand);
 
         if (!createRecipeResult.IsSuccess || createRecipeResult == null)

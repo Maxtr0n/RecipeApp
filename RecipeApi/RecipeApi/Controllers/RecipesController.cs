@@ -6,10 +6,8 @@ using Application.Recipes.GetById;
 using Application.Recipes.Update;
 using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RecipeApi.Controllers;
@@ -37,15 +35,14 @@ public class RecipesController(IMediator mediator) : ControllerBase
     [TranslateResultToActionResult]
     public async Task<Result<RecipeReadDto>> CreateRecipe([FromBody] RecipeCreateDto dto)
     {
-        var userName = User.Identity?.Name;
+        var userId = User.FindFirst("sub")?.Value;
 
-        if (string.IsNullOrEmpty(userName))
+        if (string.IsNullOrEmpty(userId))
         {
             return Result<RecipeReadDto>.Unauthorized();
         }
-        
 
-        return await mediator.Send(new CreateRecipeCommand(dto));
+        return await mediator.Send(new CreateRecipeCommand(dto, userId));
     }
 
     [HttpDelete("{id}")]
@@ -62,6 +59,13 @@ public class RecipesController(IMediator mediator) : ControllerBase
     public async Task<Result<RecipeReadDto>> UpdateRecipe([FromRoute] Guid id,
         [FromBody] RecipeUpdateDto recipeUpdateDto)
     {
-        return await mediator.Send(new UpdateRecipeCommand(id, recipeUpdateDto));
+        var userId = User.FindFirst("sub")?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Result<RecipeReadDto>.Unauthorized();
+        }
+
+        return await mediator.Send(new UpdateRecipeCommand(id, recipeUpdateDto, userId));
     }
 }

@@ -10,9 +10,10 @@ namespace UnitTests.Application.Recipes.Create;
 
 public class CreateRecipeCommandHandlerTests
 {
+    private readonly Mock<ILogger<CreateRecipeCommandHandler>> _loggerMock;
     private readonly Mock<IGenericRepository<Recipe>> _recipeRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly Mock<ILogger<CreateRecipeCommandHandler>> _loggerMock;
+
     public CreateRecipeCommandHandlerTests()
     {
         _unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -32,7 +33,7 @@ public class CreateRecipeCommandHandlerTests
             Description = "Recipe Description"
         };
 
-        var command = new CreateRecipeCommand(dto);
+        var command = new CreateRecipeCommand(dto, Constants.UserId);
         var handler =
             new CreateRecipeCommandHandler(
                 _recipeRepositoryMock.Object,
@@ -40,7 +41,7 @@ public class CreateRecipeCommandHandlerTests
                 _loggerMock.Object);
 
         // Act
-        var result = await handler.Handle(command, default);
+        var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
