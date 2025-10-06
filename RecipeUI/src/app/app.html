@@ -1,3 +1,12 @@
 <h1 class="text-3xl font-bold underline">
     Hello world!
 </h1>
+@if (authenticated().isAuthenticated) {
+<div class="user-info">
+    <p>Welcome, {{ userData().userData?.name || userData().userData?.preferred_username }}</p>
+    <p>Email: {{ userData().userData?.email }}</p>
+    <button (click)="logout()">Logout</button>
+</div>
+} @else {
+<button (click)="login()">Login</button>
+}

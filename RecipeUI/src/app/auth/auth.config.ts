@@ -6,7 +6,7 @@ export const authConfig: PassedInitialConfig = {
         redirectUrl: window.location.origin,
         postLogoutRedirectUri: window.location.origin,
         clientId: 'recipe-frontend',
-        scope: 'recipe-api.all ', // 'openid profile offline_access ' + your scopes
+        scope: 'openid profile offline_access recipe-api.all ', // 'openid profile offline_access ' + your scopes
         responseType: 'code',
         silentRenew: true,
         useRefreshToken: true,
