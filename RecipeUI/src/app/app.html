@@ -1,12 +1,21 @@
-<h1 class="text-3xl font-bold underline">
-    Hello world!
-</h1>
+<om-starry-sky [shootingStarsConfig]="{ minDelay: 500, maxDelay: 3000 }"
+    [starsBackgroundConfig]="{ starDensity: 0.0015 }">
+    <div class="content">
+        <h1>
+            A legjobb receptek a galaxisban
+        </h1>
+    </div>
+</om-starry-sky>
+
 @if (authenticated().isAuthenticated) {
 <div class="user-info">
     <p>Welcome, {{ userData().userData?.name || userData().userData?.preferred_username }}</p>
     <p>Email: {{ userData().userData?.email }}</p>
-    <button (click)="logout()">Logout</button>
+    <p>Access token: {{ oidcSecurityService.getAccessToken() | async }}</p>
+    <p>Id token: {{ oidcSecurityService.getIdToken() | async }}</p>
+    <p>Refresh token: {{ oidcSecurityService.getRefreshToken() | async }}</p>
+    <p-button (click)="logout()">Logout</p-button>
 </div>
 } @else {
-<button (click)="login()">Login</button>
+<p-button (click)="login()">Login</p-button>
 }

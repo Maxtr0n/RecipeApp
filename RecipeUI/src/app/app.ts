@@ -1,15 +1,18 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit, Signal, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthenticatedResult, OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
+import { ButtonModule } from 'primeng/button';
+import { NgxStarrySkyComponent } from '@omnedia/ngx-starry-sky';
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet],
+    imports: [RouterOutlet, AsyncPipe, ButtonModule, NgxStarrySkyComponent],
     templateUrl: './app.html',
     styleUrl: './app.scss'
 })
 export class App implements OnInit {
-    private readonly oidcSecurityService = inject(OidcSecurityService);
+    protected readonly oidcSecurityService = inject(OidcSecurityService);
     protected readonly title = signal('RecipeUI');
     authenticated: Signal<AuthenticatedResult> = this.oidcSecurityService.authenticated;
     userData: Signal<UserDataResult> = this.oidcSecurityService.userData;
