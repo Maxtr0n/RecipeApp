@@ -13,9 +13,9 @@ public class CreateRecipeTest(IntegrationTestWebAppFactory factory) : BaseIntegr
         var dto = new RecipeCreateDto
         {
             Title = "My Recipe",
-            Description = "My Recipe Description",
+            Instructions = "My Recipe Description",
             Ingredients = ["Ingredient 1, Ingredient 2, Ingredient 3"],
-            Images = []
+            ImageUrls = []
         };
 
         var command = new CreateRecipeCommand(dto, Constants.UserId);
@@ -29,6 +29,6 @@ public class CreateRecipeTest(IntegrationTestWebAppFactory factory) : BaseIntegr
         var recipe = DbContext.Recipes.FirstOrDefault(r => r.Id == result.Value.Id);
         recipe.Should().NotBeNull();
         recipe.Title.Should().Be(dto.Title);
-        recipe.Description.Should().Be(dto.Description);
+        recipe.Instructions.Should().Be(dto.Instructions);
     }
 }

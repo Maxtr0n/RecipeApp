@@ -28,8 +28,12 @@ public class UpdateRecipeCommandHandler(IGenericRepository<Recipe> recipeReposit
 
         recipeToUpdate.Update(request.RecipeUpdateDto.Title,
             request.RecipeUpdateDto.Ingredients.JoinStrings(),
+            request.RecipeUpdateDto.Instructions,
             request.RecipeUpdateDto.Description,
-            request.RecipeUpdateDto.Images.JoinStrings());
+            request.RecipeUpdateDto.PreparationTimeInMinutes,
+            request.RecipeUpdateDto.CookingTimeInMinutes,
+            request.RecipeUpdateDto.Servings,
+            request.RecipeUpdateDto.ImageUrls.JoinStrings());
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

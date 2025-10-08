@@ -12,10 +12,14 @@ public static class RecipeMappings
         {
             Id = recipe.Id,
             Title = recipe.Title,
-            Description = recipe.Description,
-            AuthorId = recipe.AuthorId.ToString(),
+            Instructions = recipe.Instructions,
+            AuthorId = recipe.AuthorId,
             Ingredients = recipe.Ingredients.SplitStrings().ToList(),
-            Images = recipe.Images.SplitStrings().ToList()
+            Description = recipe.Description,
+            PreparationTimeInMinutes = recipe.PreparationTimeInMinutes,
+            CookingTimeInMinutes = recipe.CookingTimeInMinutes,
+            Servings = recipe.Servings,
+            Images = recipe.ImageUrls.SplitStrings().ToList()
         };
     }
 
@@ -25,15 +29,7 @@ public static class RecipeMappings
 
         foreach (var recipe in recipes)
         {
-            recipeReadDtos.Add(new RecipeReadDto
-            {
-                Id = recipe.Id,
-                Title = recipe.Title,
-                Description = recipe.Description,
-                AuthorId = recipe.AuthorId.ToString(),
-                Ingredients = recipe.Ingredients.SplitStrings().ToList(),
-                Images = recipe.Images.SplitStrings().ToList()
-            });
+            recipeReadDtos.Add(MapToReadDto(recipe));
         }
 
         return recipeReadDtos;

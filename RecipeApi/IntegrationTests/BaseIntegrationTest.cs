@@ -34,9 +34,9 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
         var createRecipeDto = new RecipeCreateDto
         {
             Title = "My Recipe",
-            Description = "My Recipe Description",
+            Instructions = "My Recipe Description",
             Ingredients = ["Ingredient 1, Ingredient 2, Ingredient 3"],
-            Images = []
+            ImageUrls = []
         };
 
         var createCommand = new CreateRecipeCommand(createRecipeDto, Constants.UserId);
@@ -57,17 +57,17 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
         var dto1 = new RecipeCreateDto
         {
             Title = "My Recipe",
-            Description = "My Recipe Description",
+            Instructions = "My Recipe Description",
             Ingredients = ["Ingredient 1, Ingredient 2, Ingredient 3"],
-            Images = []
+            ImageUrls = []
         };
 
         var dto2 = new RecipeCreateDto
         {
             Title = "My Recipe 2",
-            Description = "My Recipe Description 2",
+            Instructions = "My Recipe Description 2",
             Ingredients = ["Ingredient 1, Ingredient 2, Ingredient 3"],
-            Images = []
+            ImageUrls = []
         };
 
         var createCommand = new CreateRecipeCommand(dto1, Constants.UserId);

@@ -29,8 +29,8 @@ public class CreateRecipeCommandHandlerTests
         {
             Title = "Recipe Title",
             Ingredients = ["Ingredient1", "Ingredient2"],
-            Images = [],
-            Description = "Recipe Description"
+            ImageUrls = [],
+            Instructions = "Recipe Description"
         };
 
         var command = new CreateRecipeCommand(dto, Constants.UserId);
@@ -49,6 +49,13 @@ public class CreateRecipeCommandHandlerTests
         result.Value.Id.Should().NotBeEmpty();
         result.Value.Title.Should().Be(dto.Title);
         result.Value.Ingredients.Should().Contain(dto.Ingredients);
+        result.Value.Instructions.Should().Be(dto.Instructions);
+        result.Value.Ingredients.Count.Should().Be(2);
+        result.Value.Ingredients[0].Should().Be("Ingredient1");
+        result.Value.Ingredients[1].Should().Be("Ingredient2");
         result.Value.Description.Should().Be(dto.Description);
+        result.Value.CookingTimeInMinutes.Should().Be(dto.CookingTimeInMinutes);
+        result.Value.PreparationTimeInMinutes.Should().Be(dto.PreparationTimeInMinutes);
+        result.Value.Servings.Should().Be(dto.Servings);
     }
 }

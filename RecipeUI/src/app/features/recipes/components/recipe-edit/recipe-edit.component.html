@@ -1,0 +1,97 @@
+@if (error()) {
+<div class="alert alert-danger" role="alert">
+    {{ error() }}
+</div>
+}
+@if (loading()) {
+<div>Loading...</div>
+} @else {
+<div class="max-w-4xl mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-6">{{ isEdit() ? 'Edit' : 'Create' }} Recipe</h1>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div>
+            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+            <input type="text" id="title" formControlName="title"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            @if (form.get('title')?.errors?.['required'] && form.get('title')?.touched) {
+            <p class="text-red-500 text-sm">Title is required</p>
+            }
+        </div>
+
+        <div>
+            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+            <textarea id="description" formControlName="description" rows="3"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+            @if (form.get('description')?.errors?.['required'] && form.get('description')?.touched) {
+            <p class="text-red-500 text-sm">Description is required</p>
+            }
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+            <div>
+                <label for="preparationTime" class="block text-sm font-medium text-gray-700">
+                    Preparation Time (min)
+                </label>
+                <input type="number" id="preparationTime" formControlName="preparationTime"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            </div>
+
+            <div>
+                <label for="cookingTime" class="block text-sm font-medium text-gray-700">
+                    Cooking Time (min)
+                </label>
+                <input type="number" id="cookingTime" formControlName="cookingTime"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            </div>
+
+            <div>
+                <label for="servings" class="block text-sm font-medium text-gray-700">Servings</label>
+                <input type="number" id="servings" formControlName="servings"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            </div>
+        </div>
+
+        <div formArrayName="imageUrls">
+            <label class="block text-sm font-medium text-gray-700">Image URLs</label>
+            @for (imageUrl of imageUrls.controls; track $index) {
+            <div class="flex gap-2 mt-2">
+                <input type="url" [formControlName]="$index" class="block w-full rounded-md border-gray-300 shadow-sm">
+                <button type="button" (click)="removeImageUrl($index)" class="btn btn-danger">Remove</button>
+            </div>
+            }
+            <button type="button" (click)="addImageUrl()" class="btn btn-secondary mt-2">Add Image URL</button>
+        </div>
+
+        <div formArrayName="ingredients">
+            <label class="block text-sm font-medium text-gray-700">Ingredients</label>
+            @for (ingredient of ingredients.controls; track $index) {
+            <div class="flex gap-2 mt-2">
+                <input type="text" [formControlName]="$index" class="block w-full rounded-md border-gray-300 shadow-sm">
+                <button type="button" (click)="removeIngredient($index)" class="btn btn-danger">Remove</button>
+            </div>
+            }
+            <button type="button" (click)="addIngredient()" class="btn btn-secondary mt-2">Add Ingredient</button>
+        </div>
+
+        <div formArrayName="instructions">
+            <label class="block text-sm font-medium text-gray-700">Instructions</label>
+            @for (instruction of instructions.controls; track $index) {
+            <div class="flex gap-2 mt-2">
+                <textarea [formControlName]="$index" rows="2"
+                    class="block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+                <button type="button" (click)="removeInstruction($index)" class="btn btn-danger">Remove</button>
+            </div>
+            }
+            <button type="button" (click)="addInstruction()" class="btn btn-secondary mt-2">Add Instruction</button>
+        </div>
+
+        <div class="flex gap-2">
+            <button type="button" (click)="cancel()" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+                {{ isEdit() ? 'Update' : 'Create' }} Recipe
+            </button>
+        </div>
+    </form>
+</div>
+}

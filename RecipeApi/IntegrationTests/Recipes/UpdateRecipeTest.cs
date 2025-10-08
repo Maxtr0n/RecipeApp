@@ -15,9 +15,9 @@ public class UpdateRecipeTest(IntegrationTestWebAppFactory factory) : BaseIntegr
         var updateRecipeDto = new RecipeUpdateDto
         {
             Title = "My New Title",
-            Description = "My New Description",
+            Instructions = "My New Instructions",
             Ingredients = ["Ingredient 4, Ingredient 5, Ingredient 6"],
-            Images = ["Images 1, Images 2, Images 3"]
+            ImageUrls = ["Images 1, Images 2, Images 3"]
         };
 
         var updateCommand = new UpdateRecipeCommand(recipeId, updateRecipeDto, Constants.UserId);

@@ -6,7 +6,15 @@ public class RecipeCreateDto
 
     public List<string> Ingredients { get; set; } = [];
 
-    public required string Description { get; set; }
+    public required string Instructions { get; set; }
 
-    public List<string> Images { get; set; } = [];
+    public string Description { get; set; } = null!;
+
+    public int Servings { get; set; }
+
+    public int CookingTimeInMinutes { get; set; }
+
+    public int PreparationTimeInMinutes { get; set; }
+
+    public List<string> ImageUrls { get; set; } = [];
 }
