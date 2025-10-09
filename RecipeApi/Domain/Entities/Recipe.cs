@@ -31,8 +31,6 @@ public class Recipe : Entity, IAggregateRoot
         AuthorId = authorId;
     }
 
-    protected Recipe() : base(Guid.NewGuid()) { } // For EF Core
-
     public string Title { get; private set; }
 
     public string Ingredients { get; private set; }
@@ -49,7 +47,7 @@ public class Recipe : Entity, IAggregateRoot
 
     public string? ImageUrls { get; private set; }
 
-    public string AuthorId { get; }
+    public string AuthorId { get; private set; }
 
     private static void GuardAgainstInvalidInput(string title, string ingredients, string instructions,
         int preparationTimeInMinutes, int cookingTimeInMinutes, int servings, string authorId)
@@ -92,5 +90,11 @@ public class Recipe : Entity, IAggregateRoot
         PreparationTimeInMinutes = preparationTimeInMinutes;
         CookingTimeInMinutes = cookingTimeInMinutes;
         Servings = servings;
+    }
+
+    public void UpdateAuthor(string authorId)
+    {
+        Guard.Against.NullOrEmpty(authorId);
+        AuthorId = authorId;
     }
 }

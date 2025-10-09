@@ -1,6 +1,7 @@
 ﻿using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
 using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
@@ -38,6 +39,7 @@ public static class ApiExtensions
             });
 
         services.AddAuthorizationBuilder();
+        services.AddTransient<IClaimsTransformation, OidcClaimsTransformation>();
 
         AddOpenTelemetry(services);
 

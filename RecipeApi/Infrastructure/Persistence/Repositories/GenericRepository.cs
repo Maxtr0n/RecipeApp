@@ -47,4 +47,10 @@ public class GenericRepository<T>(RecipeDbContext context) : IGenericRepository<
 
         _dbSet.Remove(entityToDelete);
     }
+
+    public async Task DeleteAllAsync()
+    {
+        var allRecipes = await _dbSet.ToListAsync();
+        _dbSet.RemoveRange(allRecipes);
+    }
 }

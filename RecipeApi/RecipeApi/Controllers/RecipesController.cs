@@ -1,6 +1,7 @@
 ﻿using Application.Common.Dtos;
 using Application.Recipes.Create;
 using Application.Recipes.Delete;
+using Application.Recipes.DeleteAll;
 using Application.Recipes.GetAll;
 using Application.Recipes.GetById;
 using Application.Recipes.Update;
@@ -67,5 +68,13 @@ public class RecipesController(IMediator mediator) : ControllerBase
         }
 
         return await mediator.Send(new UpdateRecipeCommand(id, recipeUpdateDto, userId));
+    }
+
+    [HttpDelete]
+    [Authorize(Roles = "admin")]
+    [TranslateResultToActionResult]
+    public async Task<Result> DeleteAll()
+    {
+        return await mediator.Send(new DeleteAllRecipesCommand());
     }
 }
