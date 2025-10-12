@@ -21,9 +21,16 @@ public class UpdateRecipeCommandHandlerTests
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _recipeRepositoryMock = new Mock<IGenericRepository<Recipe>>();
 
-        _recipe = new Recipe("Test Recipe Title", "Salt;Pepper;", "Instructions",
-            "Description", 20, 10, 4, null,
-            Constants.UserId);
+        _recipe = new Recipe(
+            Constants.RecipeTitle,
+            Constants.RecipeIngredients,
+            Constants.RecipeInstructions,
+            Constants.RecipePrepTime,
+            Constants.RecipeCookingTime,
+            Constants.RecipeServings,
+            Constants.UserId,
+            Constants.RecipeDescription,
+            Constants.RecipeImageUrls);
     }
 
     [Fact]
@@ -34,13 +41,14 @@ public class UpdateRecipeCommandHandlerTests
 
         var dto = new RecipeUpdateDto
         {
-            Title = "New Title",
-            Instructions = "New Instructions",
-            Ingredients = ["Ingredient1;Ingredient2;Ingredient3"],
-            Description = "New Description",
-            PreparationTimeInMinutes = 30,
-            CookingTimeInMinutes = 20,
-            Servings = 5
+            Title = Constants.UpdatedRecipeTitle,
+            Instructions = Constants.UpdatedRecipeInstructions,
+            Ingredients = Constants.UpdatedRecipeIngredients,
+            Description = Constants.UpdatedRecipeDescription,
+            PreparationTimeInMinutes = Constants.UpdatedRecipePrepTime,
+            CookingTimeInMinutes = Constants.UpdatedRecipeCookingTime,
+            Servings = Constants.UpdatedRecipeServings,
+            ImageUrls = Constants.UpdatedRecipeImageUrls
         };
 
         var command = new UpdateRecipeCommand(_recipe.Id, dto, Constants.UserId);
@@ -51,17 +59,22 @@ public class UpdateRecipeCommandHandlerTests
 
         //Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Id.Should().Be(_recipe.Id);
-        result.Value.Title.Should().Be("New Title");
-        result.Value.Instructions.Should().Be("New Instructions");
-        result.Value.Ingredients.Count.Should().Be(3);
-        result.Value.Ingredients[0].Should().Be("Ingredient1");
-        result.Value.Ingredients[1].Should().Be("Ingredient2");
-        result.Value.Ingredients[2].Should().Be("Ingredient3");
-        result.Value.Description.Should().Be("New Description");
-        result.Value.PreparationTimeInMinutes.Should().Be(30);
-        result.Value.CookingTimeInMinutes.Should().Be(20);
-        result.Value.Servings.Should().Be(5);
+        var recipeResult = result.Value;
+        recipeResult.Should().NotBeNull();
+        recipeResult.Title.Should().Be(Constants.UpdatedRecipeTitle);
+        recipeResult.Description.Should().Be(Constants.UpdatedRecipeDescription);
+        recipeResult.Instructions.Should().Be(Constants.UpdatedRecipeInstructions);
+        recipeResult.Servings.Should().Be(Constants.UpdatedRecipeServings);
+        recipeResult.CookingTimeInMinutes.Should().Be(Constants.UpdatedRecipeCookingTime);
+        recipeResult.PreparationTimeInMinutes.Should().Be(Constants.UpdatedRecipePrepTime);
+        recipeResult.Images.Should().BeEquivalentTo(Constants.UpdatedRecipeImageUrls);
+        recipeResult.Ingredients.Should().HaveCount(Constants.UpdatedRecipeIngredients.Count);
+        recipeResult.Ingredients[0].Name.Should().Be(Constants.UpdatedRecipeIngredients[0].Name);
+        recipeResult.Ingredients[0].Quantity.Amount.Should().Be(Constants.UpdatedRecipeIngredients[0].Quantity.Amount);
+        recipeResult.Ingredients[0].Quantity.Unit.Should().Be(Constants.UpdatedRecipeIngredients[0].Quantity.Unit);
+        recipeResult.Ingredients[1].Name.Should().Be(Constants.UpdatedRecipeIngredients[1].Name);
+        recipeResult.Ingredients[1].Quantity.Amount.Should().Be(Constants.UpdatedRecipeIngredients[1].Quantity.Amount);
+        recipeResult.Ingredients[1].Quantity.Unit.Should().Be(Constants.UpdatedRecipeIngredients[1].Quantity.Unit);
     }
 
     [Fact]

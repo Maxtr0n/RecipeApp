@@ -4,7 +4,7 @@ public class RecipeCreateDto
 {
     public string Title { get; set; } = default!;
 
-    public List<string> Ingredients { get; set; } = [];
+    public List<IngredientCreateDto> Ingredients { get; set; } = [];
 
     public required string Instructions { get; set; }
 

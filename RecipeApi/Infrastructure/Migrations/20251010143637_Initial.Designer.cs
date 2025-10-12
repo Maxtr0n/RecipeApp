@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RecipeDbContext))]
-    [Migration("20251009134823_Initial")]
+    [Migration("20251010143637_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -47,10 +47,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("ImageUrls")
                         .HasColumnType("text");
 
-                    b.Property<string>("Ingredients")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Instructions")
                         .IsRequired()
                         .HasColumnType("text");
@@ -71,6 +67,55 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Recipes");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Recipe", b =>
+                {
+                    b.OwnsMany("Domain.ValueObjects.Ingredient", "Ingredients", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer");
+
+                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
+
+                            b1.Property<Guid>("RecipeId")
+                                .HasColumnType("uuid");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("RecipeId");
+
+                            b1.ToTable("RecipeIngredients", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("RecipeId");
+
+                            b1.OwnsOne("Domain.ValueObjects.Quantity", "Quantity", b2 =>
+                                {
+                                    b2.Property<int>("IngredientId")
+                                        .HasColumnType("integer");
+
+                                    b2.Property<double>("Amount")
+                                        .HasColumnType("double precision");
+
+                                    b2.Property<string>("Unit")
+                                        .IsRequired()
+                                        .HasColumnType("text");
+
+                                    b2.HasKey("IngredientId");
+
+                                    b2.ToTable("RecipeIngredients");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("IngredientId");
+                                });
+
+                            b1.Navigation("Quantity")
+                                .IsRequired();
+                        });
+
+                    b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618
         }

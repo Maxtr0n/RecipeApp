@@ -1,27 +1,34 @@
 ﻿using Ardalis.GuardClauses;
 using Domain.Abstractions;
+using Domain.ValueObjects;
 using SharedKernel;
 
 namespace Domain.Entities;
 
 public class Recipe : Entity, IAggregateRoot
 {
+    private readonly List<Ingredient> _ingredients = [];
+
+    protected Recipe() : base(Guid.NewGuid())
+    {
+    }
+
     public Recipe(
         string title,
-        string ingredients,
+        IReadOnlyCollection<Ingredient> ingredients,
         string instructions,
-        string description,
         int preparationTimeInMinutes,
         int cookingTimeInMinutes,
         int servings,
-        string? imageUrls,
-        string authorId
+        string authorId,
+        string? description = null,
+        string? imageUrls = null
     ) : base(Guid.NewGuid())
     {
         GuardAgainstInvalidInput(title, ingredients, instructions, preparationTimeInMinutes, cookingTimeInMinutes,
             servings, authorId);
         Title = title;
-        Ingredients = ingredients;
+        _ingredients.AddRange(ingredients);
         Instructions = instructions;
         Description = description;
         PreparationTimeInMinutes = preparationTimeInMinutes;
@@ -33,7 +40,7 @@ public class Recipe : Entity, IAggregateRoot
 
     public string Title { get; private set; }
 
-    public string Ingredients { get; private set; }
+    public IReadOnlyCollection<Ingredient> Ingredients => _ingredients.AsReadOnly();
 
     public string Instructions { get; private set; }
 
@@ -49,7 +56,8 @@ public class Recipe : Entity, IAggregateRoot
 
     public string AuthorId { get; private set; }
 
-    private static void GuardAgainstInvalidInput(string title, string ingredients, string instructions,
+    private static void GuardAgainstInvalidInput(string title, IReadOnlyCollection<Ingredient> ingredients,
+        string instructions,
         int preparationTimeInMinutes, int cookingTimeInMinutes, int servings, string authorId)
     {
         Guard.Against.NullOrEmpty(title);
@@ -71,25 +79,27 @@ public class Recipe : Entity, IAggregateRoot
 
     public void Update(
         string title,
-        string ingredients,
+        IReadOnlyCollection<Ingredient> ingredients,
         string instructions,
-        string description,
         int preparationTimeInMinutes,
         int cookingTimeInMinutes,
         int servings,
-        string? imageUrls)
+        string? description = null,
+        string? imageUrls = null)
     {
         GuardAgainstInvalidInput(title, ingredients, instructions, preparationTimeInMinutes, cookingTimeInMinutes,
             servings, AuthorId);
 
         Title = title;
-        Ingredients = ingredients;
         Instructions = instructions;
         ImageUrls = imageUrls;
         Description = description;
         PreparationTimeInMinutes = preparationTimeInMinutes;
         CookingTimeInMinutes = cookingTimeInMinutes;
         Servings = servings;
+
+        _ingredients.Clear();
+        _ingredients.AddRange(ingredients);
     }
 
     public void UpdateAuthor(string authorId)

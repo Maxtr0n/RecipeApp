@@ -1,6 +1,5 @@
 ﻿using Application.Common.Abstractions.CQRS;
 using Application.Common.Dtos;
-using Application.Common.Extensions;
 using Application.Common.Mappings;
 using Ardalis.Result;
 using Domain.Abstractions;
@@ -19,14 +18,7 @@ public class CreateRecipeCommandHandler(
     {
         logger.LogInformation("Creating recipe");
 
-        var recipe = new Recipe(request.RecipeCreateDto.Title,
-            request.RecipeCreateDto.Ingredients.JoinStrings(),
-            request.RecipeCreateDto.Instructions,
-            request.RecipeCreateDto.Description,
-            request.RecipeCreateDto.PreparationTimeInMinutes,
-            request.RecipeCreateDto.CookingTimeInMinutes,
-            request.RecipeCreateDto.Servings,
-            request.RecipeCreateDto.ImageUrls.JoinStrings(), request.UserId);
+        var recipe = request.RecipeCreateDto.MapToEntity(request.UserId);
 
         await recipeRepository.AddAsync(recipe);
 

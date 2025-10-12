@@ -2,11 +2,11 @@
 
 public class RecipeUpdateDto
 {
-    public string Title { get; set; } = null!;
+    public string Title { get; set; } = default!;
 
-    public List<string> Ingredients { get; set; } = [];
+    public List<IngredientCreateDto> Ingredients { get; set; } = [];
 
-    public string Instructions { get; set; } = null!;
+    public required string Instructions { get; set; }
 
     public string Description { get; set; } = null!;
 

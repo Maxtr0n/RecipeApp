@@ -5,7 +5,7 @@ export interface Recipe {
     ingredients: string[];
     instructions: string[];
     preparationTime: number;
-    cookingTime: number;
+    cookingTimeInMinutes: number;
     servings: number;
     imageUrls: string[];
     createdAt: Date;

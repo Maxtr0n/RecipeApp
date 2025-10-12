@@ -6,7 +6,7 @@ public class RecipeReadDto
 
     public string Title { get; set; } = default!;
 
-    public List<string> Ingredients { get; set; } = [];
+    public List<IngredientReadDto> Ingredients { get; set; } = [];
 
     public string Instructions { get; set; } = default!;
 

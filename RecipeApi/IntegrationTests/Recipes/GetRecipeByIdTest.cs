@@ -9,9 +9,10 @@ public class GetRecipeByIdTest(IntegrationTestWebAppFactory factory) : BaseInteg
     public async Task GetById_Should_Return_Correct_Recipe_From_Database()
     {
         // Arrange
-        var recipeIds = await CreateUserAndTwoRecipesForTesting();
-        var getFirstRecipeByIdQuery = new GetRecipeByIdQuery(recipeIds[0]);
-        var getSecondRecipeByIdQuery = new GetRecipeByIdQuery(recipeIds[1]);
+        var recipeIds = await CreateRecipesForTesting();
+        var recipeIdList = recipeIds.ToList();
+        var getFirstRecipeByIdQuery = new GetRecipeByIdQuery(recipeIdList[0]);
+        var getSecondRecipeByIdQuery = new GetRecipeByIdQuery(recipeIdList[1]);
 
         // Act
         var firstResult = await Sender.Send(getFirstRecipeByIdQuery);
@@ -19,11 +20,11 @@ public class GetRecipeByIdTest(IntegrationTestWebAppFactory factory) : BaseInteg
 
         // Assert
         firstResult.IsSuccess.Should().BeTrue();
-        firstResult.Value.Title.Should().Be("My Recipe");
-        firstResult.Value.Id.Should().Be(recipeIds[0]);
+        firstResult.Value.Title.Should().Be(Constants.RecipeTitle);
+        firstResult.Value.Id.Should().Be(recipeIdList[0]);
 
         secondResult.IsSuccess.Should().BeTrue();
-        secondResult.Value.Title.Should().Be("My Recipe 2");
-        secondResult.Value.Id.Should().Be(recipeIds[1]);
+        secondResult.Value.Title.Should().Be(Constants.RecipeTitle);
+        secondResult.Value.Id.Should().Be(recipeIdList[1]);
     }
 }

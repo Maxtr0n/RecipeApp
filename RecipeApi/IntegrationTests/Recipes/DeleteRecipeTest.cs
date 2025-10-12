@@ -9,7 +9,7 @@ public class DeleteRecipeTest(IntegrationTestWebAppFactory factory) : BaseIntegr
     public async Task Delete_Should_Remove_Recipe_From_Database()
     {
         // Arrange
-        var recipeId = await CreateUserAndRecipeForTesting();
+        var recipeId = await CreateRecipeForTesting();
 
         var deleteCommand = new DeleteRecipeCommand(recipeId);
 
