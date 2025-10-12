@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 
 namespace Application.Recipes.Create;
+
 public class CreateRecipeCommandValidator : AbstractValidator<CreateRecipeCommand>
 {
     public CreateRecipeCommandValidator()
@@ -14,7 +15,7 @@ public class CreateRecipeCommandValidator : AbstractValidator<CreateRecipeComman
             .MinimumLength(3)
             .MaximumLength(100);
 
-        RuleFor(x => x.RecipeCreateDto.Description)
+        RuleFor(x => x.RecipeCreateDto.Instructions)
             .NotEmpty()
             .WithMessage("Description is required.")
             .MinimumLength(3)

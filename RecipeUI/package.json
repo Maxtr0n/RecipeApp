@@ -30,11 +30,16 @@
     "@angular/forms": "^20.3.0",
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
+    "@omnedia/ngx-starry-sky": "^3.0.3",
+    "@primeuix/themes": "^1.2.5",
     "@tailwindcss/postcss": "^4.1.13",
+    "angular-auth-oidc-client": "20.0.2",
     "pnpm": "^10.16.0",
     "postcss": "^8.5.6",
+    "primeng": "^20.2.0",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.1.13",
+    "tailwindcss-primeui": "^0.6.1",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -51,5 +56,5 @@
     "only-allow": "^1.2.1",
     "typescript": "~5.9.2"
   },
-  "packageManager": "pnpm@10.16.0"
+  "packageManager": "pnpm@10.18.1"
 }

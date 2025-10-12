@@ -7,7 +7,7 @@ public class UpdateRecipeCommandValidator : AbstractValidator<UpdateRecipeComman
     public UpdateRecipeCommandValidator()
     {
         RuleFor(x => x.RecipeUpdateDto)
-           .NotNull();
+            .NotNull();
 
         RuleFor(x => x.RecipeUpdateDto.Title)
             .NotEmpty()
@@ -15,12 +15,12 @@ public class UpdateRecipeCommandValidator : AbstractValidator<UpdateRecipeComman
             .MinimumLength(3)
             .MaximumLength(100);
 
-        RuleFor(x => x.RecipeUpdateDto.Description)
+        RuleFor(x => x.RecipeUpdateDto.Instructions)
             .NotEmpty()
             .WithMessage("Description is required.")
             .MinimumLength(3)
             .MaximumLength(5000);
 
-        RuleFor(x => x.RecipeUpdateDto.Ingredients).NotEmpty();
+        RuleFor(x => x.RecipeUpdateDto.Instructions).NotEmpty();
     }
 }

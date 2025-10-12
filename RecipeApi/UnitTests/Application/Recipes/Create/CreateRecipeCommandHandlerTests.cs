@@ -27,10 +27,14 @@ public class CreateRecipeCommandHandlerTests
         // Arrange
         var dto = new RecipeCreateDto
         {
-            Title = "Recipe Title",
-            Ingredients = ["Ingredient1", "Ingredient2"],
-            Images = [],
-            Description = "Recipe Description"
+            Title = Constants.RecipeTitle,
+            Instructions = Constants.RecipeInstructions,
+            Ingredients = Constants.RecipeIngredientDtos,
+            Description = Constants.RecipeDescription,
+            PreparationTimeInMinutes = Constants.RecipePrepTime,
+            CookingTimeInMinutes = Constants.RecipeCookingTime,
+            Servings = Constants.RecipeServings,
+            ImageUrls = Constants.RecipeImageUrlDtos
         };
 
         var command = new CreateRecipeCommand(dto, Constants.UserId);
@@ -45,10 +49,18 @@ public class CreateRecipeCommandHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBeNull();
-        result.Value.Id.Should().NotBeEmpty();
-        result.Value.Title.Should().Be(dto.Title);
-        result.Value.Ingredients.Should().Contain(dto.Ingredients);
-        result.Value.Description.Should().Be(dto.Description);
+        var recipeResult = result.Value;
+        recipeResult.Should().NotBeNull();
+        recipeResult.Title.Should().Be(Constants.RecipeTitle);
+        recipeResult.Description.Should().Be(Constants.RecipeDescription);
+        recipeResult.Instructions.Should().Be(Constants.RecipeInstructions);
+        recipeResult.Servings.Should().Be(Constants.RecipeServings);
+        recipeResult.CookingTimeInMinutes.Should().Be(Constants.RecipeCookingTime);
+        recipeResult.PreparationTimeInMinutes.Should().Be(Constants.RecipePrepTime);
+        recipeResult.Images.Should().BeEquivalentTo(Constants.RecipeImageUrlDtos);
+        recipeResult.Ingredients.Should().HaveCount(Constants.RecipeIngredientDtos.Count);
+        recipeResult.Ingredients[0].Name.Should().Be(Constants.RecipeIngredientDtos[0].Name);
+        recipeResult.Ingredients[0].Quantity.Amount.Should().Be(Constants.RecipeIngredientDtos[0].Quantity.Amount);
+        recipeResult.Ingredients[0].Quantity.Unit.Should().Be(Constants.RecipeIngredientDtos[0].Quantity.Unit);
     }
 }

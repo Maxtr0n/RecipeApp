@@ -17,7 +17,16 @@ public class GetRecipeByIdQueryHandlerTests
     {
         _recipeRepositoryMock = new Mock<IGenericRepository<Recipe>>();
 
-        _recipe = new Recipe("Test Recipe Title", "Salt;Pepper;", "Description", null, Constants.UserId);
+        _recipe = new Recipe(
+            Constants.RecipeTitle,
+            Constants.RecipeIngredients,
+            Constants.RecipeInstructions,
+            Constants.RecipePrepTime,
+            Constants.RecipeCookingTime,
+            Constants.RecipeServings,
+            Constants.UserId,
+            Constants.RecipeDescription,
+            Constants.RecipeImageUrls);
     }
 
     [Fact]
@@ -33,12 +42,19 @@ public class GetRecipeByIdQueryHandlerTests
 
         //Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Id.Should().Be(_recipe.Id);
-        result.Value.Title.Should().Be(_recipe.Title);
-        result.Value.Description.Should().Be(_recipe.Description);
-        result.Value.Ingredients.Count.Should().Be(2);
-        result.Value.Ingredients[0].Should().Be("Salt");
-        result.Value.Ingredients[1].Should().Be("Pepper");
+        var recipeResult = result.Value;
+        recipeResult.Should().NotBeNull();
+        recipeResult.Title.Should().Be(Constants.RecipeTitle);
+        recipeResult.Description.Should().Be(Constants.RecipeDescription);
+        recipeResult.Instructions.Should().Be(Constants.RecipeInstructions);
+        recipeResult.Servings.Should().Be(Constants.RecipeServings);
+        recipeResult.CookingTimeInMinutes.Should().Be(Constants.RecipeCookingTime);
+        recipeResult.PreparationTimeInMinutes.Should().Be(Constants.RecipePrepTime);
+        recipeResult.Images.Should().BeEquivalentTo(Constants.RecipeImageUrlDtos);
+        recipeResult.Ingredients.Should().HaveCount(Constants.RecipeIngredientDtos.Count);
+        recipeResult.Ingredients[0].Name.Should().Be(Constants.RecipeIngredientDtos[0].Name);
+        recipeResult.Ingredients[0].Quantity.Amount.Should().Be(Constants.RecipeIngredientDtos[0].Quantity.Amount);
+        recipeResult.Ingredients[0].Quantity.Unit.Should().Be(Constants.RecipeIngredientDtos[0].Quantity.Unit);
     }
 
     [Fact]

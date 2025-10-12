@@ -17,7 +17,7 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.5")
+                .HasAnnotation("ProductVersion", "9.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -32,24 +32,87 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("CookingTimeInMinutes")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImageUrls")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Instructions")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Images")
-                        .HasColumnType("text");
+                    b.Property<int>("PreparationTimeInMinutes")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("Ingredients")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Servings")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.ToTable("Recipes");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Recipe", b =>
+                {
+                    b.OwnsMany("Domain.ValueObjects.Ingredient", "Ingredients", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer");
+
+                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
+
+                            b1.Property<Guid>("RecipeId")
+                                .HasColumnType("uuid");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("RecipeId");
+
+                            b1.ToTable("RecipeIngredients", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("RecipeId");
+
+                            b1.OwnsOne("Domain.ValueObjects.Quantity", "Quantity", b2 =>
+                                {
+                                    b2.Property<int>("IngredientId")
+                                        .HasColumnType("integer");
+
+                                    b2.Property<double>("Amount")
+                                        .HasColumnType("double precision");
+
+                                    b2.Property<string>("Unit")
+                                        .IsRequired()
+                                        .HasColumnType("text");
+
+                                    b2.HasKey("IngredientId");
+
+                                    b2.ToTable("RecipeIngredients");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("IngredientId");
+                                });
+
+                            b1.Navigation("Quantity")
+                                .IsRequired();
+                        });
+
+                    b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618
         }

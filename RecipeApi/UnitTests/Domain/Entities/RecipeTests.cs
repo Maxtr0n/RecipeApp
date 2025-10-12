@@ -5,12 +5,6 @@ namespace UnitTests.Domain.Entities;
 
 public class RecipeTests
 {
-    private const string ValidTitle = "Recipe Title";
-    private const string ValidIngredients = "Ingredient1;Ingredient2";
-    private const string ValidDescription = "Recipe Description";
-    private const string ValidImages = "https://testurl.com/image1;https://testurl.com/image2";
-    private readonly string _validAuthorId = Guid.NewGuid().ToString();
-
     [Fact]
     public void Constructor_Should_CreateRecipe_WhenParametersAreValid()
     {
@@ -18,20 +12,28 @@ public class RecipeTests
 
         // Act
         var recipe = new Recipe(
-            ValidTitle,
-            ValidIngredients,
-            ValidDescription,
-            ValidImages,
-            _validAuthorId
+            Constants.RecipeTitle,
+            Constants.RecipeIngredients,
+            Constants.RecipeInstructions,
+            Constants.RecipePrepTime,
+            Constants.RecipeCookingTime,
+            Constants.RecipeServings,
+            Constants.UserId,
+            Constants.RecipeDescription,
+            Constants.RecipeImageUrls
         );
 
         // Assert
         recipe.Should().NotBeNull();
-        recipe.Title.Should().Be(ValidTitle);
-        recipe.Ingredients.Should().Be(ValidIngredients);
-        recipe.Description.Should().Be(ValidDescription);
-        recipe.Images.Should().Be(ValidImages);
-        recipe.AuthorId.Should().Be(_validAuthorId);
+        recipe.Title.Should().Be(Constants.RecipeTitle);
+        recipe.Ingredients.Should().BeEquivalentTo(Constants.RecipeIngredients);
+        recipe.Instructions.Should().Be(Constants.RecipeInstructions);
+        recipe.Description.Should().Be(Constants.RecipeDescription);
+        recipe.CookingTimeInMinutes.Should().Be(Constants.RecipeCookingTime);
+        recipe.PreparationTimeInMinutes.Should().Be(Constants.RecipePrepTime);
+        recipe.Servings.Should().Be(Constants.RecipeServings);
+        recipe.ImageUrls.Should().Be(Constants.RecipeImageUrls);
+        recipe.AuthorId.Should().Be(Constants.UserId);
     }
 
     [Fact]
@@ -42,10 +44,14 @@ public class RecipeTests
         {
             var recipe = new Recipe(
                 null!,
-                ValidIngredients,
-                ValidDescription,
-                ValidImages,
-                _validAuthorId);
+                Constants.RecipeIngredients,
+                Constants.RecipeInstructions,
+                Constants.RecipePrepTime,
+                Constants.RecipeCookingTime,
+                Constants.RecipeServings,
+                Constants.UserId,
+                Constants.RecipeDescription,
+                Constants.RecipeImageUrls);
         };
 
         // Act & Assert
@@ -60,10 +66,14 @@ public class RecipeTests
         {
             var recipe = new Recipe(
                 string.Empty,
-                ValidIngredients,
-                ValidDescription,
-                ValidImages,
-                _validAuthorId);
+                Constants.RecipeIngredients,
+                Constants.RecipeInstructions,
+                Constants.RecipePrepTime,
+                Constants.RecipeCookingTime,
+                Constants.RecipeServings,
+                Constants.UserId,
+                Constants.RecipeDescription,
+                Constants.RecipeImageUrls);
         };
 
         // Act & Assert

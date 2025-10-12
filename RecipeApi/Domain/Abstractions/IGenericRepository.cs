@@ -7,4 +7,5 @@ public interface IGenericRepository<T> where T : class, IAggregateRoot
     Task<List<T>> GetAllAsync(bool tracking = true);
     void Update(T entity);
     Task DeleteByIdAsync(Guid id);
+    Task DeleteAllAsync();
 }

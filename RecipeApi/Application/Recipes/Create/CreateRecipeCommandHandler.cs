@@ -1,13 +1,10 @@
 ﻿using Application.Common.Abstractions.CQRS;
 using Application.Common.Dtos;
-using Application.Common.Extensions;
 using Application.Common.Mappings;
 using Ardalis.Result;
 using Domain.Abstractions;
 using Domain.Entities;
 using Microsoft.Extensions.Logging;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Application.Recipes.Create;
 
@@ -21,9 +18,7 @@ public class CreateRecipeCommandHandler(
     {
         logger.LogInformation("Creating recipe");
 
-        var recipe = new Recipe(request.RecipeCreateDto.Title,
-            request.RecipeCreateDto.Ingredients.JoinStrings(), request.RecipeCreateDto.Description,
-            request.RecipeCreateDto.Images.JoinStrings(), request.UserId);
+        var recipe = request.RecipeCreateDto.MapToEntity(request.UserId);
 
         await recipeRepository.AddAsync(recipe);
 

@@ -1,0 +1,29 @@
+@if (error()) {
+<div class="alert alert-danger" role="alert">
+    {{ error() }}
+</div>
+}
+@if (loading()) {
+<div>Loading recipes...</div>
+} @else {
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    @for (recipe of recipes(); track recipe.id) {
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ recipe.title }}</h5>
+            <p class="card-text">{{ recipe.description }}</p>
+            <div class="flex gap-2">
+                <a [routerLink]="['/recipes', recipe.id]" class="btn btn-primary">View</a>
+                <a [routerLink]="['/recipes', recipe.id, 'edit']" class="btn btn-secondary">Edit</a>
+                <button (click)="deleteRecipe(recipe.id)" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+    } @empty {
+    <div>No recipes found.</div>
+    }
+</div>
+<div class="mt-4">
+    <a routerLink="/recipes/new" class="btn btn-success">Create New Recipe</a>
+</div>
+}

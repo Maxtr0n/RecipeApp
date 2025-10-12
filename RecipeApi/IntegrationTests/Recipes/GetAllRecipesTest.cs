@@ -9,7 +9,7 @@ public class GetAllRecipesTest(IntegrationTestWebAppFactory factory) : BaseInteg
     public async Task GetAll_Should_Return_All_Recipes_From_Database()
     {
         // Arrange
-        var recipeIds = await CreateUserAndTwoRecipesForTesting();
+        var recipeIds = await CreateRecipesForTesting();
 
         var getALlQuery = new GetAllRecipesQuery();
 
@@ -19,9 +19,9 @@ public class GetAllRecipesTest(IntegrationTestWebAppFactory factory) : BaseInteg
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Count.Should().Be(2);
-        result.Value.Exists(r => r.Title == "My Recipe").Should().BeTrue();
-        result.Value.Exists(r => r.Id == recipeIds[0]).Should().BeTrue();
-        result.Value.Exists(r => r.Title == "My Recipe 2").Should().BeTrue();
-        result.Value.Exists(r => r.Id == recipeIds[1]).Should().BeTrue();
+        result.Value.Exists(r => r.Title == Constants.RecipeTitle).Should().BeTrue();
+        result.Value.Exists(r => r.Id == recipeIds.ElementAt(0)).Should().BeTrue();
+        result.Value.Exists(r => r.Title == Constants.RecipeTitle).Should().BeTrue();
+        result.Value.Exists(r => r.Id == recipeIds.ElementAt(1)).Should().BeTrue();
     }
 }

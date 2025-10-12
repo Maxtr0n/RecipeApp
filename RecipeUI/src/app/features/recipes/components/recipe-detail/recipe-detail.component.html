@@ -1,0 +1,66 @@
+@if (error()) {
+<div class="alert alert-danger" role="alert">
+    {{ error() }}
+</div>
+}
+@if (loading()) {
+<div>Loading recipe...</div>
+} @else if (recipe()) {
+<div class="max-w-4xl mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-4">{{ recipe()!.title }}</h1>
+
+    <div class="mb-6">
+        <p class="text-gray-700">{{ recipe()!.description }}</p>
+    </div>
+
+    <div class="grid grid-cols-3 gap-4 mb-6 text-center">
+        <div class="p-4 bg-gray-100 rounded">
+            <p class="font-bold">Preparation Time</p>
+            <p>{{ recipe()!.preparationTime }} min</p>
+        </div>
+        <div class="p-4 bg-gray-100 rounded">
+            <p class="font-bold">Cooking Time</p>
+            <p>{{ recipe()!.cookingTime }} min</p>
+        </div>
+        <div class="p-4 bg-gray-100 rounded">
+            <p class="font-bold">Servings</p>
+            <p>{{ recipe()!.servings }}</p>
+        </div>
+    </div>
+
+    @if (recipe()!.imageUrls.length > 0) {
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold mb-2">Images</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            @for (imageUrl of recipe()!.imageUrls; track imageUrl) {
+            <img [src]="imageUrl" [alt]="recipe()!.title" class="recipe-image">
+            }
+        </div>
+    </div>
+    }
+
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold mb-2">Ingredients</h2>
+        <ul class="list-disc pl-5">
+            @for (ingredient of recipe()!.ingredients; track ingredient) {
+            <li>{{ ingredient }}</li>
+            }
+        </ul>
+    </div>
+
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold mb-2">Instructions</h2>
+        <ol class="list-decimal pl-5">
+            @for (instruction of recipe()!.instructions; track instruction) {
+            <li class="mb-2">{{ instruction }}</li>
+            }
+        </ol>
+    </div>
+
+    <div class="flex gap-2">
+        <a routerLink="/recipes" class="btn btn-secondary">Back to List</a>
+        <a [routerLink]="['/recipes', recipe()!.id, 'edit']" class="btn btn-primary">Edit Recipe</a>
+        <button (click)="deleteRecipe()" class="btn btn-danger">Delete Recipe</button>
+    </div>
+</div>
+}

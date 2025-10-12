@@ -29,14 +29,18 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
         DbContext?.Dispose();
     }
 
-    protected async Task<Guid> CreateUserAndRecipeForTesting()
+    protected async Task<Guid> CreateRecipeForTesting()
     {
         var createRecipeDto = new RecipeCreateDto
         {
-            Title = "My Recipe",
-            Description = "My Recipe Description",
-            Ingredients = ["Ingredient 1, Ingredient 2, Ingredient 3"],
-            Images = []
+            Title = Constants.RecipeTitle,
+            Instructions = Constants.RecipeInstructions,
+            Ingredients = Constants.RecipeIngredients,
+            Description = Constants.RecipeDescription,
+            PreparationTimeInMinutes = Constants.RecipePrepTime,
+            CookingTimeInMinutes = Constants.RecipeCookingTime,
+            Servings = Constants.RecipeServings,
+            ImageUrls = Constants.RecipeImageUrlDtos
         };
 
         var createCommand = new CreateRecipeCommand(createRecipeDto, Constants.UserId);
@@ -52,46 +56,37 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
         return createRecipeResult.Value.Id;
     }
 
-    protected async Task<Guid[]> CreateUserAndTwoRecipesForTesting()
+    protected async Task<IEnumerable<Guid>> CreateRecipesForTesting(int numberOfRecipesToCreate = 2)
     {
-        var dto1 = new RecipeCreateDto
-        {
-            Title = "My Recipe",
-            Description = "My Recipe Description",
-            Ingredients = ["Ingredient 1, Ingredient 2, Ingredient 3"],
-            Images = []
-        };
+        var recipeIds = new List<Guid>();
 
-        var dto2 = new RecipeCreateDto
+        for (var i = 0; i < numberOfRecipesToCreate; i++)
         {
-            Title = "My Recipe 2",
-            Description = "My Recipe Description 2",
-            Ingredients = ["Ingredient 1, Ingredient 2, Ingredient 3"],
-            Images = []
-        };
+            var dto = new RecipeCreateDto
+            {
+                Title = Constants.RecipeTitle,
+                Instructions = Constants.RecipeInstructions,
+                Ingredients = Constants.RecipeIngredients,
+                Description = Constants.RecipeDescription,
+                PreparationTimeInMinutes = Constants.RecipePrepTime,
+                CookingTimeInMinutes = Constants.RecipeCookingTime,
+                Servings = Constants.RecipeServings,
+                ImageUrls = Constants.RecipeImageUrlDtos
+            };
 
-        var createCommand = new CreateRecipeCommand(dto1, Constants.UserId);
-        var createRecipeResult = await Sender.Send(createCommand);
+            var createCommand = new CreateRecipeCommand(dto, Constants.UserId);
+            var createRecipeResult = await Sender.Send(createCommand);
 
-        if (!createRecipeResult.IsSuccess || createRecipeResult == null)
-        {
-            throw new Exception("Failed to create recipe 1");
+            if (!createRecipeResult.IsSuccess || createRecipeResult == null)
+            {
+                throw new Exception("Failed to create recipe.");
+            }
+
+            recipeIds.Add(createRecipeResult.Value.Id);
         }
-
-        var firstRecipeId = createRecipeResult.Value.Id;
-
-        createCommand = new CreateRecipeCommand(dto2, Constants.UserId);
-        createRecipeResult = await Sender.Send(createCommand);
-
-        if (!createRecipeResult.IsSuccess || createRecipeResult == null)
-        {
-            throw new Exception("Failed to create recipe 2");
-        }
-
-        var secondRecipeId = createRecipeResult.Value.Id;
 
         await UnitOfWork.SaveChangesAsync();
 
-        return [firstRecipeId, secondRecipeId];
+        return recipeIds;
     }
 }
