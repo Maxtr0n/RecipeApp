@@ -128,7 +128,7 @@ export class RecipeEditComponent implements OnInit {
                 this.form.patchValue({
                     title: recipe.title,
                     description: recipe.description,
-                    preparationTime: recipe.preparationTime,
+                    preparationTime: recipe.preparationTimeInMinutes,
                     cookingTime: recipe.cookingTime,
                     servings: recipe.servings,
                     imageUrls: []
