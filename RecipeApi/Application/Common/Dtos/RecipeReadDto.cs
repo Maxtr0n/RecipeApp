@@ -21,4 +21,8 @@ public class RecipeReadDto
     public List<string> Images { get; set; } = [];
 
     public string AuthorId { get; set; } = default!;
+
+    public DateTimeOffset CreatedAtUtc { get; set; }
+
+    public DateTimeOffset UpdatedAtUtc { get; set; }
 }

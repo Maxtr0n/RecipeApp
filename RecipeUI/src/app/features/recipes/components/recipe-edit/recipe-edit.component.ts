@@ -72,8 +72,8 @@ export class RecipeEditComponent implements OnInit {
         const recipe: CreateRecipeDto = {
             title: this.form.value.title!,
             description: this.form.value.description!,
-            preparationTime: this.form.value.preparationTime!,
-            cookingTime: this.form.value.cookingTime!,
+            preparationTimeInMinutes: this.form.value.preparationTime!,
+            cookingTimeInMinutes: this.form.value.cookingTime!,
             servings: this.form.value.servings!,
             imageUrls: this.imageUrls.value,
             ingredients: this.ingredients.value,
