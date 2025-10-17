@@ -19,6 +19,11 @@ public static class Constants
         new() { Name = "Ingredient1", Quantity = new QuantityCreateDto { Amount = 5.0, Unit = "liter" } }
     ];
 
+    public static readonly List<IngredientReadDto> RecipeIngredientReadDtos =
+   [
+       new() { Name = "Ingredient1", Quantity = new QuantityReadDto { Amount = 5.0, Unit = "liter" } }
+   ];
+
     public const string UpdatedRecipeTitle = "UpdatedTestRecipe";
     public const string UpdatedRecipeDescription = "UpdatedTestRecipeDescription";
     public const string UpdatedRecipeInstructions = "UpdatedTestRecipeInstructions";

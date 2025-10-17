@@ -20,7 +20,9 @@ public static class RecipeMappings
             PreparationTimeInMinutes = recipe.PreparationTimeInMinutes,
             CookingTimeInMinutes = recipe.CookingTimeInMinutes,
             Servings = recipe.Servings,
-            Images = recipe.ImageUrls.SplitStrings().ToList()
+            Images = recipe.ImageUrls.SplitStrings().ToList(),
+            CreatedAtUtc = recipe.CreatedAtUtc,
+            UpdatedAtUtc = recipe.UpdatedAtUtc
         };
     }
 
