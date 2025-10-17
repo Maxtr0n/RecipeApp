@@ -2,12 +2,10 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit, Signal, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthenticatedResult, OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
-import { ButtonModule } from 'primeng/button';
-import { NgxStarrySkyComponent } from '@omnedia/ngx-starry-sky';
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, AsyncPipe, ButtonModule, NgxStarrySkyComponent],
+    imports: [RouterOutlet, AsyncPipe],
     templateUrl: './app.html',
     styleUrl: './app.scss'
 })
