@@ -1,13 +1,1 @@
-@if (authenticated().isAuthenticated) {
-<div class="user-info">
-    <p>Welcome, {{ userData().userData?.name || userData().userData?.preferred_username }}</p>
-    <p>Email: {{ userData().userData?.email }}</p>
-    <p>Access token: {{ oidcSecurityService.getAccessToken() | async }}</p>
-    <p>Id token: {{ oidcSecurityService.getIdToken() | async }}</p>
-    <p>Refresh token: {{ oidcSecurityService.getRefreshToken() | async }}</p>
-    <button (click)="logout()">Logout</button>
-</div>
-} @else {
-<button (click)="login()">Login</button>
-}
 <router-outlet></router-outlet>

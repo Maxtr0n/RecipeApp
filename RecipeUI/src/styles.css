@@ -1,61 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
 @import '@angular/cdk/overlay-prebuilt.css';
-
 @import 'tailwindcss';
 @import '@spartan-ng/brain/hlm-tailwind-preset.css';
 
-@import "@spartan-ng/brain/hlm-tailwind-preset.css";
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-heading: 'Poppins', 'Inter', sans-serif;
+}
 
 :root {
-color-scheme: light;
+  color-scheme: light;
 
---font-sans: '';
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-heading: 'Poppins', 'Inter', sans-serif;
 
---background: oklch(1 0 0);
---foreground: oklch(0.145 0 0);
---card: oklch(1 0 0);
---card-foreground: oklch(0.145 0 0);
---popover: oklch(1 0 0);
---popover-foreground: oklch(0.145 0 0);
---primary: oklch(0.205 0 0);
---primary-foreground: oklch(0.985 0 0);
---secondary: oklch(0.97 0 0);
---secondary-foreground: oklch(0.205 0 0);
---muted: oklch(0.97 0 0);
---muted-foreground: oklch(0.556 0 0);
---accent: oklch(0.97 0 0);
---accent-foreground: oklch(0.205 0 0);
---destructive: oklch(0.577 0.245 27.325);
---border: oklch(0.922 0 0);
---input: oklch(0.922 0 0);
---ring: oklch(0.708 0 0);
---radius: 0.625rem;
+  --background: oklch(0.98 0.01 85); /* Warm white */
+  --foreground: oklch(0.25 0.02 85); /* Deep warm gray */
+  --card: oklch(1 0 0); /* Pure white */
+  --card-foreground: oklch(0.25 0.02 85);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.25 0.02 85);
+  --primary: oklch(0.55 0.18 38.91); /* Warm terracotta */
+  --primary-foreground: oklch(0.98 0.01 85);
+  --secondary: oklch(0.96 0.03 85); /* Light warm beige */
+  --secondary-foreground: oklch(0.35 0.15 38.91);
+  --muted: oklch(0.95 0.02 85); /* Muted warm gray */
+  --muted-foreground: oklch(0.48 0.04 85);
+  --accent: oklch(0.85 0.12 85); /* Soft warm accent */
+  --accent-foreground: oklch(0.25 0.02 85);
+  --destructive: oklch(0.577 0.245 27.325); /* Keep original red */
+  --border: oklch(0.9 0.02 85); /* Warm border */
+  --input: oklch(0.9 0.02 85);
+  --ring: oklch(0.55 0.18 38.91); /* Match primary */
+  --radius: 0.625rem;
 }
 
 :root.dark {
-color-scheme: dark;
+  color-scheme: dark;
 
---background: oklch(0.145 0 0);
---foreground: oklch(0.985 0 0);
---card: oklch(0.205 0 0);
---card-foreground: oklch(0.985 0 0);
---popover: oklch(0.205 0 0);
---popover-foreground: oklch(0.985 0 0);
---primary: oklch(0.922 0 0);
---primary-foreground: oklch(0.205 0 0);
---secondary: oklch(0.269 0 0);
---secondary-foreground: oklch(0.985 0 0);
---muted: oklch(0.269 0 0);
---muted-foreground: oklch(0.708 0 0);
---accent: oklch(0.269 0 0);
---accent-foreground: oklch(0.985 0 0);
---destructive: oklch(0.704 0.191 22.216);
---border: oklch(1 0 0 / 10%);
---input: oklch(1 0 0 / 15%);
---ring: oklch(0.556 0 0);
+  --background: oklch(0.2 0.02 85); /* Dark warm gray */
+  --foreground: oklch(0.95 0.01 85); /* Light warm white */
+  --card: oklch(0.25 0.02 85); /* Slightly lighter than background */
+  --card-foreground: oklch(0.95 0.01 85);
+  --popover: oklch(0.25 0.02 85);
+  --popover-foreground: oklch(0.95 0.01 85);
+  --primary: oklch(0.65 0.18 38.91); /* Bright terracotta */
+  --primary-foreground: oklch(0.2 0.02 85);
+  --secondary: oklch(0.3 0.03 85); /* Warm dark beige */
+  --secondary-foreground: oklch(0.95 0.01 85);
+  --muted: oklch(0.3 0.02 85); /* Muted warm dark */
+  --muted-foreground: oklch(0.75 0.02 85);
+  --accent: oklch(0.65 0.18 38.91); /* Match primary */
+  --accent-foreground: oklch(0.2 0.02 85);
+  --destructive: oklch(0.704 0.191 22.216); /* Keep original red */
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
 }
 
 @layer base {
-* {
-@apply border-border;
-}
+  * {
+    @apply border-border;
+  }
 }

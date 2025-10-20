@@ -20,7 +20,7 @@ interface RecipeForm {
     standalone: true,
     imports: [ReactiveFormsModule],
     templateUrl: './recipe-edit.component.html',
-    styleUrls: ['./recipe-edit.component.scss']
+    styleUrls: ['./recipe-edit.component.css']
 })
 export class RecipeEditComponent implements OnInit {
     private readonly recipeService = inject(RecipeService);
