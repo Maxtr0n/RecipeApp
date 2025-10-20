@@ -24,28 +24,34 @@
   "private": true,
   "dependencies": {
     "-": "^0.0.1",
+    "@angular/cdk": "^20.2.9",
     "@angular/common": "^20.3.0",
     "@angular/compiler": "^20.3.0",
     "@angular/core": "^20.3.0",
     "@angular/forms": "^20.3.0",
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
-    "@omnedia/ngx-starry-sky": "^3.0.3",
-    "@primeuix/themes": "^1.2.5",
+    "@ng-icons/core": "^29.10.0",
+    "@ng-icons/lucide": ">=29.0.0",
+    "@spartan-ng/brain": "0.0.1-alpha.531",
     "@tailwindcss/postcss": "^4.1.13",
     "angular-auth-oidc-client": "20.0.2",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "pnpm": "^10.16.0",
     "postcss": "^8.5.6",
-    "primeng": "^20.2.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.7.0",
     "rxjs": "~7.8.0",
+    "tailwind-merge": "^2.5.2",
     "tailwindcss": "^4.1.13",
-    "tailwindcss-primeui": "^0.6.1",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular/build": "^20.3.1",
     "@angular/cli": "^20.3.1",
     "@angular/compiler-cli": "^20.3.0",
+    "@spartan-ng/cli": "0.0.1-alpha.531",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
@@ -54,7 +60,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "only-allow": "^1.2.1",
+    "tailwindcss-animate": "^1.0.6",
     "typescript": "~5.9.2"
   },
-  "packageManager": "pnpm@10.18.1"
+  "packageManager": "pnpm@10.18.3"
 }

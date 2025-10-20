@@ -1,0 +1,23 @@
+<header
+    class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div class="container flex h-14 items-center">
+        <div class="mr-4 flex">
+            <a class="mr-6 flex items-center space-x-2" routerLink="/">
+                <span class="font-bold">RecipeApp</span>
+            </a>
+            <nav class="flex items-center space-x-6 text-sm font-medium">
+                <a routerLink="/recipes" routerLinkActive="text-foreground" [routerLinkActiveOptions]="{ exact: true }"
+                    class="transition-colors hover:text-foreground/80 text-foreground/60">
+                    Receptek
+                </a>
+            </nav>
+        </div>
+        <div class="flex flex-1 items-center justify-end space-x-4">
+            <button hlmBtn
+                class="relative inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-accent hover:text-accent-foreground"
+                aria-label="Profile menu">
+                <ng-icon hlm size="sm" name="lucideUserCircle2" />
+            </button>
+        </div>
+    </div>
+</header>
