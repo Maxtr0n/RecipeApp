@@ -8,7 +8,7 @@ import { Recipe } from '../../models/recipe.model';
     standalone: true,
     imports: [RouterLink],
     templateUrl: './recipe-detail.component.html',
-    styleUrls: ['./recipe-detail.component.scss']
+    styleUrls: ['./recipe-detail.component.css']
 })
 export class RecipeDetailComponent implements OnInit {
     private readonly recipeService = inject(RecipeService);

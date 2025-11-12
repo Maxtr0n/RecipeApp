@@ -17,9 +17,9 @@ public class Ingredient : ValueObject
         Quantity = quantity;
     }
 
-    public string Name { get; }
+    public string Name { get; private set; }
 
-    public Quantity Quantity { get; }
+    public Quantity Quantity { get; private set; }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

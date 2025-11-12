@@ -1,8 +1,8 @@
 ﻿namespace SharedKernel;
 
-public abstract class Entity
+public abstract class Entity : IAuditable
 {
-    private readonly List<IDomainEvent> _domainEvents = new();
+    private readonly List<IDomainEvent> _domainEvents = [];
 
     protected Entity(Guid id)
     {
@@ -11,11 +11,11 @@ public abstract class Entity
 
     public Guid Id { get; set; }
 
-    public DateTimeOffset CreatedAt { get; set; }
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
-    public DateTimeOffset UpdatedAt { get; set; }
+    public DateTimeOffset CreatedAtUtc { get; set; }
 
-    public List<IDomainEvent> DomainEvents => _domainEvents.ToList();
+    public DateTimeOffset UpdatedAtUtc { get; set; }
 
     public void ClearDomainEvents()
     {

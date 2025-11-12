@@ -4,12 +4,12 @@ export interface Recipe {
     description: string;
     ingredients: string[];
     instructions: string[];
-    preparationTime: number;
+    preparationTimeInMinutes: number;
     cookingTimeInMinutes: number;
     servings: number;
     imageUrls: string[];
-    createdAt: Date;
-    updatedAt: Date;
+    createdAtUtc: Date;
+    updatedAtUtc: Date;
 }
 
 export interface CreateRecipeDto {
@@ -17,8 +17,8 @@ export interface CreateRecipeDto {
     description: string;
     ingredients: string[];
     instructions: string[];
-    preparationTime: number;
-    cookingTime: number;
+    preparationTimeInMinutes: number;
+    cookingTimeInMinutes: number;
     servings: number;
     imageUrls: string[];
 }

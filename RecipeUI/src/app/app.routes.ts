@@ -1,6 +1,10 @@
 import { Routes } from '@angular/router';
-import { recipeRoutes } from './features/recipes/recipes.routes';
+import { coreRoutes } from './core/core.routes';
 
 export const routes: Routes = [
-    ...recipeRoutes
+    ...coreRoutes,
+    {
+        path: 'recipes',
+        loadChildren: () => import('./features/recipes/recipes.routes')
+    }
 ];

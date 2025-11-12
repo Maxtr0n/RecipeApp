@@ -1,5 +1,6 @@
 ﻿using Domain.Abstractions;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Interceptors;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,9 +12,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<RecipeDbContext>(options =>
-            //options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
-            options.UseNpgsql(configuration.GetConnectionString("Postgres")));
+        services.AddSingleton<AuditableInterceptor>();
+        services.AddDbContext<RecipeDbContext>((sp, options) =>
+            options.UseNpgsql(configuration.GetConnectionString("Postgres"))
+                .AddInterceptors(sp.GetRequiredService<AuditableInterceptor>()));
 
         services.AddHealthChecks()
             .AddDbContextCheck<RecipeDbContext>("Database");

@@ -7,8 +7,8 @@ import { CreateRecipeDto, Recipe, UpdateRecipeDto } from '../../models/recipe.mo
 interface RecipeForm {
     title: FormControl<string>;
     description: FormControl<string>;
-    preparationTime: FormControl<number>;
-    cookingTime: FormControl<number>;
+    preparationTimeInMinutes: FormControl<number>;
+    cookingTimeInMinutes: FormControl<number>;
     servings: FormControl<number>;
     imageUrls: FormArray<FormControl<string>>;
     ingredients: FormArray<FormControl<string>>;
@@ -20,7 +20,7 @@ interface RecipeForm {
     standalone: true,
     imports: [ReactiveFormsModule],
     templateUrl: './recipe-edit.component.html',
-    styleUrls: ['./recipe-edit.component.scss']
+    styleUrls: ['./recipe-edit.component.css']
 })
 export class RecipeEditComponent implements OnInit {
     private readonly recipeService = inject(RecipeService);
@@ -34,8 +34,8 @@ export class RecipeEditComponent implements OnInit {
     protected form = new FormGroup<RecipeForm>({
         title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
         description: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-        preparationTime: new FormControl(0, { nonNullable: true, validators: [Validators.min(0)] }),
-        cookingTime: new FormControl(0, { nonNullable: true, validators: [Validators.min(0)] }),
+        preparationTimeInMinutes: new FormControl(0, { nonNullable: true, validators: [Validators.min(0)] }),
+        cookingTimeInMinutes: new FormControl(0, { nonNullable: true, validators: [Validators.min(0)] }),
         servings: new FormControl(1, { nonNullable: true, validators: [Validators.min(1)] }),
         imageUrls: new FormArray<FormControl<string>>([]),
         ingredients: new FormArray<FormControl<string>>([]),
@@ -72,8 +72,8 @@ export class RecipeEditComponent implements OnInit {
         const recipe: CreateRecipeDto = {
             title: this.form.value.title!,
             description: this.form.value.description!,
-            preparationTime: this.form.value.preparationTime!,
-            cookingTime: this.form.value.cookingTime!,
+            preparationTimeInMinutes: this.form.value.preparationTimeInMinutes!,
+            cookingTimeInMinutes: this.form.value.cookingTimeInMinutes!,
             servings: this.form.value.servings!,
             imageUrls: this.imageUrls.value,
             ingredients: this.ingredients.value,
@@ -128,8 +128,8 @@ export class RecipeEditComponent implements OnInit {
                 this.form.patchValue({
                     title: recipe.title,
                     description: recipe.description,
-                    preparationTime: recipe.preparationTime,
-                    cookingTime: recipe.cookingTime,
+                    preparationTimeInMinutes: recipe.preparationTimeInMinutes,
+                    cookingTimeInMinutes: recipe.cookingTimeInMinutes,
                     servings: recipe.servings,
                     imageUrls: []
                 });
