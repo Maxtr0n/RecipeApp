@@ -1,4 +1,4 @@
-﻿using Application;
+﻿using Application.Common;
 using Application.Recipes.GetById;
 using Ardalis.Result;
 using Domain.Abstractions;

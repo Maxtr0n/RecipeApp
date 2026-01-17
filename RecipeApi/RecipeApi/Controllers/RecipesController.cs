@@ -5,8 +5,6 @@ using Application.Recipes.DeleteAll;
 using Application.Recipes.GetAll;
 using Application.Recipes.GetById;
 using Application.Recipes.Update;
-using Ardalis.Result;
-using Ardalis.Result.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +16,12 @@ namespace RecipeApi.Controllers;
 public class RecipesController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{id}")]
-    [TranslateResultToActionResult]
     public async Task<Result<RecipeReadDto>> GetRecipeById([FromRoute] Guid id)
     {
         return await mediator.Send(new GetRecipeByIdQuery(id));
     }
 
     [HttpGet]
-    [TranslateResultToActionResult]
     public async Task<Result<List<RecipeReadDto>>> GetRecipes()
     {
         return await mediator.Send(new GetAllRecipesQuery());
@@ -33,7 +29,6 @@ public class RecipesController(IMediator mediator) : ControllerBase
 
     [HttpPost]
     [Authorize]
-    [TranslateResultToActionResult]
     public async Task<Result<RecipeReadDto>> CreateRecipe([FromBody] RecipeCreateDto dto)
     {
         var userId = User.FindFirst("sub")?.Value;
@@ -48,7 +43,6 @@ public class RecipesController(IMediator mediator) : ControllerBase
 
     [HttpDelete("{id}")]
     [Authorize]
-    [TranslateResultToActionResult]
     public async Task<Result> DeleteRecipe([FromRoute] Guid id)
     {
         return await mediator.Send(new DeleteRecipeCommand(id));
@@ -56,7 +50,6 @@ public class RecipesController(IMediator mediator) : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize]
-    [TranslateResultToActionResult]
     public async Task<Result<RecipeReadDto>> UpdateRecipe([FromRoute] Guid id,
         [FromBody] RecipeUpdateDto recipeUpdateDto)
     {
@@ -72,7 +65,6 @@ public class RecipesController(IMediator mediator) : ControllerBase
 
     [HttpDelete]
     [Authorize(Roles = "admin")]
-    [TranslateResultToActionResult]
     public async Task<Result> DeleteAll()
     {
         return await mediator.Send(new DeleteAllRecipesCommand());

@@ -1,7 +1,7 @@
 ﻿using Application.Common.Abstractions.CQRS;
-using Ardalis.Result;
 using Domain.Abstractions;
 using Domain.Entities;
+using SharedKernel;
 
 namespace Application.Recipes.DeleteAll;
 

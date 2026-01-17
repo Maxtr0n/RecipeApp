@@ -1,9 +1,10 @@
-﻿using Application.Common.Abstractions.CQRS;
+﻿using Application.Common;
+using Application.Common.Abstractions.CQRS;
 using Application.Common.Dtos;
 using Application.Common.Mappings;
-using Ardalis.Result;
 using Domain.Abstractions;
 using Domain.Entities;
+using SharedKernel;
 
 namespace Application.Recipes.GetById;
 
@@ -17,9 +18,11 @@ public class GetRecipeByIdQueryHandler(IGenericRepository<Recipe> recipeReposito
 
         if (recipe == null)
         {
-            return Result.NotFound(ErrorMessages.RecipeNotFoundErrorMessage);
+            return Result.Failure<RecipeReadDto>(new ApplicationError(
+                ErrorCodes.RecipeNotFound, 
+                ErrorMessages.RecipeNotFound(request.Id)));
         }
 
-        return recipe.MapToReadDto();
+        return Result.Success(recipe.MapToReadDto());
     }
 }

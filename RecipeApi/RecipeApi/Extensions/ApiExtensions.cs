@@ -1,6 +1,4 @@
-﻿using Ardalis.Result;
-using Ardalis.Result.AspNetCore;
-using Infrastructure.Persistence;
+﻿using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +7,6 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using RecipeApi.Infrastructure;
 using Scalar.AspNetCore;
-using System.Net;
 
 namespace RecipeApi.Extensions;
 
@@ -20,13 +17,7 @@ public static class ApiExtensions
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
 
-        services.AddControllers(mvcOptions => mvcOptions
-            .AddResultConvention(resultStatusMap => resultStatusMap
-                .AddDefaultMap()
-                .For(ResultStatus.Ok, HttpStatusCode.OK, resultStatusOptions => resultStatusOptions
-                    .For("POST", HttpStatusCode.Created)
-                    .For("DELETE", HttpStatusCode.NoContent))
-            ));
+        services.AddControllers();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(o =>
