@@ -4,20 +4,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Ardalis.GuardClauses"/>
-        <PackageReference Include="Ardalis.Result"/>
-        <PackageReference Include="Ardalis.Result.FluentValidation"/>
-        <PackageReference Include="FluentValidation"/>
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
-        <PackageReference Include="MediatR"/>
+        <PackageReference Include="FluentValidation" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+        <PackageReference Include="MediatR" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Domain\Domain.csproj"/>
+        <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Common\Abstractions\"/>
+        <Folder Include="Common\Abstractions\" />
     </ItemGroup>
 
 </Project>

@@ -1,10 +1,10 @@
 ﻿using Application.Common.Abstractions.CQRS;
 using Application.Common.Dtos;
 using Application.Common.Mappings;
-using Ardalis.Result;
 using Domain.Abstractions;
 using Domain.Entities;
 using Microsoft.Extensions.Logging;
+using SharedKernel;
 
 namespace Application.Recipes.GetAll;
 
@@ -18,6 +18,6 @@ public class GetAllRecipesQueryHandler(IGenericRepository<Recipe> recipeReposito
         
         var recipes = await recipeRepository.GetAllAsync();
 
-        return recipes.MapToReadDtos();
+        return Result.Success(recipes.MapToReadDtos());
     }
 }

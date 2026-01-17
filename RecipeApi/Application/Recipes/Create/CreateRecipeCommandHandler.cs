@@ -1,10 +1,10 @@
 ﻿using Application.Common.Abstractions.CQRS;
 using Application.Common.Dtos;
 using Application.Common.Mappings;
-using Ardalis.Result;
 using Domain.Abstractions;
 using Domain.Entities;
 using Microsoft.Extensions.Logging;
+using SharedKernel;
 
 namespace Application.Recipes.Create;
 
@@ -26,6 +26,6 @@ public class CreateRecipeCommandHandler(
 
         logger.LogInformation("Recipe created successfully");
 
-        return recipe.MapToReadDto();
+        return Result.Success(recipe.MapToReadDto());
     }
 }

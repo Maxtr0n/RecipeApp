@@ -1,4 +1,4 @@
-﻿using Application;
+﻿using Application.Common;
 using Application.Common.Dtos;
 using Application.Recipes.GetById;
 using Application.Recipes.Update;
